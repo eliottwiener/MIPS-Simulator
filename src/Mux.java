@@ -29,6 +29,6 @@ public class Mux implements Clockable{
 	
 	@Override
 	public void clockEdge() {
-		output.setValue(inputs.get(switcher.getValue().getIntValue()).getValue());
+		output.setValue(inputs.get((int)switcher.getValue()).getValue());
 	}
 }

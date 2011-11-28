@@ -1,14 +1,14 @@
 
 public class Pin {
-	private Binary value;
+	private long value;
 	
 	Pin(){}
 	
-	public final void setValue(final Binary b){
-		this.value = b;
+	public final void setValue(final long l){
+		this.value = l;
 	}
 	
-	public final Binary getValue(){
+	public final long getValue(){
 		return this.value;
 	}
 }
