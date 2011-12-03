@@ -13,11 +13,11 @@ public class Control{
 	public Pin regWrite = new Pin();
 	
 	
-	public Control(long input){
-		this.opcode = Long.toBinaryString(input);
-	}
+	public Control(){}
 	
-	public void setSignals(){
+	public void setSignals(long input){
+		
+		this.opcode = Long.toBinaryString(input);
 		
 		// R-Type instructions
 		if(opcode.equals("000000")){
