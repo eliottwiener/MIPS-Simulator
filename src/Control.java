@@ -1,7 +1,7 @@
 public class Control{
-	public String opcode;
 	public long output;
 	
+	public Pin opcode = new Pin();
 	public Pin jump = new Pin();
 	public Pin regDst = new Pin();
 	public Pin branch = new Pin();
@@ -15,12 +15,12 @@ public class Control{
 	
 	public Control(){}
 	
-	public void setSignals(long input){
+	public void setSignals(){
 		
-		this.opcode = Long.toBinaryString(input);
+		String myOpcode = Long.toBinaryString(opcode.getValue());
 		
 		// R-Type instructions
-		if(opcode.equals("000000")){
+		if(myOpcode.equals("000000")){
 			jump.setValue((long)0);
 			regDst.setValue((long)1);
 			branch.setValue((long)0);
@@ -33,7 +33,7 @@ public class Control{
 		}
 		
 		// LW instruction
-		if(opcode.equals("100011")){
+		if(myOpcode.equals("100011")){
 			jump.setValue((long)0);
 			regDst.setValue((long)0);
 			branch.setValue((long)0);
@@ -46,7 +46,7 @@ public class Control{
 		}
 		
 		// SW instruction
-		if(opcode.equals("101011")){
+		if(myOpcode.equals("101011")){
 			jump.setValue((long)0);
 			regDst.setValue((long)0);
 			branch.setValue((long)0);
@@ -59,7 +59,7 @@ public class Control{
 		}
 		
 		// branch instructions
-		if(opcode.equals("000100") || opcode.equals("000101")){
+		if(myOpcode.equals("000100") || opcode.equals("000101")){
 			jump.setValue((long)0);
 			regDst.setValue((long)0);
 			branch.setValue((long)1);
@@ -72,7 +72,7 @@ public class Control{
 		}
 		
 		// jump instruction
-		if(opcode.equals("000010")){
+		if(myOpcode.equals("000010")){
 			jump.setValue((long)1);
 			regDst.setValue((long)0);
 			branch.setValue((long)0);
@@ -86,7 +86,7 @@ public class Control{
 		
 		// I-type instructions
 		// addi, andi, ori, slti
-		if(opcode.equals("001000") ||
+		if(myOpcode.equals("001000") ||
 				opcode.equals("001100") ||
 				opcode.equals("001101") ||
 				opcode.equals("001010")){
