@@ -1,7 +1,7 @@
 public class Fetch implements Clockable{
 	
 	//index of the program counter
-	public long PC;
+	public Pin PC;
 	
 	// the complete set of instructions
 	public Memory instructionSet;
@@ -12,11 +12,10 @@ public class Fetch implements Clockable{
 	// initialize program counter to zero
 	public Fetch(Memory instructionSet){
 		this.instructionSet = instructionSet;
-		PC = 0;
 	}
 	
 	public void setInstruction(){
-		instruction = instructionSet.loadWord(PC);
+		instruction = instructionSet.loadWord(PC.getValue());
 	}
 	
 	public long getInstruction(){
@@ -25,6 +24,6 @@ public class Fetch implements Clockable{
 	
 	public void clockEdge(){
 		setInstruction();
-		PC++;
+		PC.setValue(PC.getValue() + 1);
 	}
 }
