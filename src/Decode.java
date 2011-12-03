@@ -1,66 +1,73 @@
 public class Decode{
 	// the instruction to decode
-	public long instruction;
+	public Pin instruction = new Pin();
 	
 	// op code of instruction[31:26]
-	public long opcode;	
+	public Pin opcode = new Pin();
 	
 	// rs field of instruction[25:21]
 	// read register 1 of RegFile
-	public long rs;
+	public Pin rs = new Pin();
 	
 	// rt field of instruction[20:16]
 	// read register 2 of RegFile
-	public long rt;
+	public Pin rt = new Pin();
 	
 	// rd field of instruction[15:11]
 	// sent to MUX to determine Write Register of RegFile
-	public long rd;
+	public Pin rd = new Pin();
 	
 	// funct field of instruction[5:0]
 	// sent to ALU control for R-Type instructions
-	public long funct;
+	public Pin funct = new Pin();
 	
 	// 16-bit offset for branch, equal, load, and store
 	// sent to sign-extend
-	public long offset;
+	public Pin offset = new Pin();
+	
+	// 25-bit for target of jump
+	public Pin target = new Pin();
 
 
-	// 0 for R-Type, 1 for I-Type, 2 for J-Type
+	// 0 for R-Type, 1 for I-Type, 2 for J-Type, 3 for HLT
 	public int opType;
 	
 	// creates this object with an instruction from fetch stage
-	Decode(Long instruction){
-		this.instruction = instruction;
+	Decode(long instruction){
+		this.instruction.setValue(instruction);
 	}
 	
 	// takes first 6 bits as opcode
 	public void setOpcode(String instr){
-		opcode = Long.parseLong(instr.substring(0,5));
+		opcode.setValue(Long.parseLong(instr.substring(0,5)));
 	}
 	
 	// takes next 5 bits as rs value
 	public void setRS(String instr){
-		rs = Long.parseLong(instr.substring(6,10));
+		rs.setValue(Long.parseLong(instr.substring(6,10)));
 	}
 	
 	// takes next 5 bits as rt value
 	public void setRT(String instr){
-		rt = Long.parseLong(instr.substring(11,15));
+		rt.setValue(Long.parseLong(instr.substring(11,15)));
 		
 	}
 	
 	// sets the rd and func value if r-type
 	public void setRD(String instr){
-		rd = Long.parseLong(instr.substring(16,20));
+		rd.setValue(Long.parseLong(instr.substring(16,20)));
 	}
 	public void setFunct(String instr){
-		funct = Long.parseLong(instr.substring(26,31));
+		funct.setValue(Long.parseLong(instr.substring(26,31)));
 	}
 	
 	// sets the offset value for i-type and j-type
 	public void setOffset(String instr){
-		offset = Long.parseLong(instr.substring(16,31));
+		offset.setValue(Long.parseLong(instr.substring(16,31)));
+	}
+	
+	public void setTarget(String instr){
+		offset.setValue(Long.parseLong(instr.substring(6, 31)));
 	}
 	
 	// determines if this instruction is R-Type, I-Type, or J-Type
@@ -85,36 +92,27 @@ public class Decode{
 			opType = 2;
 			// J-Type instruction
 		}
+		
+		if(op.equals("111111")){
+			opType = 3;
+			// HLT instruction
+		}
 	}
 	
-	// accessor methods
-	public long getOpCode(){
-		return opcode;
+	public boolean isHalt(){
+		return opType == 3;
 	}
-	public long getRs(){
-		return rs;
-	}
-	public long getRt(){
-		return rt;
-	}
-	public long getRd(){
-		return rd;
-	}
-	public long getFunct(){
-		return funct;
-	}
-	public long getOffset(){
-		return offset;
-	}
+	
 	
 	// Decodes the instruction
 	public void clockEdge(){
-		String instrStr = Long.toBinaryString(instruction);
+		String instrStr = Long.toBinaryString(instruction.getValue());
 		if(instrStr.length() < 32){
-			opcode = Long.parseLong(instrStr.substring(0,5));
-			setOpType(instrStr.substring(0,5));
+			setOpcode(instrStr);
+			setOpType(Long.toBinaryString(opcode.getValue()));
 			setRS(instrStr);
 			setRT(instrStr);
+			setTarget(instrStr);
 			if(opType == 0){
 				setRD(instrStr);
 				setFunct(instrStr);
