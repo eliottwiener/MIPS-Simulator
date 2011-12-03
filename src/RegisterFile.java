@@ -3,12 +3,12 @@ public class RegisterFile implements Clockable{
 	public Register[] regFile;
 	
 	public Pin writeReg = new Pin();
-	
 	public Pin readReg1 = new Pin();
-	
-	public Pin readReg2 = new Pin();
-	
+	public Pin readReg2 = new Pin();	
 	public Pin writeData = new Pin();
+	public Pin regWrite = new Pin();
+	public Pin readData1 = new Pin();
+	public Pin readData2 = new Pin();
 	
 	public RegisterFile(){
 		
@@ -35,6 +35,14 @@ public class RegisterFile implements Clockable{
 		writeData.setValue(val);
 	}
 	
+	public void setReadData1(long val){
+		readData1.setValue(val);
+	}
+	
+	public void setReadData2(long val){
+		readData2.setValue(val);
+	}
+	
 	public long getVal(int index){
 		return regFile[index].getValue();
 	}
@@ -46,8 +54,11 @@ public class RegisterFile implements Clockable{
 	}
 	
 	public void clockEdge(){
-		for(int x=1; x<32; x++){
-			regFile[x].update();
+		setReadData1(readReg1.getValue());
+		setReadData2(readReg2.getValue());
+		
+		if(regWrite.getValue() == 1){
+			regFile[writeReg.getValue().intValue()].update();
 		}
 	}
 	
