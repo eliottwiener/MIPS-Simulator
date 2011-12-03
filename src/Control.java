@@ -2,15 +2,16 @@ public class Control{
 	public String opcode;
 	public long output;
 	
-	long jump;
-	long regDst;
-	long branch;
-	long memRead;
-	long memToReg;
-	long aluOp;
-	long memWrite;
-	long aluSrc;
-	long regWrite;
+	public Pin jump = new Pin();
+	public Pin regDst = new Pin();
+	public Pin branch = new Pin();
+	public Pin memRead = new Pin();
+	public Pin memToReg = new Pin();
+	public Pin aluOp = new Pin();
+	public Pin memWrite = new Pin();
+	public Pin aluSrc = new Pin();
+	public Pin regWrite = new Pin();
+	
 	
 	public Control(long input){
 		this.opcode = Long.toBinaryString(input);
@@ -20,67 +21,67 @@ public class Control{
 		
 		// R-Type instructions
 		if(opcode.equals("000000")){
-			jump = 0;
-			regDst = 1;
-			branch = 0;
-			memRead = 0;
-			memToReg = 0;
-			aluOp = 2;
-			memWrite = 0;
-			aluSrc = 0;
-			regWrite = 1;
+			jump.setValue((long)0);
+			regDst.setValue((long)1);
+			branch.setValue((long)0);
+			memRead.setValue((long)0);
+			memToReg.setValue((long)0);
+			aluOp.setValue((long)2);
+			memWrite.setValue((long)0);
+			aluSrc.setValue((long)0);
+			regWrite.setValue((long)1);
 		}
 		
 		// LW instruction
 		if(opcode.equals("100011")){
-			jump = 0;
-			regDst = 0;
-			branch = 0;
-			memRead = 1;
-			memToReg = 1;
-			aluOp = 0;
-			memWrite = 0;
-			aluSrc = 1;
-			regWrite = 1;
+			jump.setValue((long)0);
+			regDst.setValue((long)0);
+			branch.setValue((long)0);
+			memRead.setValue((long)1);
+			memToReg.setValue((long)1);
+			aluOp.setValue((long)0);
+			memWrite.setValue((long)0);
+			aluSrc.setValue((long)1);
+			regWrite.setValue((long)1);
 		}
 		
 		// SW instruction
 		if(opcode.equals("101011")){
-			jump = 0;
-			regDst = 0;
-			branch = 0;
-			memRead = 0;
-			memToReg = 0;
-			aluOp = 0;
-			memWrite = 1;
-			aluSrc = 1;
-			regWrite = 0;
+			jump.setValue((long)0);
+			regDst.setValue((long)0);
+			branch.setValue((long)0);
+			memRead.setValue((long)0);
+			memToReg.setValue((long)0);
+			aluOp.setValue((long)0);
+			memWrite.setValue((long)1);
+			aluSrc.setValue((long)1);
+			regWrite.setValue((long)0);
 		}
 		
 		// branch instructions
 		if(opcode.equals("000100") || opcode.equals("000101")){
-			jump = 0;
-			regDst = 0;
-			branch = 1;
-			memRead = 0;
-			memToReg = 0;
-			aluOp = 1;
-			memWrite = 0;
-			aluSrc = 1;
-			regWrite = 0;
+			jump.setValue((long)0);
+			regDst.setValue((long)0);
+			branch.setValue((long)1);
+			memRead.setValue((long)0);
+			memToReg.setValue((long)0);
+			aluOp.setValue((long)1);
+			memWrite.setValue((long)0);
+			aluSrc.setValue((long)1);
+			regWrite.setValue((long)0);
 		}
 		
 		// jump instruction
 		if(opcode.equals("000010")){
-			jump = 1;
-			regDst = 0;
-			branch = 0;
-			memRead = 0;
-			memToReg = 0;
-			aluOp = 0;
-			memWrite = 0;
-			aluSrc = 1;
-			regWrite = 0;
+			jump.setValue((long)1);
+			regDst.setValue((long)0);
+			branch.setValue((long)0);
+			memRead.setValue((long)0);
+			memToReg.setValue((long)0);
+			aluOp.setValue((long)0);
+			memWrite.setValue((long)0);
+			aluSrc.setValue((long)1);
+			regWrite.setValue((long)0);
 		}
 		
 		// I-type instructions
@@ -89,15 +90,15 @@ public class Control{
 				opcode.equals("001100") ||
 				opcode.equals("001101") ||
 				opcode.equals("001010")){
-			jump = 0;
-			regDst = 0;
-			branch = 0;
-			memRead = 0;
-			memToReg = 0;
-			aluOp = 0;
-			memWrite = 0;
-			aluSrc = 1;
-			regWrite = 1;
+			jump.setValue((long)0);
+			regDst.setValue((long)0);
+			branch.setValue((long)0);
+			memRead.setValue((long)0);
+			memToReg.setValue((long)0);
+			aluOp.setValue((long)0);
+			memWrite.setValue((long)0);
+			aluSrc.setValue((long)1);
+			regWrite.setValue((long)1);
 		}
 	}
 }
