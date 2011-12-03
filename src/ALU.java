@@ -1,17 +1,16 @@
 
 public class ALU implements Clockable{
 
-	Pin input1;
+	Pin input1 = new Pin();
 	
-	Pin input2;
+	Pin input2 = new Pin();
 	
-	Pin control;
+	Pin control = new Pin();
 	
-	Pin result;
+	Pin result = new Pin();
 	
-	Pin zero;
+	Pin zero = new Pin();
 	
-	@Override
 	public void clockEdge() {
 		Long f = null;
 		Long a = input1.getValue();
