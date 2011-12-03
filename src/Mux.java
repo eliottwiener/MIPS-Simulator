@@ -3,32 +3,22 @@ import java.util.ArrayList;
 
 public class Mux implements Clockable{
 	
-	private final Pin output = new Pin(); 
+	public final Pin output = new Pin(); 
 	
-	private final Pin switcher = new Pin();
+	public final Pin switcher = new Pin();
 	
-	private final ArrayList<Pin> inputs = new ArrayList<Pin>();
+	public final Pin input0 = new Pin();
+	
+	public final Pin input1 = new Pin();
 	
 	Mux(){}
-
-	public void addInput(Pin p){
-		inputs.add(p);
-	}
-	
-	public Pin getOutput(){
-		return output;
-	}
-	
-	public Pin getSwitcher(){
-		return switcher;
-	}
-	
-	public Pin getInput(final int i){
-		return inputs.get(i);
-	}
 	
 	@Override
 	public void clockEdge() {
-		output.setValue(inputs.get((int)switcher.getValue()).getValue());
+		if(switcher.equals(0)){
+			output.setValue(input0.getValue());
+		} else {
+			output.setValue(input1.getValue());
+		}
 	}
 }

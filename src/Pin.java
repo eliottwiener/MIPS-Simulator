@@ -1,14 +1,22 @@
 
 public class Pin {
-	private long value;
+	private Long value;
+	private Pin connectedPin;
 	
 	Pin(){}
 	
-	public final void setValue(final long l){
-		this.value = l;
+	public final void setValue(final Long val){
+		this.value = val;
+		if(connectedPin != null){
+			connectedPin.setValue(val);
+		}
 	}
 	
-	public final long getValue(){
+	public final Long getValue(){
 		return this.value;
+	}
+	
+	public final void connectTo(final Pin somePin){
+		connectedPin = somePin;
 	}
 }
