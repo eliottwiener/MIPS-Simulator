@@ -18,6 +18,7 @@ public class Fetch implements Clockable{
 	public void setInstruction(){
 		instruction = instructionSet.loadWord(PC);
 	}
+	
 	public long getInstruction(){
 		return instruction;
 	}
