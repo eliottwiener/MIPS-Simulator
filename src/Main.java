@@ -25,6 +25,19 @@ public class Main {
 		
 		//initialize data memory
 		Memory dataMemory = new Memory(Long.parseLong("0", 16),Long.parseLong("ffc", 16));
+		
+		Mux aluSrcMux = new Mux();
+		Mux memToRegMux = new Mux();
+		ALUControl aluControl = new ALUControl();
+		ALU alu = new ALU();
+		MemoryIO memoryIo = new MemoryIO(dataMemory);
+		
+		aluSrcMux.output.connectTo(alu.input2);
+		aluControl.aluControl.connectTo(alu.control);
+		alu.result.connectTo(memoryIo.address);
+		alu.result.connectTo(memToRegMux.input0);
+		memoryIo.readData.connectTo(memToRegMux.input1);
+		
 	}
 
 }

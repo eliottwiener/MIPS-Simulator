@@ -2,7 +2,8 @@
 public class MemoryIO implements Clockable {
 
 	public final Pin address = new Pin();
-	public final Pin data = new Pin();
+	public final Pin writeData = new Pin();
+	public final Pin readData = new Pin();
 	public final Pin memWrite = new Pin();
 	public final Pin memRead = new Pin();
 	public final Memory mem;
@@ -15,9 +16,9 @@ public class MemoryIO implements Clockable {
 	@Override
 	public void clockEdge() {
 		if(memRead.getValue().equals(1)){
-			data.setValue(mem.loadWord(address.getValue()));
+			readData.setValue(mem.loadWord(address.getValue()));
 		} else if(memWrite.getValue().equals(1)){
-			mem.storeWord(address.getValue(), data.getValue());
+			mem.storeWord(address.getValue(), writeData.getValue());
 		}
 	}
 
