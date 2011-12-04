@@ -19,30 +19,7 @@ public class RegisterFile implements Clockable{
 		}
 	}
 	
-	public void setWriteReg(long val){
-		writeReg.setValue(val);
-	}
-	
-	public void setRegReg1(long val){
-		readReg1.setValue(val);
-	}
-	
-	public void setReadReg2(long val){
-		readReg2.setValue(val);
-	}
-	
-	public void setWriteData(long val){
-		writeData.setValue(val);
-	}
-	
-	public void setReadData1(long val){
-		readData1.setValue(val);
-	}
-	
-	public void setReadData2(long val){
-		readData2.setValue(val);
-	}
-	
+	// gets the value stored at register $'index'
 	public long getVal(int index){
 		return regFile[index].getValue();
 	}
@@ -54,8 +31,8 @@ public class RegisterFile implements Clockable{
 	}
 	
 	public void clockEdge(){
-		setReadData1(readReg1.getValue());
-		setReadData2(readReg2.getValue());
+		readData1.setValue(readReg1.getValue());
+		readData2.setValue(readReg2.getValue());
 		
 		if(regWrite.getValue() == 1){
 			regFile[writeReg.getValue().intValue()].update();
