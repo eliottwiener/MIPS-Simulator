@@ -34,9 +34,7 @@ public class Decode{
 	public int opType = -1;
 	
 	// creates this object with an instruction from fetch stage
-	Decode(long instruction){
-		this.instruction.setValue(instruction);
-	}
+	Decode(){}
 	
 	// takes first 6 bits as opcode
 	public void setOpcode(String instr){
@@ -116,8 +114,7 @@ public class Decode{
 	
 	
 	// Decodes the instruction
-	public void clockEdge(){
-		
+	public void clockEdge(){		
 		// converts the instruction into a binary String
 		String instrStr = Long.toBinaryString(instruction.getValue());
 		
