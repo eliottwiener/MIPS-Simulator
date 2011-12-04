@@ -38,7 +38,7 @@ public class RegisterFile implements Clockable{
 		
 		// if regWrite is 1, then we write to the register
 		// which is stored in writeReg. Data is stored in writeData;
-		if(regWrite.getValue() == 1){
+		if(regWrite.getValue() == new Long(1)){
 			setRegister(writeReg.getValue().intValue(), writeData.getValue());
 		}
 	}
