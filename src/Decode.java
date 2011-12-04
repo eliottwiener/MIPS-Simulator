@@ -121,18 +121,14 @@ public class Decode{
 		// converts the instruction into a binary String
 		String instrStr = Long.toBinaryString(instruction.getValue());
 		
-		// save the length of this instruction to avoid recalculating it later
-		int instrStrLen = instrStr.length();
-		
+	
 		// instruction is more than 32 bits so throw an error
-		if(instrStrLen > 32){
+		if(instrStr.length() > 32){
 			throw new Error("Instruction is longer than 32 bits");
 		}
 		
-		// instruction is less than 32 bits so zero-pad it
-		if(instrStrLen < 32){
-			instrStr = String.format("%32s", instrStr.replace(" ", "0"));
-		}
+		// ensure that the instruction is no less than 32 bits by zero-padding
+		instrStr = String.format("%32s", instrStr).replace(" ", "0");
 		
 		// instruction should now be 32 bits, so decode it.
 		if(instrStr.length() == 32){
