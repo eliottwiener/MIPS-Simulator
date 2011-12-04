@@ -24,18 +24,22 @@ public class RegisterFile implements Clockable{
 		return regFile[index].getValue();
 	}
 	
-	public void update(int index, long val){
+	// updates value at register $'index' with 'val'
+	public void setRegister(int index, long val){
 		if(index >=1 && index < 32){
 			regFile[index].setValue(val);
 		}
+		else throw new Error("Cannot access $r" + index);
 	}
 	
 	public void clockEdge(){
 		readData1.setValue(readReg1.getValue());
 		readData2.setValue(readReg2.getValue());
 		
+		// if regWrite is 1, then we write to the register
+		// which is stored in writeReg. Data is stored in writeData;
 		if(regWrite.getValue() == 1){
-			regFile[writeReg.getValue().intValue()].update();
+			setRegister(writeReg.getValue().intValue(), writeData.getValue());
 		}
 	}
 	
