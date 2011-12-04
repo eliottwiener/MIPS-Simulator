@@ -1,6 +1,6 @@
 public class Control{
-	public long output;
 	
+	// each control output is a Pin object
 	public Pin opcode = new Pin();
 	public Pin jump = new Pin();
 	public Pin regDst = new Pin();
@@ -15,6 +15,7 @@ public class Control{
 	
 	public Control(){}
 	
+	// Set the control signals depending on the opcode
 	public void setSignals(){
 		
 		String myOpcode = Long.toBinaryString(opcode.getValue());
