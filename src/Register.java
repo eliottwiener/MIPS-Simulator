@@ -1,7 +1,6 @@
 public class Register{
 	
-	private long value;
-	private long nextVal;
+	public long value;
 	
 	Register(long value) {
 		this.value = value;
@@ -12,11 +11,7 @@ public class Register{
 	}
 	
 	public void setValue(long v){
-		nextVal = v;
-	}
-	
-	public void update(){
-		value = nextVal;
+		value = v;
 	}
 	
 }

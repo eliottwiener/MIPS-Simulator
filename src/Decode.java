@@ -30,7 +30,8 @@ public class Decode{
 
 
 	// 0 for R-Type, 1 for I-Type, 2 for J-Type, 3 for HLT
-	public int opType;
+	// -1 for unrecognized opcode
+	public int opType = -1;
 	
 	// creates this object with an instruction from fetch stage
 	Decode(long instruction){
@@ -66,39 +67,49 @@ public class Decode{
 		offset.setValue(Long.parseLong(instr.substring(16,31)));
 	}
 	
+	// set jump target for j-type
 	public void setTarget(String instr){
 		offset.setValue(Long.parseLong(instr.substring(6, 31)));
 	}
 	
 	// determines if this instruction is R-Type, I-Type, or J-Type
 	public void setOpType(String op){
+		
+		// R-Type instructions all have opcode as 000000
 		if(op.equals("000000")){
 			opType = 0;
-			// R-Type instruction
 		}
 		
+		// I-Type instruction are any opcodes other than
+		// 000000, 00001x, 0100xx, and 111111
 		if(!op.equals("000000") &&
 				!op.equals("000010") &&
 				!op.equals("000011") &&
 				!op.equals("010000") &&
 				!op.equals("010001") &&
 				!op.equals("010011") &&
-				!op.equals("010010")){
+				!op.equals("010010") &&
+				!op.equals("111111")){
 			opType = 1;
-			// I-Type instruction
 		}
 		
+		// J-type instructions have opcodes of 00001x
 		if(op.equals("000010") || op.equals("000011")){
 			opType = 2;
-			// J-Type instruction
 		}
 		
+		// HLT's opcode is 111111
 		if(op.equals("111111")){
 			opType = 3;
-			// HLT instruction
+		}
+		
+		// throw an error for unsupported opcode
+		if(opType == -1){
+			throw new Error("Unsupported opcode: " + op);
 		}
 	}
 	
+	// function that returns True if this instruction is a halt.
 	public boolean isHalt(){
 		return opType == 3;
 	}
@@ -106,8 +117,21 @@ public class Decode{
 	
 	// Decodes the instruction
 	public void clockEdge(){
+		
+		// converts the instruction into a binary String
 		String instrStr = Long.toBinaryString(instruction.getValue());
-		if(instrStr.length() < 32){
+		
+	
+		// instruction is more than 32 bits so throw an error
+		if(instrStr.length() > 32){
+			throw new Error("Instruction is longer than 32 bits");
+		}
+		
+		// ensure that the instruction is no less than 32 bits by zero-padding
+		instrStr = String.format("%32s", instrStr).replace(" ", "0");
+		
+		// instruction should now be 32 bits, so decode it.
+		if(instrStr.length() == 32){
 			setOpcode(instrStr);
 			setOpType(Long.toBinaryString(opcode.getValue()));
 			setRS(instrStr);
@@ -119,5 +143,7 @@ public class Decode{
 			}
 			else setOffset(instrStr);
 		}
+		else throw new Error("Bad instruction length: " + instrStr);
+		
 	}
 }

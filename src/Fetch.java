@@ -1,7 +1,7 @@
 public class Fetch implements Clockable{
 	
 	//index of the program counter
-	public Pin PC;
+	public Pin PC = new Pin();
 	
 	// the complete set of instructions
 	public Memory instructionSet;
