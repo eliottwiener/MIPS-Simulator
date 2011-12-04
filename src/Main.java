@@ -43,20 +43,24 @@ public class Main {
 		Fetch fetch = new Fetch(instrMemory);
 		And branchMuxAnd = new And();
 		
-		aluSrcMux.output.connectTo(alu.input2);
-		aluControl.aluControl.connectTo(alu.control);
+		// connect output of ALUs
 		alu.result.connectTo(memoryIo.address);
 		alu.result.connectTo(memToRegMux.input0);
 		alu.zero.connectTo(branchMuxAnd.input1);
-		memoryIo.readData.connectTo(memToRegMux.input1);
+		aluAdd.result.connectTo(branchMux.input1);
+		
+		// connect output of Muxes
 		memToRegMux.output.connectTo(regFile.writeData);
 		regDstMux.output.connectTo(regFile.writeReg);
+		jumpMux.output.connectTo(fetch.PC);
+		aluSrcMux.output.connectTo(alu.input2);
+		branchMux.output.connectTo(jumpMux.input0);
+		
+		// connect output of SLT's
 		slt1.out.connectTo(jumpMux.input1);
 		slt2.out.connectTo(aluAdd.input2);
-		branchMuxAnd.output.connectTo(branchMux.switcher);
-		jumpMux.output.connectTo(fetch.PC);
 		
-		// connect the control signals
+		// connect the control signal outputs from Control and ALU Control
 		control.regDst.connectTo(regDstMux.switcher);
 		control.jump.connectTo(jumpMux.switcher);
 		control.branch.connectTo(branchMuxAnd.input0);
@@ -66,20 +70,31 @@ public class Main {
 		control.memWrite.connectTo(memoryIo.memWrite);
 		control.aluSrc.connectTo(aluSrcMux.switcher);
 		control.regWrite.connectTo(regFile.regWrite);
+		aluControl.aluControl.connectTo(alu.control);
 		
-		regFile.readReg1.connectTo(alu.input1);
-		regFile.readReg2.connectTo(aluSrcMux.input0);
-		regFile.readReg2.connectTo(memoryIo.writeData);
+		// connect the register file outputs
+		regFile.readData1.connectTo(alu.input1);
+		regFile.readData2.connectTo(aluSrcMux.input0);
+		regFile.readData2.connectTo(memoryIo.writeData);
 		
+		// connect data memory output
+		memoryIo.readData.connectTo(memToRegMux.input1);
+		
+		// connect output of AND
+		branchMuxAnd.output.connectTo(branchMux.switcher);
+		
+		// connect PC to Add ALU
+		fetch.PC.connectTo(aluAdd.input1);
+		
+		fetch.PC.setValue(Long.parseLong("1000", 16));
 		for(Long instruction : instructions){
 			// fetch instruction and increment PC
 			fetch.clockEdge();
-			// connect PC to Add ALU
-			fetch.PC.connectTo(aluAdd.input1);
 			
 			// create decode object with this instruction
 			Decode decode = new Decode(fetch.getInstruction());
-			// make the necessary connections
+			
+			// Connect the outputs of the decode
 			decode.opcode.connectTo(control.opcode);
 			decode.rs.connectTo(regFile.readReg1);
 			decode.rt.connectTo(regFile.readReg2);
