@@ -67,7 +67,7 @@ public class Decode{
 	
 	// set jump target for j-type
 	public void setTarget(String instr){
-		target.setValue(Long.parseLong(instr.substring(6, 31), 2));
+		target.setValue(Long.parseLong(instr.substring(6,31), 2));
 	}
 	
 	// determines if this instruction is R-Type, I-Type, or J-Type
