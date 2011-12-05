@@ -40,7 +40,7 @@ public class Main {
 		aluAdd.control.setValue((long)2);
 		ALU aluP4 = new ALU();
 		aluP4.control.setValue((long)2);
-		aluP4.input2.setValue((long) 4);
+		aluP4.input2.setValue((long)4);
 		MemoryIO memoryIo = new MemoryIO(dataMemory);
 		Control control = new Control();
 		RegisterFile regFile = new RegisterFile();
@@ -85,10 +85,12 @@ public class Main {
 		// Connect output of memoryIo
 		memoryIo.readData.connectTo(memToRegMux.input1);
 		
-		memToRegMux.output.connectTo(regFile.writeData);
-		regDstMux.output.connectTo(regFile.writeReg);
+		// Connect the outputs of SLTs
 		slt1.out.connectTo(combiner.jumpAddr);
 		slt2.out.connectTo(aluAdd.input2);
+		
+		memToRegMux.output.connectTo(regFile.writeData);
+		regDstMux.output.connectTo(regFile.writeReg);
 		branchMuxAnd.output.connectTo(branchMux.switcher);
 		jumpMux.output.connectTo(pc.pcIn);
 		combiner.out.connectTo(jumpMux.input1);
@@ -109,10 +111,13 @@ public class Main {
 		for(Long instruction : instructions){
 			// send PC to fetch object
 			pc.clockEdge();
-
+			
 			// fetch the instruction
 			fetch.clockEdge();
-			System.out.println("[DEBUG] This Instruction is: " + fetch.instr.getValue());
+			
+			// clock the P4 ALU (increment the PC)
+			aluP4.clockEdge();
+			
 			// decode the instruction
 			decode.clockEdge();
 			if(decode.isHalt()){
@@ -125,7 +130,7 @@ public class Main {
 			
 			// clock the Add ALU
 			aluAdd.clockEdge();
-			
+
 			// set the output control signals
 			control.setSignals();
 			
