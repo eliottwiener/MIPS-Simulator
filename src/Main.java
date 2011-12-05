@@ -19,7 +19,6 @@ public class Main {
 		Memory instrMemory = new Memory(firstInstrAddr,firstInstrAddr+(numInstr*4-1));
 
 		for(int i = 0; i < numInstr ; i++){
-			System.out.println(firstInstrAddr+i*4);
 			instrMemory.storeWord(firstInstrAddr+i*4, instructions.get(i));
 		}
 		
@@ -120,8 +119,8 @@ public class Main {
 			regFile.clockEdge();
 		}
 		System.out.println("Final register values:");
-		for(int x = 0 ; x < 32 ; x++){
-			System.out.println("    $r" + x + ": 0x" + Long.toHexString(regFile.getVal(x)));
+		for(int i = 0 ; i < 32 ; i++){
+			System.out.println("    $r" + i + ": 0x" + Long.toHexString(regFile.getVal(i)));
 		}
 	}
 
