@@ -46,11 +46,11 @@ public class ProgramReader {
 		
 		Iterator<Integer> it = individualBytes.iterator();
 		while(it.hasNext()){
-			Long instr = (long) it.next();
-			instr += it.next();
-			instr += it.next();
-			instr += it.next();
-			instructions.add(instr);
+			String instr = BinaryUtil.pad(Long.toBinaryString(it.next()));
+			instr += BinaryUtil.pad(Long.toBinaryString(it.next()));
+			instr += BinaryUtil.pad(Long.toBinaryString(it.next()));
+			instr += BinaryUtil.pad(Long.toBinaryString(it.next()));
+			instructions.add(Long.parseLong(instr));
 		}
 		
 		return instructions;
