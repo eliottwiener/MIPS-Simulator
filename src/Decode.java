@@ -38,36 +38,36 @@ public class Decode{
 	
 	// takes first 6 bits as opcode
 	public void setOpcode(String instr){
-		opcode.setValue(Long.parseLong(instr.substring(0,5)));
+		opcode.setValue(Long.parseLong(instr.substring(0,5), 2));
 	}
 	
 	// takes next 5 bits as rs value
 	public void setRS(String instr){
-		rs.setValue(Long.parseLong(instr.substring(6,10)));
+		rs.setValue(Long.parseLong(instr.substring(6,10), 2));
 	}
 	
 	// takes next 5 bits as rt value
 	public void setRT(String instr){
-		rt.setValue(Long.parseLong(instr.substring(11,15)));
+		rt.setValue(Long.parseLong(instr.substring(11,15), 2));
 		
 	}
 	
 	// sets the rd and func value if r-type
 	public void setRD(String instr){
-		rd.setValue(Long.parseLong(instr.substring(16,20)));
+		rd.setValue(Long.parseLong(instr.substring(16,20), 2));
 	}
 	public void setFunct(String instr){
-		funct.setValue(Long.parseLong(instr.substring(26,31)));
+		funct.setValue(Long.parseLong(instr.substring(26,31), 2));
 	}
 	
 	// sets the offset value for i-type and j-type
 	public void setOffset(String instr){
-		offset.setValue(Long.parseLong(instr.substring(16,31)));
+		offset.setValue(Long.parseLong(instr.substring(16,31), 2));
 	}
 	
 	// set jump target for j-type
 	public void setTarget(String instr){
-		offset.setValue(Long.parseLong(instr.substring(6, 31)));
+		offset.setValue(Long.parseLong(instr.substring(6, 31), 2));
 	}
 	
 	// determines if this instruction is R-Type, I-Type, or J-Type
