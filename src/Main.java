@@ -16,14 +16,15 @@ public class Main {
 		//load instructions into instruction memory
 		Long numInstr = (long) instructions.size();
 		Long firstInstrAddr = Long.parseLong("1000", 16);
-		Memory instrMemory = new Memory(firstInstrAddr,firstInstrAddr+numInstr-1);
+		Memory instrMemory = new Memory(firstInstrAddr,firstInstrAddr+(numInstr*4-1));
+
 		for(int i = 0; i < numInstr ; i++){
+			System.out.println(firstInstrAddr+i*4);
 			instrMemory.storeWord(firstInstrAddr+i*4, instructions.get(i));
 		}
 		
 		//initialize data memory
 		Memory dataMemory = new Memory(Long.parseLong("0", 16),Long.parseLong("ffc", 16));
-		
 		
 		//initialize everything
 		Mux aluSrcMux = new Mux();
@@ -97,7 +98,12 @@ public class Main {
 		control.regWrite.connectTo(regFile.regWrite);
 		aluControl.aluControl.connectTo(alu.control);
 		
+		pc.pcIn.setValue(firstInstrAddr);
 		for(Long instruction : instructions){
+			pc.clockEdge();
+			// fetch the instruction
+			fetch.clockEdge();
+			
 			// decode the instruction
 			decode.clockEdge();
 			if(decode.isHalt()){
@@ -114,8 +120,8 @@ public class Main {
 			regFile.clockEdge();
 		}
 		System.out.println("Final register values:");
-		for(int i = 0 ; i < 32 ; i++){
-			System.out.println("    $r" + i + ": 0x" + Long.toHexString(regFile.getVal(i)));
+		for(int x = 0 ; x < 32 ; x++){
+			System.out.println("    $r" + x + ": 0x" + Long.toHexString(regFile.getVal(x)));
 		}
 	}
 
