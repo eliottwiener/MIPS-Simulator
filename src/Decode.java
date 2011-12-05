@@ -67,7 +67,7 @@ public class Decode{
 	
 	// set jump target for j-type
 	public void setTarget(String instr){
-		offset.setValue(Long.parseLong(instr.substring(6, 31), 2));
+		target.setValue(Long.parseLong(instr.substring(6, 31), 2));
 	}
 	
 	// determines if this instruction is R-Type, I-Type, or J-Type
@@ -116,10 +116,7 @@ public class Decode{
 	// Decodes the instruction
 	public void clockEdge(){		
 		// converts the instruction into a binary String
-		String instrStr = Long.toBinaryString(instruction.getValue());
-		
-		// ensure that the instruction is 32 bits by zero-padding
-		instrStr = BinaryUtil.pad(instrStr);
+		String instrStr = BinaryUtil.pad(Long.toBinaryString(instruction.getValue()),32);
 		
 		// decode the instruction
 		setOpcode(instrStr);
@@ -127,12 +124,20 @@ public class Decode{
 		setRS(instrStr);
 		setRT(instrStr);
 		setTarget(instrStr);
-		if(opType == 0){
-			setRD(instrStr);
-			setFunct(instrStr);
-		}
-		else setOffset(instrStr);
+		setRD(instrStr);
+		setFunct(instrStr);
+		setOffset(instrStr);
 		
+		System.out.println("[DEBUG] Class:Decode, instr:" + instrStr +
+												  "\nopCode:" + BinaryUtil.pad(Long.toBinaryString(opcode.getValue()),6) +
+												  "\nRS:" + BinaryUtil.pad(Long.toBinaryString(rs.getValue()), 5) +
+												  "\nRT:" + BinaryUtil.pad(Long.toBinaryString(rt.getValue()), 5) +
+												  "\nTarget:" + BinaryUtil.pad(Long.toBinaryString(target.getValue()), 26) +
+												  "\nRD:" + BinaryUtil.pad(Long.toBinaryString(rd.getValue()), 5) +
+												  "\nFunct:" + BinaryUtil.pad(Long.toBinaryString(funct.getValue()), 6) +
+												  "\nOffset:" + BinaryUtil.pad(Long.toBinaryString(offset.getValue()), 16));
+												 
+												  
 		
 	}
 }
