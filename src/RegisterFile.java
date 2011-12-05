@@ -33,13 +33,21 @@ public class RegisterFile implements Clockable{
 	}
 	
 	public void clockEdge(){
+		System.out.println("[DEBUG] Class:RegisterFile");
 		// if regWrite is 1, then we write to the register
 		// which is stored in writeReg. Data is stored in writeData;
 		if(regWrite.getValue() == new Long(1)){
 			setRegister(writeReg.getValue().intValue(), writeData.getValue());
-		}
+			System.out.println("writeData:" + BinaryUtil.pad(Long.toBinaryString(writeData.getValue()), 32));
+		}else System.out.println("writeData: null");
 		readData1.setValue(readReg1.getValue());
 		readData2.setValue(readReg2.getValue());
+		
+		System.out.println("readRegister1:" + BinaryUtil.pad(Long.toBinaryString(readReg1.getValue()), 32) +
+					      "\nreadRegister2:" + BinaryUtil.pad(Long.toBinaryString(readReg2.getValue()), 32) +
+					      "\nwriteRegister:" + BinaryUtil.pad(Long.toBinaryString(writeReg.getValue()), 32) +
+					      "\nreadData1:" + BinaryUtil.pad(Long.toBinaryString(readData1.getValue()), 32) +
+					      "\nreadData2:" + BinaryUtil.pad(Long.toBinaryString(readData2.getValue()), 32));
 	}
 	
 }
