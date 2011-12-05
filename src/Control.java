@@ -18,8 +18,7 @@ public class Control{
 	// Set the control signals depending on the opcode
 	public void setSignals(){
 		
-		String myOpcode = Long.toBinaryString(opcode.getValue());
-		
+		String myOpcode = BinaryUtil.pad(Long.toBinaryString(opcode.getValue()), 6);
 		// R-Type instructions
 		if(myOpcode.equals("000000")){
 			jump.setValue((long)0);
@@ -101,5 +100,17 @@ public class Control{
 			aluSrc.setValue((long)1);
 			regWrite.setValue((long)1);
 		}
+		
+		System.out.println("[DEBUG] Class:Control" + 
+		                  "\nopcode:" + myOpcode +
+		                  "\njump:" + jump.getValue() +
+		                  "\nregDst:" + regDst.getValue() +
+		                  "\nbranch:" + branch.getValue() +
+		                  "\nmemRead:" + memRead.getValue() +
+		                  "\nmemToReg:" + memToReg.getValue() +
+		                  "\naluOp:" + aluOp.getValue() +
+		                  "\nmemWrite:" + memWrite.getValue() + 
+		                  "\naluSrc:" + aluSrc.getValue() +
+		                  "\nregWrite:" + regWrite.getValue());
 	}
 }
