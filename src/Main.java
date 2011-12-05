@@ -35,10 +35,10 @@ public class Main {
 		ShiftLeftTwo slt1 = new ShiftLeftTwo();
 		ShiftLeftTwo slt2 = new ShiftLeftTwo();
 		ALUControl aluControl = new ALUControl();
-		ALU alu = new ALU(2);
-		ALU aluAdd = new ALU(1);
+		ALU alu = new ALU();
+		ALU aluAdd = new ALU();
 		aluAdd.control.setValue((long)2);
-		ALU aluP4 = new ALU(3);
+		ALU aluP4 = new ALU();
 		aluP4.control.setValue((long)2);
 		aluP4.input2.setValue((long) 4);
 		MemoryIO memoryIo = new MemoryIO(dataMemory);
@@ -51,8 +51,8 @@ public class Main {
 		Combiner combiner = new Combiner();
 		
 		// Connect output of PC
-		pc.pcOut.connectToList[0].connectTo(fetch.pc);
-		pc.pcOut.connectToList[1].connectTo(aluP4.input1);
+		pc.pcOut.connectTo(fetch.pc);
+		pc.pcOut.connectTo(aluP4.input1);
 		
 		// Connect output of fetch
 		fetch.instr.connectTo(decode.instruction);
@@ -60,8 +60,8 @@ public class Main {
 		// Connect the outputs of the decode
 		decode.opcode.connectTo(control.opcode);
 		decode.rs.connectTo(regFile.readReg1);
-		decode.rt.connectToList[0].connectTo(regFile.readReg2);
-		decode.rt.connectToList[1].connectTo(regDstMux.input0);
+		decode.rt.connectTo(regFile.readReg2);
+		decode.rt.connectTo(regDstMux.input0);
 		decode.rd.connectTo(regDstMux.input1);
 		decode.target.connectTo(slt1.in);
 		decode.offset.connectTo(slt2.in);
@@ -74,13 +74,13 @@ public class Main {
 		
 		// Connect outputs of ALU and related
 		aluSrcMux.output.connectTo(alu.input2);
-		alu.result.connectToList[0].connectTo(memoryIo.address);
-		alu.result.connectToList[1].connectTo(memToRegMux.input0);
+		alu.result.connectTo(memoryIo.address);
+		alu.result.connectTo(memToRegMux.input0);
 		alu.zero.connectTo(branchMuxAnd.input1);
-		aluP4.result.connectToList[0].connectTo(aluAdd.input1);
-		aluP4.result.connectToList[1].connectTo(branchMux.input0);
-		aluP4.result.connectToList[2].connectTo(combiner.pcIn);
-		aluAdd.result.connectToList[0].connectTo(branchMux.input0);
+		aluP4.result.connectTo(aluAdd.input1);
+		aluP4.result.connectTo(branchMux.input0);
+		aluP4.result.connectTo(combiner.pcIn);
+		aluAdd.result.connectTo(branchMux.input0);
 		
 		// Connect output of memoryIo
 		memoryIo.readData.connectTo(memToRegMux.input1);

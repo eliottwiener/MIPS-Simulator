@@ -11,7 +11,7 @@ public class Decode{
 	
 	// rt field of instruction[20:16]
 	// read register 2 of RegFile
-	public Splitter rt = new Splitter(2);
+	public Pin rt = new Pin();
 	
 	// rd field of instruction[15:11]
 	// sent to MUX to determine Write Register of RegFile

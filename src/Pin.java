@@ -1,14 +1,16 @@
+import java.util.ArrayList;
+import java.util.List;
 
 public class Pin {
 	private Long value;
-	private Pin connectedPin;
+	private List<Pin> connectedPins = new ArrayList<Pin>();
 	
 	Pin(){}
 	
 	public final void setValue(final Long val){
 		this.value = val;
-		if(connectedPin != null){
-			connectedPin.setValue(val);
+		for(Pin p : connectedPins){
+			p.setValue(val);
 		}
 	}
 	
@@ -17,6 +19,6 @@ public class Pin {
 	}
 	
 	public final void connectTo(final Pin somePin){
-		connectedPin = somePin;
+		connectedPins.add(somePin);
 	}
 }

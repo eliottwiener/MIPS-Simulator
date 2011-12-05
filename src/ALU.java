@@ -7,13 +7,11 @@ public class ALU implements Clockable{
 	
 	Pin control = new Pin();
 	
-	Splitter result;
+	Pin result = new Pin();
 	
 	Pin zero = new Pin();
 	
-	public ALU(int numOutputs){
-		result = new Splitter(numOutputs);
-	}
+	public ALU(){}
 	
 	public void clockEdge() {
 		Long f = null;
