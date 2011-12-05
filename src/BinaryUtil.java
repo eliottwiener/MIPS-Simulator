@@ -9,7 +9,7 @@ public class BinaryUtil {
 	public static final String pad8(String s){
 		if(s.length() > 8){
 			throw new RuntimeException("Attempt to pad out String that is greater than 8 bits: " + s);
-		} else return String.format("$8s", s).replace(" ", "0");
+		} else return String.format("%8s", s).replace(" ", "0");
 		
 	}
 }
