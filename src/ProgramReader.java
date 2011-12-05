@@ -22,9 +22,9 @@ public class ProgramReader {
 
 			fin = new FileInputStream(file);
 
-			while( (chunk = fin.read()) != -1)
+			while( (chunk = fin.read()) != -1){
 				individualBytes.add(chunk);
-
+			}
 			/*
 			 * To close the FileInputStream, use
 			 * void close() method of FileInputStream class.
@@ -46,13 +46,14 @@ public class ProgramReader {
 		
 		Iterator<Integer> it = individualBytes.iterator();
 		while(it.hasNext()){
-			String instr = BinaryUtil.pad(Long.toBinaryString(it.next()));
-			instr += BinaryUtil.pad(Long.toBinaryString(it.next()));
-			instr += BinaryUtil.pad(Long.toBinaryString(it.next()));
-			instr += BinaryUtil.pad(Long.toBinaryString(it.next()));
-			instructions.add(Long.parseLong(instr));
+			String instr = BinaryUtil.pad8(Integer.toBinaryString(it.next()));
+			instr += BinaryUtil.pad8(Integer.toBinaryString(it.next()));
+			instr += BinaryUtil.pad8(Integer.toBinaryString(it.next()));
+			instr += BinaryUtil.pad8(Integer.toBinaryString(it.next()));
+			instructions.add(Long.parseLong(instr,2));
 		}
 		
+		System.out.println(instructions);
 		return instructions;
 	}
 }
