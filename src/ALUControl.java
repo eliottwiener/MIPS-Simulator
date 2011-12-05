@@ -7,13 +7,13 @@ public class ALUControl {
 	public ALUControl(){}
 	
 	public final void update(){
-		String funcString = Long.toBinaryString(func.getValue());
+		String funcString = BinaryUtil.pad(Long.toBinaryString(func.getValue()),6);
 		int funcLen = funcString.length();
 		boolean f0 = funcString.substring(funcLen-1,funcLen).equals("1");
 		boolean f1 = funcString.substring(funcLen-2,funcLen-1).equals("1");
 		boolean f2 = funcString.substring(funcLen-3,funcLen-2).equals("1");
 		boolean f3 = funcString.substring(funcLen-4,funcLen-3).equals("1");
-		String aluOpString = Long.toBinaryString(aluOp.getValue());
+		String aluOpString = BinaryUtil.pad(Long.toBinaryString(aluOp.getValue()),6);
 		int aluOpLen = aluOpString.length();
 		boolean aluOp0 = aluOpString.substring(aluOpLen-1,aluOpLen).equals("1");
 		boolean aluOp1 = aluOpString.substring(aluOpLen-2,aluOpLen-1).equals("1");
@@ -37,5 +37,11 @@ public class ALUControl {
 			aluControlString += "0";
 		}
 		aluControl.setValue(Long.parseLong(aluControlString,2));
+		
+		System.out.println("[DEBUG] Class:ALUControl" +
+						  "\nfunc:" + BinaryUtil.pad(Long.toBinaryString(func.getValue()),6) +
+						  "\naluOp:" + BinaryUtil.pad(Long.toBinaryString(aluOp.getValue()), 6) +
+						  "\naluControl:" + BinaryUtil.pad(Long.toBinaryString(aluControl.getValue()),6));
+		
 	}
 }
