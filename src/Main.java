@@ -65,6 +65,7 @@ public class Main {
 		decode.rd.connectTo(regDstMux.input1);
 		decode.target.connectTo(slt1.in);
 		decode.offset.connectTo(slt2.in);
+		decode.offset.connectTo(aluSrcMux.input1);
 		decode.funct.connectTo(aluControl.func);
 		
 		// Connect outputs of regFile
@@ -80,7 +81,7 @@ public class Main {
 		aluP4.result.connectTo(aluAdd.input1);
 		aluP4.result.connectTo(branchMux.input0);
 		aluP4.result.connectTo(combiner.pcIn);
-		aluAdd.result.connectTo(branchMux.input0);
+		aluAdd.result.connectTo(branchMux.input1);
 		
 		// Connect output of memoryIo
 		memoryIo.readData.connectTo(memToRegMux.input1);
@@ -92,6 +93,7 @@ public class Main {
 		memToRegMux.output.connectTo(regFile.writeData);
 		regDstMux.output.connectTo(regFile.writeReg);
 		branchMuxAnd.output.connectTo(branchMux.switcher);
+		branchMux.output.connectTo(jumpMux.input0);
 		jumpMux.output.connectTo(pc.pcIn);
 		combiner.out.connectTo(jumpMux.input1);
 		
@@ -100,7 +102,7 @@ public class Main {
 		control.jump.connectTo(jumpMux.switcher);
 		control.branch.connectTo(branchMuxAnd.input0);
 		control.memRead.connectTo(memoryIo.memRead);
-		control.memToReg.connectTo(memToRegMux.input1);
+		control.memToReg.connectTo(memToRegMux.switcher);
 		control.aluOp.connectTo(aluControl.aluOp);
 		control.memWrite.connectTo(memoryIo.memWrite);
 		control.aluSrc.connectTo(aluSrcMux.switcher);
@@ -160,12 +162,15 @@ public class Main {
 			
 			// clock the Branch Mux
 			branchMux.clockEdge();
-			
+
 			// clock the memToRegMux
 			memToRegMux.clockEdge();
-			
+
 			// clock the jump Mux
 			jumpMux.clockEdge();
+			
+			// clock the regFile
+			regFile.clockEdge();
 		}
 		System.out.println("Final register values:");
 		for(int i = 0 ; i < 32 ; i++){
