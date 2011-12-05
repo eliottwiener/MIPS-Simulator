@@ -118,29 +118,21 @@ public class Decode{
 		// converts the instruction into a binary String
 		String instrStr = Long.toBinaryString(instruction.getValue());
 		
-	
-		// instruction is more than 32 bits so throw an error
-		if(instrStr.length() > 32){
-			throw new Error("Instruction is longer than 32 bits");
-		}
+		// ensure that the instruction is 32 bits by zero-padding
+		instrStr = BinaryUtil.pad(instrStr);
 		
-		// ensure that the instruction is no less than 32 bits by zero-padding
-		instrStr = String.format("%32s", instrStr).replace(" ", "0");
-		
-		// instruction should now be 32 bits, so decode it.
-		if(instrStr.length() == 32){
-			setOpcode(instrStr);
-			setOpType(Long.toBinaryString(opcode.getValue()));
-			setRS(instrStr);
-			setRT(instrStr);
-			setTarget(instrStr);
-			if(opType == 0){
-				setRD(instrStr);
-				setFunct(instrStr);
-			}
-			else setOffset(instrStr);
+		// decode the instruction
+		setOpcode(instrStr);
+		setOpType(Long.toBinaryString(opcode.getValue()));
+		setRS(instrStr);
+		setRT(instrStr);
+		setTarget(instrStr);
+		if(opType == 0){
+			setRD(instrStr);
+			setFunct(instrStr);
 		}
-		else throw new Error("Bad instruction length: " + instrStr);
+		else setOffset(instrStr);
+		
 		
 	}
 }
