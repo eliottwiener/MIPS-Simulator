@@ -6,10 +6,9 @@ public class Combiner implements Clockable{
 	
 	public Combiner(){}
 
-	@Override
 	public void clockEdge() {
-		String pcinc3128 = BinaryUtil.pad(Long.toBinaryString(pcIn.getValue())).substring(0,4);
-		String ja250 = BinaryUtil.pad(Long.toBinaryString(jumpAddr.getValue())).substring(6);
+		String pcinc3128 = BinaryUtil.pad(Long.toBinaryString(pcIn.getValue()),32).substring(0,4);
+		String ja250 = BinaryUtil.pad(Long.toBinaryString(jumpAddr.getValue()),32).substring(6);
 		String outString = pcinc3128 + ja250;
 		out.setValue(Long.parseLong(outString,2));
 	}
