@@ -1,4 +1,3 @@
-
 public class ALUControl {
 	public final Pin func = new Pin();
 	public final Pin aluOp = new Pin();
@@ -8,15 +7,17 @@ public class ALUControl {
 	
 	public final void update(){
 		String funcString = BinaryUtil.pad(Long.toBinaryString(func.getValue()),6);
-		int funcLen = funcString.length();
-		boolean f0 = funcString.substring(funcLen-1,funcLen).equals("1");
-		boolean f1 = funcString.substring(funcLen-2,funcLen-1).equals("1");
-		boolean f2 = funcString.substring(funcLen-3,funcLen-2).equals("1");
-		boolean f3 = funcString.substring(funcLen-4,funcLen-3).equals("1");
-		String aluOpString = BinaryUtil.pad(Long.toBinaryString(aluOp.getValue()),6);
-		int aluOpLen = aluOpString.length();
-		boolean aluOp0 = aluOpString.substring(aluOpLen-1,aluOpLen).equals("1");
-		boolean aluOp1 = aluOpString.substring(aluOpLen-2,aluOpLen-1).equals("1");
+		
+		boolean f0 = funcString.substring(5,6).equals("1");
+		boolean f1 = funcString.substring(4,5).equals("1");
+		boolean f2 = funcString.substring(3,4).equals("1");
+		boolean f3 = funcString.substring(2,3).equals("1");
+		
+		String aluOpString = BinaryUtil.pad(Long.toBinaryString(aluOp.getValue()),2);
+		
+		boolean aluOp0 = aluOpString.substring(1,2).equals("1");
+		boolean aluOp1 = aluOpString.substring(0,1).equals("1");
+		
 		boolean aluControl0 = aluOp1 && (f0 || f3);
 		boolean aluControl1 = !aluOp1 || !f2;
 		boolean aluControl2 = aluOp0 || (aluOp1 && f1);
@@ -37,11 +38,6 @@ public class ALUControl {
 			aluControlString += "0";
 		}
 		aluControl.setValue(Long.parseLong(aluControlString,2));
-		
-		System.out.println("[DEBUG] Class:ALUControl" +
-						  "\nfunc:" + BinaryUtil.pad(Long.toBinaryString(func.getValue()),6) +
-						  "\naluOp:" + BinaryUtil.pad(Long.toBinaryString(aluOp.getValue()), 6) +
-						  "\naluControl:" + BinaryUtil.pad(Long.toBinaryString(aluControl.getValue()),6));
 		
 	}
 }
