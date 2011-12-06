@@ -40,7 +40,9 @@ public class Main {
 		Decode decode = new Decode();
 		Combiner combiner = new Combiner();
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		Debugger debug = new Debugger(regFile);
+		Debugger debug = new Debugger(regFile, decode, pc, control, aluControl,
+				memoryIo, alu, regDstMux, memToRegMux, aluSrcMux, branchMux,
+				jumpMux);
 		
 		// Connect output of PC
 		pc.pcOut.connectTo(fetch.pc);
@@ -56,8 +58,8 @@ public class Main {
 		decode.rt.connectTo(regDstMux.input0);
 		decode.rd.connectTo(regDstMux.input1);
 		decode.target.connectTo(slt1.in);
-		decode.offset.connectTo(slt2.in);
-		decode.offset.connectTo(aluSrcMux.input1);
+		decode.immediate.connectTo(slt2.in);
+		decode.immediate.connectTo(aluSrcMux.input1);
 		decode.funct.connectTo(aluControl.func);
 		
 		// Connect outputs of regFile
@@ -106,83 +108,96 @@ public class Main {
 		pc.pcIn.setValue(Long.parseLong("1000",16));
 		int cycleCount = 1;
 		for(;;){
-			// send PC to fetch object
-			pc.clockEdge();
+			try{
+				// send PC to fetch object
+				pc.clockEdge();
+				
+				// fetch the instruction
+				fetch.clockEdge();
+				
+				// clock the P4 ALU (increment the PC)
+				aluP4.clockEdge();
+				
+				// decode the instruction
+				decode.clockEdge();
+				if(decode.isHalt()){
+					break;
+				}
+				
+				// clock the SLT
+				slt1.clockEdge();
+				slt2.clockEdge();
+				
+				// clock the Add ALU
+				aluAdd.clockEdge();
+				
+				// clock the regfile
+				// we do this before clocking the control
+				// because if regWrite ends up being a 1, we won't have
+				// write data until this cycle is finished. So we clock 
+				// regFile first in order to handle the read registers
+				regFile.clockEdge();
+				
+				// set the output control signals
+				control.setSignals();
+				
+				// set ALU control signals
+				aluControl.update();
+				
+				// clock the RegDST Mux
+				regDstMux.clockEdge();
+				
+				// clock the ALUSrc Mux
+				aluSrcMux.clockEdge();
+				
+				// clock the ALU
+				alu.clockEdge();
+				
+				// clock the AND
+				branchMuxAnd.clockEdge();
+				
+				// clock the Memory IO
+				memoryIo.clockEdge();
+				
+				// clock the combiner
+				combiner.clockEdge();
+				
+				// clock the Branch Mux
+				branchMux.clockEdge();
+	
+				// clock the memToRegMux
+				memToRegMux.clockEdge();
+	
+				// clock the jump Mux
+				jumpMux.clockEdge();
+				
+				// clock the regFile
+				regFile.clockEdge();
+				
+				debug.debugCycle(cycleCount);
+				cycleCount++;
+		/*		System.out.println(pc.pcOut.getValue());
+				System.out.print("next line?");
+				try {
+					br.readLine();
+				} catch (IOException e) {
+					//  Auto-generated catch block
+					e.printStackTrace();
+				}*/
 			
-			// fetch the instruction
-			fetch.clockEdge();
-			
-			// clock the P4 ALU (increment the PC)
-			aluP4.clockEdge();
-			
-			// decode the instruction
-			decode.clockEdge();
-			if(decode.isHalt()){
-				break;
+				if(cycleCount == 50){
+					break;
+				}
 			}
 			
-			// clock the SLT
-			slt1.clockEdge();
-			slt2.clockEdge();
-			
-			// clock the Add ALU
-			aluAdd.clockEdge();
-
-			// set the output control signals
-			control.setSignals();
-			
-			// set ALU control signals
-			aluControl.update();
-			
-			// clock the RegDST Mux
-			regDstMux.clockEdge();
-			
-			// clock the regfile
-			regFile.clockEdge();
-			
-			// clock the ALUSrc Mux
-			aluSrcMux.clockEdge();
-			
-			// clock the ALU
-			alu.clockEdge();
-			
-			// clock the AND
-			branchMuxAnd.clockEdge();
-			
-			// clock the Memory IO
-			memoryIo.clockEdge();
-			
-			// clock the combiner
-			combiner.clockEdge();
-			
-			// clock the Branch Mux
-			branchMux.clockEdge();
-
-			// clock the memToRegMux
-			memToRegMux.clockEdge();
-
-			// clock the jump Mux
-			jumpMux.clockEdge();
-			
-			// clock the regFile
-			regFile.clockEdge();
-			
-			debug.debugCycle(cycleCount);
-			cycleCount++;
-		//	System.out.println(pc.pcOut.getValue());
-		//	System.out.print("next line?");
-	//		try {
-	//			br.readLine();
-	//		} catch (IOException e) {
-	//			//  Auto-generated catch block
-	//			e.printStackTrace();
-	//		}
-			
-		if(pc.pcOut.getValue()==4132){
+			catch (Exception e){
+				e.printStackTrace();
+				System.out.println(cycleCount);
+				debug.debugCycle(cycleCount);
 				break;
 			}
-			
-			
+				
+
 		}
 		
 		debug.dump("debug.txt");
