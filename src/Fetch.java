@@ -13,7 +13,6 @@ public class Fetch implements Clockable{
 	}
 	
 	public void clockEdge(){
-		System.out.println(pc.getValue());
 		instr.setValue(mem.loadWord(pc.getValue()));
 		System.out.println("[DEBUG] Class:Fetch (Post-Fetch), instr:" + 
 		BinaryUtil.pad(Long.toBinaryString(instr.getValue()), 32) + " pc:" + 
