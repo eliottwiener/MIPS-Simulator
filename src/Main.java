@@ -40,6 +40,7 @@ public class Main {
 		Decode decode = new Decode();
 		Combiner combiner = new Combiner();
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		Debugger debug = new Debugger(regFile);
 		
 		// Connect output of PC
 		pc.pcOut.connectTo(fetch.pc);
@@ -103,6 +104,7 @@ public class Main {
 		aluControl.aluControl.connectTo(alu.control);
 		
 		pc.pcIn.setValue(Long.parseLong("1000",16));
+		int cycleCount = 1;
 		for(;;){
 			// send PC to fetch object
 			pc.clockEdge();
@@ -165,6 +167,8 @@ public class Main {
 			// clock the regFile
 			regFile.clockEdge();
 			
+			debug.debugCycle(cycleCount);
+			cycleCount++;
 		//	System.out.println(pc.pcOut.getValue());
 		//	System.out.print("next line?");
 	//		try {
@@ -174,16 +178,18 @@ public class Main {
 	//			e.printStackTrace();
 	//		}
 			
-	/*	if(pc.pcOut.getValue()==4132){
+		if(pc.pcOut.getValue()==4132){
 				break;
 			}
 			
-		*/	
+			
 		}
-		System.out.println("Final register values:");
-		for(int i = 0 ; i < 32 ; i++){
-			System.out.println("    $r" + i + ": 0x" + Long.toHexString(regFile.getVal(i)));
-		}
+		
+		debug.dump("debug.txt");
+//		System.out.println("Final register values:");
+//		for(int i = 0 ; i < 32 ; i++){
+//			System.out.println("    $r" + i + ": 0x" + Long.toHexString(regFile.getVal(i)));
+//		}
 	}
 
 }
