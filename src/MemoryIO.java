@@ -15,7 +15,7 @@ public class MemoryIO implements Clockable {
 	
 	public void clockEdge() {
 		System.out.println("[DEBUG] Class: MemoryIO");
-		if(memRead.getValue().equals(1)){
+		if(memRead.getValue().equals((long)1)){
 			readData.setValue(mem.loadWord(address.getValue()));
 			System.out.println("readData:" + BinaryUtil.pad(Long.toBinaryString(readData.getValue()), 32));
 		} else if(memWrite.getValue().equals(1)){
