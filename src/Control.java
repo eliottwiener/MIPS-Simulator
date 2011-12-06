@@ -11,6 +11,8 @@ public class Control{
 	public Pin memWrite = new Pin();
 	public Pin aluSrc = new Pin();
 	public Pin regWrite = new Pin();
+	public Pin branchOp1 = new Pin();
+	public Pin branchOp2 = new Pin();
 	
 	
 	public Control(){}
@@ -30,6 +32,8 @@ public class Control{
 			memWrite.setValue((long)0);
 			aluSrc.setValue((long)0);
 			regWrite.setValue((long)1);
+			branchOp1.setValue((long)0);
+			branchOp2.setValue((long)0);
 		}
 		
 		// LW instruction
@@ -43,6 +47,8 @@ public class Control{
 			memWrite.setValue((long)0);
 			aluSrc.setValue((long)1);
 			regWrite.setValue((long)1);
+			branchOp1.setValue((long)0);
+			branchOp2.setValue((long)0);
 		}
 		
 		// SW instruction
@@ -56,10 +62,12 @@ public class Control{
 			memWrite.setValue((long)1);
 			aluSrc.setValue((long)1);
 			regWrite.setValue((long)0);
+			branchOp1.setValue((long)0);
+			branchOp2.setValue((long)0);
 		}
 		
-		// branch instructions
-		if(myOpcode.equals("000100") || opcode.equals("000101")){
+		// beq
+		if(myOpcode.equals("000100")){
 			jump.setValue((long)0);
 			regDst.setValue((long)0);
 			branch.setValue((long)1);
@@ -69,6 +77,23 @@ public class Control{
 			memWrite.setValue((long)0);
 			aluSrc.setValue((long)0);
 			regWrite.setValue((long)0);
+			branchOp1.setValue((long)1);
+			branchOp2.setValue((long)0);
+		}
+		
+		// bne
+		if(myOpcode.equals("000101")){
+			jump.setValue((long)0);
+			regDst.setValue((long)0);
+			branch.setValue((long)1);
+			memRead.setValue((long)0);
+			memToReg.setValue((long)0);
+			aluOp.setValue((long)1);
+			memWrite.setValue((long)0);
+			aluSrc.setValue((long)0);
+			regWrite.setValue((long)0);
+			branchOp1.setValue((long)1);
+			branchOp2.setValue((long)1);
 		}
 		
 		// jump instruction
@@ -82,7 +107,10 @@ public class Control{
 			memWrite.setValue((long)0);
 			aluSrc.setValue((long)1);
 			regWrite.setValue((long)0);
+			branchOp1.setValue((long)0);
+			branchOp2.setValue((long)0);
 		}
+		
 		
 		// I-type instructions
 		// addi, andi, ori, slti
@@ -99,18 +127,9 @@ public class Control{
 			memWrite.setValue((long)0);
 			aluSrc.setValue((long)1);
 			regWrite.setValue((long)1);
+			branchOp1.setValue((long)0);
+			branchOp2.setValue((long)0);
 		}
 		
-		System.out.println("[DEBUG] Class:Control" + 
-		                  "\nopcode:" + myOpcode +
-		                  "\njump:" + jump.getValue() +
-		                  "\nregDst:" + regDst.getValue() +
-		                  "\nbranch:" + branch.getValue() +
-		                  "\nmemRead:" + memRead.getValue() +
-		                  "\nmemToReg:" + memToReg.getValue() +
-		                  "\naluOp:" + aluOp.getValue() +
-		                  "\nmemWrite:" + memWrite.getValue() + 
-		                  "\naluSrc:" + aluSrc.getValue() +
-		                  "\nregWrite:" + regWrite.getValue());
 	}
 }
