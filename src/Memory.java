@@ -1,12 +1,16 @@
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 
 
 public class Memory {
 	HashMap<Long,Long> mem = new HashMap<Long,Long>();
 	
-	public Memory(final Long lower,final Long upper){
-		for(long addr = lower ; addr <= upper; addr++){
-			mem.put(addr, (long)0);
+	public Memory(final List<Long> contents){
+		Iterator<Long> it = contents.iterator();
+		while(it.hasNext()){
+			Long next = it.next();
+			mem.put((long)contents.indexOf(next), next);
 		}
 	}
 	

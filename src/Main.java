@@ -10,22 +10,10 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		
-		//Read instructions from program file
-		List<Long> instructions = ProgramReader.getInstructions(args[0]);
+		//Read mem from program file
+		List<Long> rawMemory = ProgramReader.getMemory(args[0]);
 		
-		//load instructions into instruction memory
-		Long numInstr = (long) instructions.size();
-		System.out.println(numInstr);
-		Long firstInstrAddr = Long.parseLong("1000", 16);
-		Memory instrMemory = new Memory(firstInstrAddr,firstInstrAddr+(numInstr*4)-1);
-
-		for(int i = 0; i < numInstr ; i++){
-			instrMemory.storeWord(firstInstrAddr+i*4, instructions.get(i));
-		}
-		
-		
-		//initialize data memory
-		Memory dataMemory = new Memory(Long.parseLong("0", 16),Long.parseLong("ffc", 16));
+		Memory memory = new Memory(rawMemory);
 		
 		//initialize everything
 		Mux aluSrcMux = new Mux();
@@ -42,10 +30,10 @@ public class Main {
 		ALU aluP4 = new ALU();
 		aluP4.control.setValue((long)2);
 		aluP4.input2.setValue((long)4);
-		MemoryIO memoryIo = new MemoryIO(dataMemory);
+		MemoryIO memoryIo = new MemoryIO(memory);
 		Control control = new Control();
 		RegisterFile regFile = new RegisterFile();
-		Fetch fetch = new Fetch(instrMemory);
+		Fetch fetch = new Fetch(memory);
 		And branchMuxAnd = new And();
 		ProgramCounter pc = new ProgramCounter();
 		Decode decode = new Decode();
@@ -109,8 +97,8 @@ public class Main {
 		control.regWrite.connectTo(regFile.regWrite);
 		aluControl.aluControl.connectTo(alu.control);
 		
-		pc.pcIn.setValue(firstInstrAddr);
-		for(Long instruction : instructions){
+		pc.pcIn.setValue(Long.parseLong("1000",16));
+		for(;;){
 			// send PC to fetch object
 			pc.clockEdge();
 			

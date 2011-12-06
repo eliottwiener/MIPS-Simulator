@@ -10,18 +10,17 @@ import java.util.List;
 
 
 public class ProgramReader {
-	public static List<Long> getInstructions(String fileName) {
+	public static List<Long> getMemory(String fileName) {
 		File file = new File(fileName);
 		int chunk;
 		DataInputStream fin = null;
-		List<Integer> individualBytes = new ArrayList<Integer>();
-		List<Long> instructions = new ArrayList<Long>();
+		List<Long> individualBytes = new ArrayList<Long>();
 		try
 		{
 			fin = new DataInputStream(new FileInputStream(file));
 			while(true){
 				int b = fin.readUnsignedByte();
-				individualBytes.add(b);
+				individualBytes.add(new Long(b));
 			}
 		} catch(EOFException e){
 		}
@@ -34,16 +33,6 @@ public class ProgramReader {
 		{
 			System.out.println("Exception while reading the file" + ioe);
 		}
-		Iterator<Integer> it = individualBytes.iterator();
-		while(it.hasNext()){
-			String instr = BinaryUtil.pad(Integer.toBinaryString(it.next()), 8);
-			instr += BinaryUtil.pad(Integer.toBinaryString(it.next()), 8);
-			instr += BinaryUtil.pad(Integer.toBinaryString(it.next()), 8);
-			instr += BinaryUtil.pad(Integer.toBinaryString(it.next()), 8);
-			Long instrLong = Long.parseLong(instr,2);
-			System.out.println(instr);
-			instructions.add(instrLong);
-		}
-		return instructions;
+		return individualBytes;
 	}
 }
