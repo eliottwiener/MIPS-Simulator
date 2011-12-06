@@ -1,3 +1,5 @@
+import java.io.DataInputStream;
+import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -8,31 +10,20 @@ import java.util.List;
 
 
 public class ProgramReader {
-
 	public static List<Long> getInstructions(String fileName) {
-
 		File file = new File(fileName);
 		int chunk;
-		FileInputStream fin = null;
+		DataInputStream fin = null;
 		List<Integer> individualBytes = new ArrayList<Integer>();
 		List<Long> instructions = new ArrayList<Long>();
-
 		try
 		{
-
-			fin = new FileInputStream(file);
-
-			while( (chunk = fin.read()) != -1){
-				individualBytes.add(chunk);
+			fin = new DataInputStream(new FileInputStream(file));
+			while(true){
+				int b = fin.readUnsignedByte();
+				individualBytes.add(b);
 			}
-			/*
-			 * To close the FileInputStream, use
-			 * void close() method of FileInputStream class.
-			 *
-			 * close method also throws IOException.
-			 */
-			fin.close();
-
+		} catch(EOFException e){
 		}
 		catch(FileNotFoundException e)
 		{
@@ -43,17 +34,16 @@ public class ProgramReader {
 		{
 			System.out.println("Exception while reading the file" + ioe);
 		}
-
 		Iterator<Integer> it = individualBytes.iterator();
 		while(it.hasNext()){
 			String instr = BinaryUtil.pad(Integer.toBinaryString(it.next()), 8);
 			instr += BinaryUtil.pad(Integer.toBinaryString(it.next()), 8);
 			instr += BinaryUtil.pad(Integer.toBinaryString(it.next()), 8);
 			instr += BinaryUtil.pad(Integer.toBinaryString(it.next()), 8);
-			instructions.add(Long.parseLong(instr,2));
+			Long instrLong = Long.parseLong(instr,2);
+			System.out.println(instr);
+			instructions.add(instrLong);
 		}
-
-		System.out.println(instructions);
 		return instructions;
 	}
 }
