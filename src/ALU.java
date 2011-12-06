@@ -34,11 +34,5 @@ public class ALU implements Clockable{
 		}
 		if(f==0) zero.setValue((long)1);
 		result.setValue(f);
-		
-		System.out.println("[DEBUG] Class:ALU" + 
-		                   "\ninput1:" + BinaryUtil.pad(Long.toBinaryString(input1.getValue()), 32) +
-		                   "\ninput2:" + BinaryUtil.pad(Long.toBinaryString(input2.getValue()), 32) +
-		                   "\ncontrol:" + BinaryUtil.pad(Long.toBinaryString(control.getValue()),32) +
-		                   "\nresult:" + BinaryUtil.pad(Long.toBinaryString(result.getValue()), 32));
 	}
 }
