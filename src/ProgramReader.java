@@ -43,7 +43,7 @@ public class ProgramReader {
 		{
 			System.out.println("Exception while reading the file" + ioe);
 		}
-		
+
 		Iterator<Integer> it = individualBytes.iterator();
 		while(it.hasNext()){
 			String instr = BinaryUtil.pad(Integer.toBinaryString(it.next()), 8);
@@ -52,7 +52,7 @@ public class ProgramReader {
 			instr += BinaryUtil.pad(Integer.toBinaryString(it.next()), 8);
 			instructions.add(Long.parseLong(instr,2));
 		}
-		
+
 		System.out.println(instructions);
 		return instructions;
 	}
