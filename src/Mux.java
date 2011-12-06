@@ -21,7 +21,7 @@ public class Mux implements Clockable{
 			System.out.println("input0:" + BinaryUtil.pad(Long.toBinaryString(input0.getValue()), 32));
 		} else {
 			output.setValue(input1.getValue());
-			System.out.println("input1:" + BinaryUtil.pad(Long.toBinaryString(input0.getValue()), 32));
+			System.out.println("input1:" + BinaryUtil.pad(Long.toBinaryString(input1.getValue()), 32));			
 		}
 		
 		
