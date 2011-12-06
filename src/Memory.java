@@ -18,6 +18,7 @@ public class Memory {
 			String d = BinaryUtil.pad(Long.toBinaryString(mem.get(addr+3)),8);
 			return Long.parseLong(a+b+c+d,2);
 		} catch(Exception e){
+			System.out.println(e.getMessage());
 			throw new RuntimeException("unable to load word at address: " + addr);
 		}
 	}
@@ -25,10 +26,10 @@ public class Memory {
 	public final void storeWord(Long addr, Long val){
 		if(mem.containsKey(addr) && mem.containsKey(addr+1) && mem.containsKey(addr+2) && mem.containsKey(addr+3)){
 			String valString = BinaryUtil.pad(Long.toBinaryString(val),32);
-			Long a = Long.parseLong(valString.substring(0,8));
-			Long b = Long.parseLong(valString.substring(8,16));
-			Long c = Long.parseLong(valString.substring(16,24));
-			Long d = Long.parseLong(valString.substring(24,32));
+			Long a = Long.parseLong(valString.substring(0,8), 2);
+			Long b = Long.parseLong(valString.substring(8,16), 2);
+			Long c = Long.parseLong(valString.substring(16,24), 2);
+			Long d = Long.parseLong(valString.substring(24,32), 2);
 			mem.put(addr, a);
 			mem.put(addr+1, b);
 			mem.put(addr+2, c);
