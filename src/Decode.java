@@ -23,7 +23,7 @@ public class Decode{
 	
 	// 16-bit offset for branch, equal, load, and store
 	// sent to sign-extend
-	public Pin offset = new Pin();
+	public Pin immediate = new Pin();
 	
 	// 25-bit for target of jump
 	public Pin target = new Pin();
@@ -61,8 +61,8 @@ public class Decode{
 	}
 	
 	// sets the offset value for i-type and j-type
-	public void setOffset(String instr){
-		offset.setValue(Long.parseLong(instr.substring(16,32), 2));
+	public void setImmediate(String instr){
+		immediate.setValue(Long.parseLong(instr.substring(16,32), 2));
 	}
 	
 	// set jump target for j-type
@@ -126,18 +126,7 @@ public class Decode{
 		setTarget(instrStr);
 		setRD(instrStr);
 		setFunct(instrStr);
-		setOffset(instrStr);
-		
-		System.out.println("[DEBUG] Class:Decode, instr:" + instrStr +
-												  "\nopCode:" + BinaryUtil.pad(Long.toBinaryString(opcode.getValue()),6) +
-												  "\nRS:" + BinaryUtil.pad(Long.toBinaryString(rs.getValue()), 5) +
-												  "\nRT:" + BinaryUtil.pad(Long.toBinaryString(rt.getValue()), 5) +
-												  "\nTarget:" + BinaryUtil.pad(Long.toBinaryString(target.getValue()), 26) +
-												  "\nRD:" + BinaryUtil.pad(Long.toBinaryString(rd.getValue()), 5) +
-												  "\nFunct:" + BinaryUtil.pad(Long.toBinaryString(funct.getValue()), 6) +
-												  "\nOffset:" + BinaryUtil.pad(Long.toBinaryString(offset.getValue()), 16));
-												 
-												  
+		setImmediate(instrStr);								  
 		
 	}
 }
