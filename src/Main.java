@@ -159,7 +159,6 @@ public class Main {
 			
 			// clock the regFile
 			regFile.clockEdge();
-			break;
 		}
 		System.out.println("Final register values:");
 		for(int i = 0 ; i < 32 ; i++){
