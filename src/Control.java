@@ -67,7 +67,7 @@ public class Control{
 			memToReg.setValue((long)0);
 			aluOp.setValue((long)1);
 			memWrite.setValue((long)0);
-			aluSrc.setValue((long)1);
+			aluSrc.setValue((long)0);
 			regWrite.setValue((long)0);
 		}
 		
