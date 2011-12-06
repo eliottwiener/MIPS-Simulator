@@ -7,7 +7,6 @@ public class Memory {
 	List<Long> mem = new ArrayList<Long>();
 	
 	public Memory(final List<Long> contents){
-		System.out.println(contents.size());
 		Iterator<Long> it = contents.iterator();
 		while(it.hasNext()){
 			Long next = it.next();
@@ -17,10 +16,10 @@ public class Memory {
 	
 	public final Long loadWord(Long addr){
 		try{
-			String a = BinaryUtil.pad(Long.toBinaryString(mem.get(addr.intValue())),8);
-			String b = BinaryUtil.pad(Long.toBinaryString(mem.get(addr.intValue()+1)),8);
-			String c = BinaryUtil.pad(Long.toBinaryString(mem.get(addr.intValue()+2)),8);
-			String d = BinaryUtil.pad(Long.toBinaryString(mem.get(addr.intValue()+3)),8);
+			String a = BinaryUtil.pad(Long.toBinaryString(mem.get(addr.intValue()+3)),8);
+			String b = BinaryUtil.pad(Long.toBinaryString(mem.get(addr.intValue()+2)),8);
+			String c = BinaryUtil.pad(Long.toBinaryString(mem.get(addr.intValue()+1)),8);
+			String d = BinaryUtil.pad(Long.toBinaryString(mem.get(addr.intValue()+0)),8);
 			return Long.parseLong(a+b+c+d,2);
 		} catch(Exception e){
 			System.out.println(e + " : " + e.getMessage());
@@ -34,9 +33,9 @@ public class Memory {
 			Long b = Long.parseLong(valString.substring(8,16), 2);
 			Long c = Long.parseLong(valString.substring(16,24), 2);
 			Long d = Long.parseLong(valString.substring(24,32), 2);
-			mem.set(addr.intValue(), a);
-			mem.set(addr.intValue()+1, b);
-			mem.set(addr.intValue()+2, c);
-			mem.set(addr.intValue()+3, d);
+			mem.set(addr.intValue()+3, a);
+			mem.set(addr.intValue()+2, b);
+			mem.set(addr.intValue()+1, c);
+			mem.set(addr.intValue()+0, d);
 	}
 }
