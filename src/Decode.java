@@ -56,8 +56,35 @@ public class Decode{
 	public void setRD(String instr){
 		rd.setValue(Long.parseLong(instr.substring(16,21), 2));
 	}
+	
 	public void setFunct(String instr){
-		funct.setValue(Long.parseLong(instr.substring(26,32), 2));
+		// funct field is last 6 bits if not I-Type
+		if(opType == 1){
+			String strOp = BinaryUtil.pad(Long.toBinaryString(opcode.getValue()),6);
+			// and instruction
+			if(strOp.equals("001000")){
+				funct.setValue(Long.parseLong("100000",2));
+			}
+			
+			// andi instruction
+			if(strOp.equals("001100")){
+				funct.setValue(Long.parseLong("100100",2));
+			}
+			
+			// ori instruction
+			if(strOp.equals("001101")){
+				funct.setValue(Long.parseLong("100101",2));
+			}
+			
+			// slti instruction
+			if(strOp.equals("001010")){
+				funct.setValue(Long.parseLong("101010",2));
+			}
+		}
+		else{
+			funct.setValue(Long.parseLong(instr.substring(26,32), 2));
+		}	
+		
 	}
 	
 	// sets the offset value for i-type and j-type
@@ -80,14 +107,14 @@ public class Decode{
 		
 		// I-Type instruction are any opcodes other than
 		// 000000, 00001x, 0100xx, and 111111
-		if(!op.equals("000000") &&
-				!op.equals("000010") &&
-				!op.equals("000011") &&
-				!op.equals("010000") &&
-				!op.equals("010001") &&
-				!op.equals("010011") &&
-				!op.equals("010010") &&
-				!op.equals("111111")){
+		if(!(op.equals("000000") ||
+				op.equals("000010") ||
+				op.equals("000011") ||
+				op.equals("010000") ||
+				op.equals("010001") ||
+				op.equals("010011") ||
+				op.equals("010010") ||
+				op.equals("111111"))){
 			opType = 1;
 		}
 		
@@ -120,7 +147,7 @@ public class Decode{
 		
 		// decode the instruction
 		setOpcode(instrStr);
-		setOpType(Long.toBinaryString(opcode.getValue()));
+		setOpType(BinaryUtil.pad(Long.toBinaryString(opcode.getValue()),6));
 		setRS(instrStr);
 		setRT(instrStr);
 		setTarget(instrStr);
