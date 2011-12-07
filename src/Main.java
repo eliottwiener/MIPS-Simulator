@@ -53,6 +53,9 @@ public class Main {
 		// initialize the combiner (jump addr + (PC + 4))
 		Combiner combiner = new Combiner();
 		
+		// initialize the sign-extend
+		SignExtend signExtend = new SignExtend();
+		
 		// initialize the Program Counter
 		ProgramCounter pc = new ProgramCounter();
 		
@@ -75,9 +78,12 @@ public class Main {
 		decode.rt.connectTo(regDstMux.input0);
 		decode.rd.connectTo(regDstMux.input1);
 		decode.target.connectTo(slt1.in);
-		decode.immediate.connectTo(slt2.in);
-		decode.immediate.connectTo(aluSrcMux.input1);
+		decode.immediate.connectTo(signExtend.input);
 		decode.funct.connectTo(aluControl.func);
+		
+		// connect the outputs of sign-extend
+		signExtend.output.connectTo(slt2.in);
+		signExtend.output.connectTo(aluSrcMux.input1);
 		
 		// Connect outputs of regFile
 		regFile.readData1.connectTo(alu.input1);
