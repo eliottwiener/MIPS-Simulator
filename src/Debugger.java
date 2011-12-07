@@ -16,9 +16,11 @@ public class Debugger{
 	public Mux aluSrcMux;
 	public Mux branchMux;
 	public Mux jumpMux;
+	public Mux jumpRegMux;
 	public SignExtend signExtend;
 	public ShiftLeftTwo sltAdd;
 	public ShiftLeftTwo sltTarget;
+	public Inverter inv;
 	public String output = "";
 	
 	public Debugger(RegisterFile regFile, Decode decode,
@@ -28,7 +30,8 @@ public class Debugger{
 			Mux regDstMux, Mux memToRegMux,
 			Mux aluSrcMux, Mux branchMux, Mux jumpMux,
 			SignExtend signExtend, ShiftLeftTwo sltAdd,
-			ShiftLeftTwo sltTarget){
+			ShiftLeftTwo sltTarget, Mux jumpRegMux,
+			Inverter inv){
 		this.regFile = regFile;
 		this.decode = decode;
 		this.pc = pc;
@@ -47,6 +50,8 @@ public class Debugger{
 		this.signExtend = signExtend;
 		this.sltAdd = sltAdd;
 		this.sltTarget = sltTarget;
+		this.jumpRegMux = jumpRegMux;
+		this.inv = inv;
 	}
 	
 	public void debugCycle(int cycleCount){
@@ -82,8 +87,8 @@ public class Debugger{
 		output += "MemWrite:" + BinaryUtil.pad(print(control.memWrite),1) + "\n";
 		output += "ALUSrc:" + BinaryUtil.pad(print(control.aluSrc),1) + "\n";
 		output += "RegWrite:" + BinaryUtil.pad(print(control.regWrite),1) + "\n";
-		output += "BranchOp1:" + BinaryUtil.pad(print(control.branchOp1),1) + "\n";
-		output += "BranchOp2:" + BinaryUtil.pad(print(control.branchOp2),1) + "\n";
+		output += "JumpReg:" + BinaryUtil.pad(print(control.jumpReg),1) + "\n";
+		output += "branchBNE:" + BinaryUtil.pad(print(control.branchBNE),1) + "\n";
 		output += "------------------------ ALU Control Signal Outputs -----------------------\n";		
 		output += "funct:" + BinaryUtil.pad(print(aluControl.func),6) + "\n";
 		output += "ALUOp:" + BinaryUtil.pad(print(aluControl.aluOp),2) + "\n";
@@ -100,6 +105,10 @@ public class Debugger{
 		output += "control:" + BinaryUtil.pad(print(zeroALU.control),32)  + "\n";
 		output += "result:" + BinaryUtil.pad(print(zeroALU.result), 32)  + "\n";
 		output += "zero:" + BinaryUtil.pad(print(zeroALU.zero),32)  + "\n";
+		output += "--------------------------- Inverter Information --------------------------\n";				
+		output += "input:" + BinaryUtil.pad(print(inv.in),1) + "\n";
+		output += "branchBNE:" + BinaryUtil.pad(print(inv.branchBNE),1)  + "\n";
+		output += "output:" + BinaryUtil.pad(print(inv.out),1)  + "\n";
 		output += "-------------------------- Branch ALU Information -------------------------\n";				
 		output += "input1:" + BinaryUtil.pad(print(branchALU.input1),32) + "\n";
 		output += "input2:" + BinaryUtil.pad(print(branchALU.input2),32)  + "\n";
@@ -138,6 +147,11 @@ public class Debugger{
 		output += "input 0:" + BinaryUtil.pad(print(jumpMux.input0),32) + "\n";
 		output += "input 1:" + BinaryUtil.pad(print(jumpMux.input1),32) + "\n";
 		output += "output:" + BinaryUtil.pad(print(jumpMux.output),32) + "\n";
+		output += "\t\t\t\tjumpRegMux\t\t\t\t\n";
+		output += "switcher:" + BinaryUtil.pad(print(jumpRegMux.switcher),1) + "\n";
+		output += "input 0:" + BinaryUtil.pad(print(jumpRegMux.input0),32) + "\n";
+		output += "input 1:" + BinaryUtil.pad(print(jumpRegMux.input1),32) + "\n";
+		output += "output:" + BinaryUtil.pad(print(jumpRegMux.output),32) + "\n";
 		output += "------------------------ Register File Information -----------------------\n";
 		output += "Read Register 1:" + BinaryUtil.pad(print(regFile.readReg1),32) + "\t\t" + printDecimal(regFile.readReg1)  +"\n"; 
 		output += "Read Register 2:" + BinaryUtil.pad(print(regFile.readReg2),32) + "\t\t" + printDecimal(regFile.readReg2)  +"\n";
