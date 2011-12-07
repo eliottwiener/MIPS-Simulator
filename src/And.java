@@ -9,16 +9,11 @@ public class And implements Clockable {
 	And(){}
 	
 	public void clockEdge() {
-		if(input0.getValue().equals(1) && input1.getValue().equals(1)){
+		if(input0.getValue().equals((long)1) && input1.getValue().equals((long)1)){
 			output.setValue((long)1);
 		} else {
 			output.setValue((long)0);
 		}
-		
-		System.out.println("[DEBUG] Class:And" +
-						  "\noutput:" + BinaryUtil.pad(Long.toBinaryString(output.getValue()), 32) +
-				          "\ninput0:" + BinaryUtil.pad(Long.toBinaryString(output.getValue()), 32) +
-						  "\ninput1:" + BinaryUtil.pad(Long.toBinaryString(output.getValue()), 32));
 	}
 
 }
