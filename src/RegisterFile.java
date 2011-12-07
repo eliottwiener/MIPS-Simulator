@@ -28,8 +28,9 @@ public class RegisterFile implements Clockable{
 	public void setRegister(int index, long val){
 		if(index >=1 && index < 32){
 			regFile[index].setValue(val);
+		}else if(index != 0){
+			throw new Error("Cannot access $r" + index);
 		}
-		else throw new Error("Cannot access $r" + index);
 	}
 	
 	public void clockEdge(){		
