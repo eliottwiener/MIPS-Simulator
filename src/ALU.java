@@ -25,6 +25,7 @@ public class ALU implements Clockable{
 		Long f = null;
 		Long a = input1.getValue();
 		Long b = input2.getValue();
+
 		if(control.getValue().equals((long)0)){
 			// bitwise and
 			f = a & b;
