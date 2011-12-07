@@ -7,6 +7,7 @@ public class IDEX implements Clockable{
 	public Pin rt = new Pin();
 	public Pin rd = new Pin();
 	public Pin funct = new Pin();
+	public Pin rs = new Pin();
 	// outputs
 	public Pin outPC4 = new Pin();
 	public Pin outReadData1 = new Pin();
@@ -15,6 +16,7 @@ public class IDEX implements Clockable{
 	public Pin outRt = new Pin();
 	public Pin outRd = new Pin();
 	public Pin outFunct = new Pin();
+	public Pin outRs = new Pin();
 	// control signals (WB)
 	public Pin regWrite = new Pin();
 	public Pin memToReg = new Pin();
@@ -59,5 +61,6 @@ public class IDEX implements Clockable{
 		outRt.setValue(rt.getValue());
 		outRd.setValue(rd.getValue());
 		outFunct.setValue(funct.getValue());
+		outRs.setValue(rs.getValue());
 	}
 }
