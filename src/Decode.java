@@ -126,7 +126,6 @@ public class Decode{
 		setTarget(instrStr);
 		setRD(instrStr);
 		setFunct(instrStr);
-		setImmediate(instrStr);								  
-		
+		setImmediate(instrStr);							  
 	}
 }
