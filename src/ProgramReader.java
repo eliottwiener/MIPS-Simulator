@@ -5,14 +5,12 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 
 public class ProgramReader {
 	public static List<Long> getMemory(String fileName) {
 		File file = new File(fileName);
-		int chunk;
 		DataInputStream fin = null;
 		List<Long> individualBytes = new ArrayList<Long>();
 		try
