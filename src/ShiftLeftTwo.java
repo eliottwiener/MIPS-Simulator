@@ -10,9 +10,6 @@ public class ShiftLeftTwo implements Clockable{
 	public void clockEdge() {
 		String myStr = BinaryUtil.pad(Long.toBinaryString(in.getValue()), outputBits);
 	    out.setValue(Long.parseLong(myStr.substring(2,outputBits) + "00", 2));
-		System.out.println("[DEBUG] Class: ShiftLeftTwo" + 
-						  "\nin:" + BinaryUtil.pad(Long.toBinaryString(in.getValue()), 32) +
-						  "\nout:" + BinaryUtil.pad(Long.toBinaryString(out.getValue()), 32));
 	}
 	
 	
