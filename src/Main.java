@@ -87,11 +87,11 @@ public class Main {
 		decode.opcode.connectTo(control.opcode);
 		decode.rs.connectTo(regFile.readReg1);
 		decode.rt.connectTo(regFile.readReg2);
-		decode.rt.connectTo(regDstMux.input0);
-		decode.rd.connectTo(regDstMux.input1);
+		decode.rt.connectTo(idex.rt);
+		decode.rd.connectTo(idex.rd);
 		decode.target.connectTo(sltTarget.in);
 		decode.immediate.connectTo(signExtend.input);
-		decode.funct.connectTo(aluControl.func);
+		decode.funct.connectTo(idex.funct);
 		decode.funct.connectTo(control.funct);
 		
 		// connect the outputs of sign-extend
@@ -131,18 +131,38 @@ public class Main {
 		combiner.out.connectTo(jumpMux.input1);
 		
 		// connect the control signals
-		control.regDst.connectTo(regDstMux.switcher);
-		control.jump.connectTo(jumpMux.switcher);
-		control.branch.connectTo(branchMuxAnd.input0);
-		control.memRead.connectTo(memoryIo.memRead);
-		control.memToReg.connectTo(memToRegMux.switcher);
-		control.aluOp.connectTo(aluControl.aluOp);
-		control.memWrite.connectTo(memoryIo.memWrite);
-		control.aluSrc.connectTo(aluSrcMux.switcher);
-		control.regWrite.connectTo(regFile.regWrite);
-		control.jumpReg.connectTo(jumpRegMux.switcher);
-		control.branchBNE.connectTo(inv.branchBNE);
 		aluControl.aluControl.connectTo(alu.control);
+		control.regDst.connectTo(idex.regDST);
+		control.jump.connectTo(idex.jump);
+		control.branch.connectTo(idex.branch);
+		control.memRead.connectTo(idex.memRead);
+		control.memToReg.connectTo(idex.memToReg);
+		control.aluOp.connectTo(idex.aluOp);
+		control.memWrite.connectTo(idex.memWrite);
+		control.aluSrc.connectTo(idex.aluSrc);
+		control.regWrite.connectTo(idex.regWrite);
+		control.jumpReg.connectTo(idex.jumpReg);
+		control.branchBNE.connectTo(idex.branchBNE);
+		idex.outregDST.connectTo(regDstMux.switcher);
+		idex.outaluOp.connectTo(aluControl.aluOp);
+		idex.outaluSrc.connectTo(aluSrcMux.switcher);
+		idex.outbranchBNE.connectTo(inv.branchBNE);
+		idex.outjump.connectTo(exmem.jump);
+		idex.outbranch.connectTo(exmem.branch);
+		idex.outmemRead.connectTo(exmem.memRead);
+		idex.outmemToReg.connectTo(exmem.memToReg);
+		idex.outmemWrite.connectTo(exmem.memWrite);
+		idex.outregWrite.connectTo(exmem.regWrite);
+		idex.outjumpReg.connectTo(exmem.jumpReg);
+		exmem.outjump.connectTo(jumpMux.switcher);
+		exmem.outjumpReg.connectTo(jumpRegMux.switcher);
+		exmem.outbranch.connectTo(branchMuxAnd.input0);
+		exmem.outmemWrite.connectTo(memoryIo.memWrite);
+		exmem.outmemRead.connectTo(memoryIo.memRead);
+		exmem.outmemToReg.connectTo(memwb.memToReg);
+		exmem.outregWrite.connectTo(memwb.regWrite);
+		memwb.outmemToReg.connectTo(memToRegMux.switcher);
+		memwb.outregWrite.connectTo(regFile.regWrite);
 		
 		// connect the outputs of the pipeline registers
 		ifid.outInstr.connectTo(decode.instruction);
@@ -154,6 +174,9 @@ public class Main {
 		idex.outReadData2.connectTo(exmem.readData2);
 		idex.outSignExtended.connectTo(sltAdd.in);
 		idex.outSignExtended.connectTo(aluSrcMux.input1);
+		idex.outRt.connectTo(regDstMux.input0);
+		idex.outRd.connectTo(regDstMux.input1);
+		idex.outFunct.connectTo(aluControl.func);
 		exmem.outAddALUresult.connectTo(branchMux.input1);
 		exmem.outGenALUresult.connectTo(memoryIo.address);
 		exmem.outGenALUresult.connectTo(memToRegMux.input0);
@@ -179,6 +202,7 @@ public class Main {
 				// clock the P4 ALU (increment the PC)
 				aluP4.clockEdge();
 				
+				// clock IF/ID
 				ifid.clockEdge();
 				
 				// decode the instruction
@@ -202,15 +226,17 @@ public class Main {
 				// clock the SLT
 				sltTarget.clockEdge();
 				
+				// set the output control signals
+				control.setSignals();
+				
+				// clock ID/EX
 				idex.clockEdge();
 				
+				// clock slt Add
 				sltAdd.clockEdge();
 
 				// clock the Add ALU
 				aluAdd.clockEdge();
-				
-				// set the output control signals
-				control.setSignals();
 				
 				// set ALU control signals
 				aluControl.update();
