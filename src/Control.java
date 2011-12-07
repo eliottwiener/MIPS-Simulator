@@ -115,15 +115,15 @@ public class Control{
 		// I-type instructions
 		// addi, andi, ori, slti
 		if(myOpcode.equals("001000") ||
-				opcode.equals("001100") ||
-				opcode.equals("001101") ||
-				opcode.equals("001010")){
+				myOpcode.equals("001100") ||
+				myOpcode.equals("001101") ||
+				myOpcode.equals("001010")){
 			jump.setValue((long)0);
 			regDst.setValue((long)0);
 			branch.setValue((long)0);
 			memRead.setValue((long)0);
 			memToReg.setValue((long)0);
-			aluOp.setValue((long)0);
+			aluOp.setValue((long)2);
 			memWrite.setValue((long)0);
 			aluSrc.setValue((long)1);
 			regWrite.setValue((long)1);
