@@ -155,7 +155,7 @@ public class Debugger{
 		output += "------------------------ Register File Information -----------------------\n";
 		output += "Read Register 1:" + BinaryUtil.pad(print(regFile.readReg1),32) + "\t\t" + printDecimal(regFile.readReg1)  +"\n"; 
 		output += "Read Register 2:" + BinaryUtil.pad(print(regFile.readReg2),32) + "\t\t" + printDecimal(regFile.readReg2)  +"\n";
-		output += "Read Register 1:" + BinaryUtil.pad(print(regFile.writeData),32) + "\n";
+		output += "Write Data:" + BinaryUtil.pad(print(regFile.writeData),32) + "\n";
 		output += "Read Data 1:" + BinaryUtil.pad(print(regFile.readData1),32) + "\n";
 		output += "Read Data 2:" + BinaryUtil.pad(print(regFile.readData2),32) + "\n";
 		output += "Register\t\tBinary Value\t\tHex Value\t\tLong Value\n";
