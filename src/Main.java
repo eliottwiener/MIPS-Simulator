@@ -123,9 +123,13 @@ public class Main {
 		aluControl.aluControl.connectTo(alu.control);
 		
 		pc.pcIn.setValue(Long.parseLong("1000",16));
-		int cycleCount = 1;
+		int cycleCount = 0;
 		for(;;){
 			try{
+				
+				// increase the cycle count
+				cycleCount ++;
+
 				// send PC to fetch object
 				pc.clockEdge();
 				
@@ -194,9 +198,6 @@ public class Main {
 				
 				// Add this cycle to the debug stream
 				debug.debugCycle(cycleCount);
-				
-				// increase the cycle count
-				cycleCount++;
 			
 			}
 			
@@ -215,7 +216,11 @@ public class Main {
 		}
 		
 		debug.dump("debug.txt");
+		int instrCount = 20;
 		System.out.println("Execution Complete!\n");
+		System.out.println("The total number of cycles: " + cycleCount);
+		System.out.println("The total number of instructions executed: " + instrCount);
+		System.out.println("CPI: " + (new Float(cycleCount/instrCount)));
 		System.out.println("Final Register Values:");
 		String output = "Register\tBinary\t\t\t  Hexadecimal\tDecimal\n";
 		for(int i = 0 ; i < 32 ; i++){
