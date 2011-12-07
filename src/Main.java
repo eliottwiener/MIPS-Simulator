@@ -13,13 +13,15 @@ public class Main {
 		
 		Memory memory = new Memory(rawMemory);
 		
-		// Initialize the 5 MUX's
+		// Initialize the MUX's
 		Mux aluSrcMux = new Mux();
 		Mux memToRegMux = new Mux();
 		Mux regDstMux = new Mux();
 		Mux jumpMux = new Mux();
 		Mux branchMux = new Mux();
 		Mux jumpRegMux = new Mux();
+		Mux forwardAMux = new Mux();
+		Mux forwardBMux = new Mux();
 		
 		// Initialize the 2 SLTs
 	 	ShiftLeftTwo sltTarget = new ShiftLeftTwo(28);
@@ -69,6 +71,9 @@ public class Main {
 		EXMEM exmem = new EXMEM();
 		MEMWB memwb = new MEMWB();
 		
+		// initialize the forwarding unit
+		ForwardingUnit forwardingUnit = new ForwardingUnit();
+		
 		// For debugging
 		Debugger debug = new Debugger(regFile, decode, pc, control, aluControl,
 				memoryIo, alu, aluP4, aluAdd, regDstMux, memToRegMux, aluSrcMux, 
@@ -86,6 +91,7 @@ public class Main {
 		// Connect the outputs of the decode
 		decode.opcode.connectTo(control.opcode);
 		decode.rs.connectTo(regFile.readReg1);
+		decode.rs.connectTo(idex.rs);
 		decode.rt.connectTo(regFile.readReg2);
 		decode.rt.connectTo(idex.rt);
 		decode.rd.connectTo(idex.rd);
@@ -123,7 +129,7 @@ public class Main {
 		combiner.out.connectTo(jumpMux.input1);
 		
 		memToRegMux.output.connectTo(regFile.writeData);
-		regDstMux.output.connectTo(regFile.writeReg);
+		regDstMux.output.connectTo(exmem.rd);
 		branchMuxAnd.output.connectTo(branchMux.switcher);
 		branchMux.output.connectTo(jumpMux.input0);
 		jumpMux.output.connectTo(jumpRegMux.input0);
@@ -161,6 +167,7 @@ public class Main {
 		exmem.outmemRead.connectTo(memoryIo.memRead);
 		exmem.outmemToReg.connectTo(memwb.memToReg);
 		exmem.outregWrite.connectTo(memwb.regWrite);
+		exmem.outRd.connectTo(memwb.rd);
 		memwb.outmemToReg.connectTo(memToRegMux.switcher);
 		memwb.outregWrite.connectTo(regFile.regWrite);
 		
@@ -185,6 +192,17 @@ public class Main {
 		memwb.outGenALUresult.connectTo(memToRegMux.input1);
 		memwb.outReadData.connectTo(memToRegMux.input1);
 		
+		// connect I/O of forwarding unit
+		idex.outRs.connectTo(forwardingUnit.idex_rs);
+		idex.outRt.connectTo(forwardingUnit.idex_rt);
+		exmem.outRd.connectTo(forwardingUnit.exmem_rd);
+		memwb.outRd.connectTo(forwardingUnit.memwb_rd);
+		exmem.outregWrite.connectTo(forwardingUnit.exmem_regWrite);
+		memwb.outregWrite.connectTo(forwardingUnit.memwb_regWrite);
+		forwardingUnit.forwardA.connectTo(forwardAMux.switcher);
+		forwardingUnit.forwardB.connectTo(forwardBMux.switcher);
+		
+		//exmem.r
 		pc.pcIn.setValue(Long.parseLong("1000",16));
 		int cycleCount = 0;
 		for(;;){
