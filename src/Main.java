@@ -19,6 +19,7 @@ public class Main {
 		Mux regDstMux = new Mux();
 		Mux jumpMux = new Mux();
 		Mux branchMux = new Mux();
+		Mux jumpRegMux = new Mux();
 		
 		// Initialize the 2 SLTs
 	 	ShiftLeftTwo sltTarget = new ShiftLeftTwo(28);
@@ -56,13 +57,17 @@ public class Main {
 		// initialize the sign-extend
 		SignExtend signExtend = new SignExtend();
 		
+		// initialize the inverter
+		Inverter inv = new Inverter();
+		
 		// initialize the Program Counter
 		ProgramCounter pc = new ProgramCounter();
 		
 		// For debugging
 		Debugger debug = new Debugger(regFile, decode, pc, control, aluControl,
 				memoryIo, alu, aluP4, aluAdd, regDstMux, memToRegMux, aluSrcMux, 
-				branchMux, jumpMux, signExtend, sltAdd, sltTarget);
+				branchMux, jumpMux, signExtend, sltAdd, sltTarget, jumpRegMux,
+				inv);
 		
 		// Connect output of PC
 		pc.pcOut.connectTo(fetch.pc);
@@ -80,6 +85,7 @@ public class Main {
 		decode.target.connectTo(sltTarget.in);
 		decode.immediate.connectTo(signExtend.input);
 		decode.funct.connectTo(aluControl.func);
+		decode.funct.connectTo(control.funct);
 		
 		// connect the outputs of sign-extend
 		signExtend.output.connectTo(sltAdd.in);
@@ -87,6 +93,7 @@ public class Main {
 		
 		// Connect outputs of regFile
 		regFile.readData1.connectTo(alu.input1);
+		regFile.readData1.connectTo(jumpRegMux.input1);
 		regFile.readData2.connectTo(aluSrcMux.input0);
 		regFile.readData2.connectTo(memoryIo.writeData);
 		
@@ -94,7 +101,8 @@ public class Main {
 		aluSrcMux.output.connectTo(alu.input2);
 		alu.result.connectTo(memoryIo.address);
 		alu.result.connectTo(memToRegMux.input0);
-		alu.zero.connectTo(branchMuxAnd.input1);
+		alu.zero.connectTo(inv.in);
+		inv.out.connectTo(branchMuxAnd.input1);
 		aluP4.result.connectTo(aluAdd.input1);
 		aluP4.result.connectTo(branchMux.input0);
 		aluP4.result.connectTo(combiner.pcIn);
@@ -109,11 +117,13 @@ public class Main {
 		
 		// connect output of combiner
 		combiner.out.connectTo(jumpMux.input1);
+		
 		memToRegMux.output.connectTo(regFile.writeData);
 		regDstMux.output.connectTo(regFile.writeReg);
 		branchMuxAnd.output.connectTo(branchMux.switcher);
 		branchMux.output.connectTo(jumpMux.input0);
-		jumpMux.output.connectTo(pc.pcIn);
+		jumpMux.output.connectTo(jumpRegMux.input0);
+		jumpRegMux.output.connectTo(pc.pcIn);
 		combiner.out.connectTo(jumpMux.input1);
 		
 		// connect the control signals
@@ -126,6 +136,8 @@ public class Main {
 		control.memWrite.connectTo(memoryIo.memWrite);
 		control.aluSrc.connectTo(aluSrcMux.switcher);
 		control.regWrite.connectTo(regFile.regWrite);
+		control.jumpReg.connectTo(jumpRegMux.switcher);
+		control.branchBNE.connectTo(inv.branchBNE);
 		aluControl.aluControl.connectTo(alu.control);
 		
 		pc.pcIn.setValue(Long.parseLong("1000",16));
@@ -184,6 +196,9 @@ public class Main {
 				// clock the ALU
 				alu.clockEdge();
 				
+				// clock the Inverter
+				inv.clockEdge();
+				
 				// clock the AND
 				branchMuxAnd.clockEdge();
 				
@@ -201,6 +216,9 @@ public class Main {
 	
 				// clock the jump Mux
 				jumpMux.clockEdge();
+				
+				// clock the jump register Mux
+				jumpRegMux.clockEdge();
 				
 				// clock the regFile
 				regFile.clockEdge();
