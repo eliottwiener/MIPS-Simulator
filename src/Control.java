@@ -2,6 +2,7 @@ public class Control{
 	
 	// each control output is a Pin object
 	public Pin opcode = new Pin();
+	public Pin funct = new Pin();
 	public Pin jump = new Pin();
 	public Pin regDst = new Pin();
 	public Pin branch = new Pin();
@@ -11,9 +12,8 @@ public class Control{
 	public Pin memWrite = new Pin();
 	public Pin aluSrc = new Pin();
 	public Pin regWrite = new Pin();
-	public Pin branchOp1 = new Pin();
-	public Pin branchOp2 = new Pin();
-	
+	public Pin jumpReg = new Pin();
+	public Pin branchBNE = new Pin();
 	
 	public Control(){}
 	
@@ -24,16 +24,26 @@ public class Control{
 		// R-Type instructions
 		if(myOpcode.equals("000000")){
 			jump.setValue((long)0);
-			regDst.setValue((long)1);
 			branch.setValue((long)0);
 			memRead.setValue((long)0);
 			memToReg.setValue((long)0);
-			aluOp.setValue((long)2);
 			memWrite.setValue((long)0);
 			aluSrc.setValue((long)0);
-			regWrite.setValue((long)1);
-			branchOp1.setValue((long)0);
-			branchOp2.setValue((long)0);
+			branchBNE.setValue((long)0);
+					
+			String myFunct = BinaryUtil.pad(Long.toBinaryString(funct.getValue()),6);
+			if(myFunct.equals("001000")){
+				regDst.setValue((long)0);
+				jumpReg.setValue((long)1);
+				aluOp.setValue((long)0);
+				regWrite.setValue((long)0);
+			}else{
+				regDst.setValue((long)1);
+				jumpReg.setValue((long)0);
+				aluOp.setValue((long)2);
+				regWrite.setValue((long)1);
+				
+			}
 		}
 		
 		// LW instruction
@@ -47,8 +57,8 @@ public class Control{
 			memWrite.setValue((long)0);
 			aluSrc.setValue((long)1);
 			regWrite.setValue((long)1);
-			branchOp1.setValue((long)0);
-			branchOp2.setValue((long)0);
+			jumpReg.setValue((long)0);
+			branchBNE.setValue((long)0);
 		}
 		
 		// SW instruction
@@ -62,8 +72,8 @@ public class Control{
 			memWrite.setValue((long)1);
 			aluSrc.setValue((long)1);
 			regWrite.setValue((long)0);
-			branchOp1.setValue((long)0);
-			branchOp2.setValue((long)0);
+			jumpReg.setValue((long)0);
+			branchBNE.setValue((long)0);
 		}
 		
 		// beq
@@ -77,8 +87,8 @@ public class Control{
 			memWrite.setValue((long)0);
 			aluSrc.setValue((long)0);
 			regWrite.setValue((long)0);
-			branchOp1.setValue((long)1);
-			branchOp2.setValue((long)0);
+			jumpReg.setValue((long)0);
+			branchBNE.setValue((long)0);
 		}
 		
 		// bne
@@ -92,8 +102,8 @@ public class Control{
 			memWrite.setValue((long)0);
 			aluSrc.setValue((long)0);
 			regWrite.setValue((long)0);
-			branchOp1.setValue((long)1);
-			branchOp2.setValue((long)1);
+			jumpReg.setValue((long)0);
+			branchBNE.setValue((long)1);
 		}
 		
 		// jump instruction
@@ -107,8 +117,8 @@ public class Control{
 			memWrite.setValue((long)0);
 			aluSrc.setValue((long)1);
 			regWrite.setValue((long)0);
-			branchOp1.setValue((long)0);
-			branchOp2.setValue((long)0);
+			jumpReg.setValue((long)0);
+			branchBNE.setValue((long)0);
 		}
 		
 		
@@ -127,8 +137,8 @@ public class Control{
 			memWrite.setValue((long)0);
 			aluSrc.setValue((long)1);
 			regWrite.setValue((long)1);
-			branchOp1.setValue((long)0);
-			branchOp2.setValue((long)0);
+			jumpReg.setValue((long)0);
+			branchBNE.setValue((long)0);
 		}
 		
 	}
