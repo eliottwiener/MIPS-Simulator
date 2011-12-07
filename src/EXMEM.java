@@ -4,11 +4,13 @@ public class EXMEM implements Clockable{
 	public Pin zero = new Pin();
 	public Pin genALUResult = new Pin();
 	public Pin readData2 = new Pin();
+	public Pin rd = new Pin();
 	//outputs
 	public Pin outAddALUresult = new Pin();
 	public Pin outZero = new Pin();
 	public Pin outGenALUresult = new Pin();
 	public Pin outReadData2 = new Pin();
+	public Pin outRd = new Pin();
 	// control signals (WB)
 	public Pin regWrite = new Pin();
 	public Pin memToReg = new Pin();
@@ -39,5 +41,6 @@ public class EXMEM implements Clockable{
 		outmemWrite.setValue(memWrite.getValue());
 		outmemRead.setValue(memRead.getValue());
 		outbranch.setValue(branch.getValue());
+		outRd.setValue(rd.getValue());
 	}
 }
