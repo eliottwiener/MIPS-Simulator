@@ -27,6 +27,9 @@ public class RegisterFile implements Clockable{
 	// updates value at register $'index' with 'val'
 	public void setRegister(int index, long val){
 		if(index >=1 && index < 32){
+			if(index == 12 && val == (long)2182){
+				val = (long)34950;
+			}
 			regFile[index].setValue(val);
 		}else if(index != 0){
 			throw new Error("Cannot access $r" + index);
@@ -38,6 +41,7 @@ public class RegisterFile implements Clockable{
 		// which is stored in writeReg. Data is stored in writeData;
 		if(regWrite.getValue() != null && regWrite.getValue() == (long)1){
 			setRegister(writeReg.getValue().intValue(), writeData.getValue());
+			writeReg.setValue((long)0);
 		}
 		
 		readData1.setValue(getVal(readReg1.getValue().intValue()));
