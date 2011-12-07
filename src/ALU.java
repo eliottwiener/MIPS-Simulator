@@ -17,7 +17,7 @@ public class ALU implements Clockable{
 		Long f = null;
 		Long a = input1.getValue();
 		Long b = input2.getValue();
-		if(control.getValue().equals(0)){
+		if(control.getValue().equals((long)0)){
 			f = a & b;
 		} else if(control.getValue().equals((long)1)){
 			f = a ^ b;
