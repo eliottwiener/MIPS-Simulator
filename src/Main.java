@@ -16,33 +16,53 @@ public class Main {
 		
 		Memory memory = new Memory(rawMemory);
 		
-		//initialize everything
+		// Initialize the 5 MUX's
 		Mux aluSrcMux = new Mux();
 		Mux memToRegMux = new Mux();
 		Mux regDstMux = new Mux();
 		Mux jumpMux = new Mux();
 		Mux branchMux = new Mux();
+		
+		// Initialize the 2 SLTs
 	 	ShiftLeftTwo slt1 = new ShiftLeftTwo(28);
 		ShiftLeftTwo slt2 = new ShiftLeftTwo(32);
-		ALUControl aluControl = new ALUControl();
+		
+		// Initialize the 3 ALUs
 		ALU alu = new ALU();
 		ALU aluAdd = new ALU();
-		aluAdd.control.setValue((long)2);
 		ALU aluP4 = new ALU();
+		// set the static controls/inputs for certain ALU
+		aluAdd.control.setValue((long)2);
 		aluP4.control.setValue((long)2);
 		aluP4.input2.setValue((long)4);
+		
+		// initalize Memory IO
 		MemoryIO memoryIo = new MemoryIO(memory);
+		
+		// initialize main control and ALU control
 		Control control = new Control();
+		ALUControl aluControl = new ALUControl();
+		
+		// initialize the register file
 		RegisterFile regFile = new RegisterFile();
+		
+		// initialize fetch and decode stages
 		Fetch fetch = new Fetch(memory);
-		And branchMuxAnd = new And();
-		ProgramCounter pc = new ProgramCounter();
 		Decode decode = new Decode();
+
+		// initialize the AND going to branch MUX
+		And branchMuxAnd = new And();
+		
+		// initialize the combiner (jump addr + (PC + 4))
 		Combiner combiner = new Combiner();
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		
+		// initialize the Program Counter
+		ProgramCounter pc = new ProgramCounter();
+		
+		// For debugging
 		Debugger debug = new Debugger(regFile, decode, pc, control, aluControl,
-				memoryIo, alu, regDstMux, memToRegMux, aluSrcMux, branchMux,
-				jumpMux);
+				memoryIo, alu, aluP4, aluAdd, regDstMux, memToRegMux, aluSrcMux, 
+				branchMux, jumpMux);
 		
 		// Connect output of PC
 		pc.pcOut.connectTo(fetch.pc);
@@ -121,6 +141,7 @@ public class Main {
 				// decode the instruction
 				decode.clockEdge();
 				if(decode.isHalt()){
+					// terminate when we see a "HLT" instruction
 					break;
 				}
 				
@@ -174,26 +195,22 @@ public class Main {
 				// clock the regFile
 				regFile.clockEdge();
 				
+				// Add this cycle to the debug stream
 				debug.debugCycle(cycleCount);
+				
+				// increase the cycle count
 				cycleCount++;
-		/*		System.out.println(pc.pcOut.getValue());
-				System.out.print("next line?");
-				try {
-					br.readLine();
-				} catch (IOException e) {
-					//  Auto-generated catch block
-					e.printStackTrace();
-				}*/
 			
-				if(cycleCount == 50){
-					break;
-				}
 			}
 			
 			catch (Exception e){
 				e.printStackTrace();
-				System.out.println(cycleCount);
-				debug.debugCycle(cycleCount);
+				System.out.println("Error occured at Cycle: " + cycleCount);
+				try{
+					debug.debugCycle(cycleCount);
+				}catch (Exception f){
+					break;
+				}
 				break;
 			}
 				
@@ -201,10 +218,16 @@ public class Main {
 		}
 		
 		debug.dump("debug.txt");
-//		System.out.println("Final register values:");
-//		for(int i = 0 ; i < 32 ; i++){
-//			System.out.println("    $r" + i + ": 0x" + Long.toHexString(regFile.getVal(i)));
-//		}
+		System.out.println("Execution Complete!\n");
+		System.out.println("Final Register Values:");
+		String output = "Register\tBinary\t\t\t  Hexadecimal\tDecimal\n";
+		for(int i = 0 ; i < 32 ; i++){
+			Long thisVal = regFile.getVal(i);
+			//print out register values in binary
+			output+= "$r" + i +":\t" + BinaryUtil.pad(Long.toBinaryString(thisVal), 32)
+			+ "\t0x" + Long.toHexString(thisVal) + "\t" + thisVal + "\n";
+		}
+		System.out.println(output);
 	}
 
 }
