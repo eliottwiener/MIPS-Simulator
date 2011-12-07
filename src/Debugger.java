@@ -9,6 +9,8 @@ public class Debugger{
 	public ALUControl aluControl;
 	public MemoryIO memIO;
 	public ALU zeroALU;
+	public ALU branchALU;
+	public ALU p4ALU;
 	public Mux regDstMux;
 	public Mux memToRegMux;
 	public Mux aluSrcMux;
@@ -19,7 +21,8 @@ public class Debugger{
 	public Debugger(RegisterFile regFile, Decode decode,
 			ProgramCounter pc, Control control,
 			ALUControl aluControl, MemoryIO memIO,
-			ALU zeroALU, Mux regDstMux, Mux memToRegMux,
+			ALU zeroALU, ALU p4ALU, ALU branchALU,
+			Mux regDstMux, Mux memToRegMux,
 			Mux aluSrcMux, Mux branchMux, Mux jumpMux){
 		this.regFile = regFile;
 		this.decode = decode;
@@ -28,6 +31,9 @@ public class Debugger{
 		this.aluControl = aluControl;
 		this.memIO = memIO;
 		this.zeroALU = zeroALU;
+		this.branchALU = branchALU;
+		this.p4ALU = p4ALU;
+		this.branchALU = branchALU;
 		this.regDstMux = regDstMux;
 		this.memToRegMux = memToRegMux;
 		this.aluSrcMux = aluSrcMux;
@@ -65,12 +71,24 @@ public class Debugger{
 		output += "funct:" + BinaryUtil.pad(print(aluControl.func),6) + "\n";
 		output += "ALUOp:" + BinaryUtil.pad(print(aluControl.aluOp),2) + "\n";
 		output += "ALUControl Out:" + BinaryUtil.pad(print(aluControl.aluControl),3) + "\t\t" + print(aluControl.aluControl) + "\n";
+		output += "------------------ PC + 4 ALU Information ------------------\n";				
+		output += "input1:" + BinaryUtil.pad(print(p4ALU.input1),32) + "\n";
+		output += "input2:" + BinaryUtil.pad(print(p4ALU.input2),32)  + "\n";
+		output += "control:" + BinaryUtil.pad(print(p4ALU.control),32)  + "\n";
+		output += "result:" + BinaryUtil.pad(print(p4ALU.result), 32)  + "\n";
+		output += "zero:" + BinaryUtil.pad(print(p4ALU.zero),32)  + "\n";
 		output += "------------------ Zero ALU Information ------------------\n";				
 		output += "input1:" + BinaryUtil.pad(print(zeroALU.input1),32) + "\n";
 		output += "input2:" + BinaryUtil.pad(print(zeroALU.input2),32)  + "\n";
 		output += "control:" + BinaryUtil.pad(print(zeroALU.control),32)  + "\n";
 		output += "result:" + BinaryUtil.pad(print(zeroALU.result), 32)  + "\n";
 		output += "zero:" + BinaryUtil.pad(print(zeroALU.zero),32)  + "\n";
+		output += "------------------ Branch ALU Information ------------------\n";				
+		output += "input1:" + BinaryUtil.pad(print(branchALU.input1),32) + "\n";
+		output += "input2:" + BinaryUtil.pad(print(branchALU.input2),32)  + "\n";
+		output += "control:" + BinaryUtil.pad(print(branchALU.control),32)  + "\n";
+		output += "result:" + BinaryUtil.pad(print(branchALU.result), 32)  + "\n";
+		output += "zero:" + BinaryUtil.pad(print(branchALU.zero),32)  + "\n";
 		output += "------------------ Memory IO Information ------------------\n";				
 		output += "address:" +BinaryUtil.pad(print(memIO.address), 32) +"\n";
 		output += "writeData:" + BinaryUtil.pad(print(memIO.writeData), 32) +"\n";
