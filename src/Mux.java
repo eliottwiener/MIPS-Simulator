@@ -1,14 +1,8 @@
-import java.util.ArrayList;
-
-
 public class Mux implements Clockable{
 	
-	public final Pin output = new Pin(); 
-	
+	public final Pin output = new Pin(); 	
 	public final Pin switcher = new Pin();
-	
 	public final Pin input0 = new Pin();
-	
 	public final Pin input1 = new Pin();
 	
 	Mux(){}
