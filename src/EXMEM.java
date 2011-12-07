@@ -9,11 +9,35 @@ public class EXMEM implements Clockable{
 	public Pin outZero = new Pin();
 	public Pin outGenALUresult = new Pin();
 	public Pin outReadData2 = new Pin();
+	// control signals (WB)
+	public Pin regWrite = new Pin();
+	public Pin memToReg = new Pin();
+	public Pin outregWrite = new Pin();
+	public Pin outmemToReg = new Pin();
+	// control signals (MEM)
+	public Pin jump = new Pin();
+	public Pin jumpReg = new Pin();
+	public Pin memWrite = new Pin();
+	public Pin memRead = new Pin();
+	public Pin branch = new Pin();
+	public Pin outjump = new Pin();
+	public Pin outjumpReg = new Pin();
+	public Pin outmemWrite = new Pin();
+	public Pin outmemRead = new Pin();
+	public Pin outbranch = new Pin();
+
 	
 	public void clockEdge(){
 		outAddALUresult.setValue(addALUresult.getValue());
 		outZero.setValue(zero.getValue());
 		outGenALUresult.setValue(genALUResult.getValue());
 		outReadData2.setValue(readData2.getValue());
+		outregWrite.setValue(regWrite.getValue());
+		outmemToReg.setValue(memToReg.getValue());
+		outjump.setValue(jump.getValue());
+		outjumpReg.setValue(jumpReg.getValue());
+		outmemWrite.setValue(memWrite.getValue());
+		outmemRead.setValue(memRead.getValue());
+		outbranch.setValue(branch.getValue());
 	}
 }
