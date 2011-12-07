@@ -107,7 +107,7 @@ public class Debugger{
 		output += "result:" + BinaryUtil.pad(print(branchALU.result), 32)  + "\n";
 		output += "zero:" + BinaryUtil.pad(print(branchALU.zero),32)  + "\n";
 		output += "-------------------------- Memory IO Information --------------------------\n";				
-		output += "address:" +BinaryUtil.pad(print(memIO.address), 32) +"\n";
+		output += "address:" +BinaryUtil.pad(print(memIO.address), 32) + "\t\t" + printDecimal(memIO.address) + "\n";
 		output += "writeData:" + BinaryUtil.pad(print(memIO.writeData), 32) +"\n";
 		output += "memWrite:" + BinaryUtil.pad(print(memIO.memWrite),1) + "\n";
 		output += "memRead:" + BinaryUtil.pad(print(memIO.memRead),1) + "\n";
@@ -139,6 +139,11 @@ public class Debugger{
 		output += "input 1:" + BinaryUtil.pad(print(jumpMux.input1),32) + "\n";
 		output += "output:" + BinaryUtil.pad(print(jumpMux.output),32) + "\n";
 		output += "------------------------ Register File Information -----------------------\n";
+		output += "Read Register 1:" + BinaryUtil.pad(print(regFile.readReg1),32) + "\t\t" + printDecimal(regFile.readReg1)  +"\n"; 
+		output += "Read Register 2:" + BinaryUtil.pad(print(regFile.readReg2),32) + "\t\t" + printDecimal(regFile.readReg2)  +"\n";
+		output += "Read Register 1:" + BinaryUtil.pad(print(regFile.writeData),32) + "\n";
+		output += "Read Data 1:" + BinaryUtil.pad(print(regFile.readData1),32) + "\n";
+		output += "Read Data 2:" + BinaryUtil.pad(print(regFile.readData2),32) + "\n";
 		output += "Register\t\tBinary Value\t\tHex Value\t\tLong Value\n";
 		for(int i = 0 ; i < 32 ; i++){
 			Long thisVal = regFile.getVal(i);
