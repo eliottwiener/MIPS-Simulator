@@ -21,8 +21,8 @@ public class Main {
 		Mux branchMux = new Mux();
 		
 		// Initialize the 2 SLTs
-	 	ShiftLeftTwo slt1 = new ShiftLeftTwo(28);
-		ShiftLeftTwo slt2 = new ShiftLeftTwo(32);
+	 	ShiftLeftTwo sltTarget = new ShiftLeftTwo(28);
+		ShiftLeftTwo sltAdd = new ShiftLeftTwo(32);
 		
 		// Initialize the 3 ALUs
 		ALU alu = new ALU();
@@ -62,7 +62,7 @@ public class Main {
 		// For debugging
 		Debugger debug = new Debugger(regFile, decode, pc, control, aluControl,
 				memoryIo, alu, aluP4, aluAdd, regDstMux, memToRegMux, aluSrcMux, 
-				branchMux, jumpMux);
+				branchMux, jumpMux, signExtend, sltAdd, sltTarget);
 		
 		// Connect output of PC
 		pc.pcOut.connectTo(fetch.pc);
@@ -77,12 +77,12 @@ public class Main {
 		decode.rt.connectTo(regFile.readReg2);
 		decode.rt.connectTo(regDstMux.input0);
 		decode.rd.connectTo(regDstMux.input1);
-		decode.target.connectTo(slt1.in);
+		decode.target.connectTo(sltTarget.in);
 		decode.immediate.connectTo(signExtend.input);
 		decode.funct.connectTo(aluControl.func);
 		
 		// connect the outputs of sign-extend
-		signExtend.output.connectTo(slt2.in);
+		signExtend.output.connectTo(sltAdd.in);
 		signExtend.output.connectTo(aluSrcMux.input1);
 		
 		// Connect outputs of regFile
@@ -104,8 +104,8 @@ public class Main {
 		memoryIo.readData.connectTo(memToRegMux.input1);
 		
 		// Connect the outputs of SLTs
-		slt1.out.connectTo(combiner.jumpAddr);
-		slt2.out.connectTo(aluAdd.input2);
+		sltTarget.out.connectTo(combiner.jumpAddr);
+		sltAdd.out.connectTo(aluAdd.input2);
 		
 		// connect output of combiner
 		combiner.out.connectTo(jumpMux.input1);
@@ -152,9 +152,12 @@ public class Main {
 					break;
 				}
 				
+				// clock the sign-extend
+				signExtend.clockEdge();
+				
 				// clock the SLT
-				slt1.clockEdge();
-				slt2.clockEdge();
+				sltTarget.clockEdge();
+				sltAdd.clockEdge();
 				
 				// clock the Add ALU
 				aluAdd.clockEdge();
