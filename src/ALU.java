@@ -4,6 +4,7 @@ public class ALU implements Clockable{
 	Pin input1 = new Pin();
 	Pin input2 = new Pin();
 	Pin control = new Pin();	
+	Pin immediate = new Pin();
 	Pin result = new Pin();
 	Pin zero = new Pin();
 	
@@ -11,7 +12,7 @@ public class ALU implements Clockable{
 	
 	// a helper for nor, flips each 1 to a 0 and vice versa
 	public String flipBits(Long val){
-		String strVal = Long.toBinaryString(val);
+		String strVal = BinaryUtil.pad(Long.toBinaryString(val),32);
 		String strOut = "";
 		for(int i = 0; i < strVal.length(); i++){
 			if(strVal.charAt(i) == '0'){
@@ -21,10 +22,30 @@ public class ALU implements Clockable{
 		return strOut;
 	}
 	
+	public Long getValue(Pin p){
+		
+		// not immediate, so we don't sign extend
+		if(immediate.getValue() == null || immediate.equals((long)0)){
+			return new Long(p.getValue());
+		}
+		// immediate, so sign extend
+		else{
+			String val = BinaryUtil.pad(Long.toBinaryString(p.getValue()),32);
+			char msb = val.charAt(0);
+			if(msb == '0'){
+				return p.getValue();
+			}
+			else{
+				String unsigned = Long.toBinaryString(p.getValue()).substring(1);
+				return new Long(-1 * Long.parseLong(unsigned, 2));
+			}
+		}
+	}
+	
 	public void clockEdge() {
 		Long f = null;
-		Long a = input1.getValue();
-		Long b = input2.getValue();
+		Long a = getValue(input1);
+		Long b = getValue(input2);
 
 		if(control.getValue().equals((long)0)){
 			// bitwise and
@@ -49,6 +70,7 @@ public class ALU implements Clockable{
 			throw new RuntimeException("Unhandled ALU control: " + Long.toBinaryString(control.getValue()));
 		}
 		if(f==0) zero.setValue((long)1);
+		
 		result.setValue(f);
 	}
 }
