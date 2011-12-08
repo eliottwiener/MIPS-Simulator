@@ -38,10 +38,13 @@ public class IDEX implements Clockable{
 	public Pin aluSrc = new Pin();
 	public Pin aluOp = new Pin();
 	public Pin branchBNE = new Pin();
+	public Pin immediate = new Pin();
 	public Pin outregDST = new Pin();
 	public Pin outaluSrc = new Pin();
 	public Pin outaluOp = new Pin();
 	public Pin outbranchBNE = new Pin();
+	public Pin outimmediate = new Pin();
+	
 	public void clockEdge(){
 		outPC4.setValue(PC4.getValue());
 		outReadData1.setValue(readData1.getValue());
@@ -54,6 +57,7 @@ public class IDEX implements Clockable{
 		outmemWrite.setValue(memWrite.getValue());
 		outmemRead.setValue(memRead.getValue());
 		outbranch.setValue(branch.getValue());
+		outimmediate.setValue(immediate.getValue());
 		outregDST.setValue(regDST.getValue());
 		outaluSrc.setValue(aluSrc.getValue());
 		outaluOp.setValue(aluOp.getValue());
