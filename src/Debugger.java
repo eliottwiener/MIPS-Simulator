@@ -69,8 +69,8 @@ public class Debugger{
 		output += "immediate:" + BinaryUtil.pad(print(decode.immediate),16) + "\t\t" + printDecimal(decode.immediate)  +"\n";
 		output += "target:" + BinaryUtil.pad(print(decode.target),26) + "\t\t" + printDecimal(decode.target)  +"\n";
 		output += "------------------------- Sign-Extend Information -------------------------\n";
-		output += "input:" + print(signExtend.input) + "\n";
-		output += "output:" + print(signExtend.output) + "\n";
+		output += "input:" + BinaryUtil.pad(print(signExtend.input),16) + "\n";
+		output += "output:" + BinaryUtil.pad(print(signExtend.output),32) + "\n";
 		output += "------------------------- SLT (Target) Information ------------------------\n";
 		output += "input:" + print(sltTarget.in) + "\n";
 		output += "output:" + print(sltTarget.out) + "\n";
@@ -89,6 +89,7 @@ public class Debugger{
 		output += "RegWrite:" + BinaryUtil.pad(print(control.regWrite),1) + "\n";
 		output += "JumpReg:" + BinaryUtil.pad(print(control.jumpReg),1) + "\n";
 		output += "branchBNE:" + BinaryUtil.pad(print(control.branchBNE),1) + "\n";
+		output += "immediate:" + BinaryUtil.pad(print(control.immediate),1) + "\n";
 		output += "------------------------ ALU Control Signal Outputs -----------------------\n";		
 		output += "funct:" + BinaryUtil.pad(print(aluControl.func),6) + "\n";
 		output += "ALUOp:" + BinaryUtil.pad(print(aluControl.aluOp),2) + "\n";
