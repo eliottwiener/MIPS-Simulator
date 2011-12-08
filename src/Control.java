@@ -14,6 +14,7 @@ public class Control{
 	public Pin regWrite = new Pin();
 	public Pin jumpReg = new Pin();
 	public Pin branchBNE = new Pin();
+	public Pin immediate = new Pin();
 	
 	public Control(){}
 	
@@ -30,6 +31,7 @@ public class Control{
 			memWrite.setValue((long)0);
 			aluSrc.setValue((long)0);
 			branchBNE.setValue((long)0);
+			immediate.setValue((long)0);
 					
 			String myFunct = BinaryUtil.pad(Long.toBinaryString(funct.getValue()),6);
 			if(myFunct.equals("001000")){
@@ -139,6 +141,7 @@ public class Control{
 			regWrite.setValue((long)1);
 			jumpReg.setValue((long)0);
 			branchBNE.setValue((long)0);
+			immediate.setValue((long)1);
 		}
 		
 	}
