@@ -1,16 +1,16 @@
 public class Register{
 
-	private long value;
+	private BinaryNum value;
 	
-	Register(long value) {
+	Register(BinaryNum value) {
 		this.value = value;
 	}
 
-	public long getValue(){
+	public BinaryNum getValue(){
 		return value;
 	}
 
-	public void setValue(long v){
+	public void setValue(BinaryNum v){
 		value = v;
 	}
 
