@@ -24,22 +24,22 @@ public class ALU implements Clockable{
 	
 	public Long getValue(Pin p){
 		
-		// not immediate, so we don't sign extend
-		if(immediate.getValue() == null || immediate.equals((long)0)){
-			return new Long(p.getValue());
-		}
-		// immediate, so sign extend
-		else{
+		// immediate so sign extend
+		if(immediate.getValue() != null && immediate.getValue().equals((long)1)){
 			String val = BinaryUtil.pad(Long.toBinaryString(p.getValue()),32);
 			char msb = val.charAt(0);
 			if(msb == '0'){
 				return p.getValue();
 			}
 			else{
-				String unsigned = Long.toBinaryString(p.getValue()).substring(1);
+				int last1 = val.lastIndexOf('1');
+				String unsigned = val.substring(last1);
 				return new Long(-1 * Long.parseLong(unsigned, 2));
 			}
+		}else{
+			return new Long(p.getValue());
 		}
+
 	}
 	
 	public void clockEdge() {
@@ -57,7 +57,7 @@ public class ALU implements Clockable{
 			// add
 			f = a+b;
 		} else if(control.getValue().equals((long)6)){
-			// substract
+			// subtract
 			f = a-b;
 		} else if(control.getValue().equals((long)7)){
 			// set if less than
