@@ -37,94 +37,96 @@ public class Decode{
 	Decode(){}
 
 	// takes first 6 bits as opcode
-	public void setOpcode(String instr){
-		opcode.setValue(Long.parseLong(instr.substring(0,6), 2));
+	public void setOpcode(BinaryNum instr){
+		opcode.setValue(instr.getRange(31,26));
 	}
 
 	// takes next 5 bits as rs value
-	public void setRS(String instr){
-		rs.setValue(Long.parseLong(instr.substring(6,11), 2));
+	public void setRS(BinaryNum instr){
+		rs.setValue(instr.getRange(25,21));
 	}
 
 	// takes next 5 bits as rt value
-	public void setRT(String instr){
-		rt.setValue(Long.parseLong(instr.substring(11,16), 2));
-
+	public void setRT(BinaryNum instr){
+		rt.setValue(instr.getRange(20,16));
 	}
 
 	// sets the rd and func value if r-type
-	public void setRD(String instr){
-		rd.setValue(Long.parseLong(instr.substring(16,21), 2));
+	public void setRD(BinaryNum instr){
+		rd.setValue(instr.getRange(15,11));
 	}
 
-	public void setFunct(String instr){
+	public void setFunct(BinaryNum instr){
 		// funct field is last 6 bits if not I-Type
 		if(opType == 1){
-			String strOp = BinaryUtil.pad(Long.toBinaryString(opcode.getValue()),6);
+			BinaryNum thisOp = opcode.getValue();
 			// and instruction
-			if(strOp.equals("001000")){
-				funct.setValue(Long.parseLong("100000",2));
+			if(thisOp.equals(new BinaryNum("001000"))){
+				funct.setValue(new BinaryNum("100000"));
 			}
 
 			// andi instruction
-			if(strOp.equals("001100")){
-				funct.setValue(Long.parseLong("100100",2));
+			if(thisOp.equals(new BinaryNum("001100"))){
+				funct.setValue(new BinaryNum("100100"));
 			}
 
 			// ori instruction
-			if(strOp.equals("001101")){
-				funct.setValue(Long.parseLong("100101",2));
+			if(thisOp.equals(new BinaryNum("001101"))){
+				funct.setValue(new BinaryNum("100101"));
 			}
 
 			// slti instruction
-			if(strOp.equals("001010")){
-				funct.setValue(Long.parseLong("101010",2));
+			if(thisOp.equals(new BinaryNum("001010"))){
+				funct.setValue(new BinaryNum("101010"));
 			}
 		}
 		else{
-			funct.setValue(Long.parseLong(instr.substring(26,32), 2));
+			funct.setValue(instr.getRange(5, 0));
 		}	
 
 	}
 
 	// sets the offset value for i-type and j-type
-	public void setImmediate(String instr){
-		immediate.setValue(Long.parseLong(instr.substring(16,32), 2));
+	public void setImmediate(BinaryNum instr){
+		immediate.setValue(instr.getRange(15,0));
 	}
 
 	// set jump target for j-type
-	public void setTarget(String instr){
-		target.setValue(Long.parseLong(instr.substring(6,32), 2));
+	public void setTarget(BinaryNum instr){
+		target.setValue(instr.getRange(25,0));
 	}
 
 	// determines if this instruction is R-Type, I-Type, or J-Type
-	public void setOpType(String op){
+	public void setOpType(){
 
+		BinaryNum op = opcode.getValue();
+		
 		// R-Type instructions all have opcode as 000000
-		if(op.equals("000000")){
+		if(op.equals(new BinaryNum("000000"))){
 			opType = 0;
 		}
 
 		// I-Type instruction are any opcodes other than
 		// 000000, 00001x, 0100xx, and 111111
-		if(!(op.equals("000000") ||
-				op.equals("000010") ||
-				op.equals("000011") ||
-				op.equals("010000") ||
-				op.equals("010001") ||
-				op.equals("010011") ||
-				op.equals("010010") ||
-				op.equals("111111"))){
+		if(!(op.equals(new BinaryNum("000000")) ||
+				op.equals(new BinaryNum("000010")) ||
+				op.equals(new BinaryNum("000011")) ||
+				op.equals(new BinaryNum("010000")) ||
+				op.equals(new BinaryNum("010001")) ||
+				op.equals(new BinaryNum("010011")) ||
+				op.equals(new BinaryNum("010010")) ||
+				op.equals(new BinaryNum("111111")))){
 			opType = 1;
 		}
 
 		// J-type instructions have opcodes of 00001x
-		if(op.equals("000010") || op.equals("000011")){
+		if(op.equals(new BinaryNum("000010")) || 
+				op.equals(new BinaryNum("000011"))){
 			opType = 2;
 		}
 
 		// HLT's opcode is 111111
-		if(op.equals("111111")){
+		if(op.equals(new BinaryNum("111111"))){
 			opType = 3;
 		}
 
@@ -143,17 +145,17 @@ public class Decode{
 	// Decodes the instruction
 	public void clockEdge(){		
 		// converts the instruction into a binary String
-		String instrStr = BinaryUtil.pad(Long.toBinaryString(instruction.getValue()),32);
+		BinaryNum instrbin = instruction.getValue();
 
 		// decode the instruction
-		setOpcode(instrStr);
-		setOpType(BinaryUtil.pad(Long.toBinaryString(opcode.getValue()),6));
-		setRS(instrStr);
-		setRT(instrStr);
-		setTarget(instrStr);
-		setRD(instrStr);
-		setFunct(instrStr);
-		setImmediate(instrStr);
+		setOpcode(instrbin);
+		setOpType();
+		setRS(instrbin);
+		setRT(instrbin);
+		setTarget(instrbin);
+		setRD(instrbin);
+		setFunct(instrbin);
+		setImmediate(instrbin);
 		
 	}
 }
