@@ -22,12 +22,12 @@ public class ForwardingUnit implements Clockable{
 		// EX hazard
 		if(exmem_regWrite_val.equals(new BinaryNum("1"))
 				&& !(exmem_rd_val.equals(new BinaryNum("0")))
-				&& exmem_rd_val.equals(new BinaryNum(idex_rs_val.toString()))){
+				&& exmem_rd_val.equals(idex_rs_val)){
 			forwardA.setValue(new BinaryNum("10"));
 		} else forwardA.setValue(new BinaryNum("0"));
 		if(exmem_regWrite_val.equals(new BinaryNum("1"))
 				&& !(exmem_rd_val.equals(new BinaryNum("0")))
-				&& exmem_rd_val.equals(new BinaryNum(idex_rt_val.toString()))){
+				&& exmem_rd_val.equals(idex_rt_val)){
 			forwardB.setValue(new BinaryNum("10"));
 		} else forwardB.setValue(new BinaryNum("0"));
 		
@@ -36,16 +36,16 @@ public class ForwardingUnit implements Clockable{
 				&& !(memwb_rd_val.equals(new BinaryNum("0")))
 				&& !(exmem_regWrite_val.equals(new BinaryNum("1"))
 						&& !(exmem_rd_val.equals(new BinaryNum("0")))
-						&& !(exmem_rd_val.equals(new BinaryNum(idex_rs_val.toString()))))
-				&& memwb_rd_val.equals(new BinaryNum(idex_rs_val.toString()))){
+						&& !(exmem_rd_val.equals(idex_rs_val)))
+				&& memwb_rd_val.equals(idex_rs_val)){
 			forwardA.setValue(new BinaryNum("1"));
 		} else forwardA.setValue(new BinaryNum("0"));
 		if(memwb_regWrite_val.equals(new BinaryNum("1"))
 				&& !(memwb_rd_val.equals(new BinaryNum("0")))
 				&& !(exmem_regWrite_val.equals(new BinaryNum("1"))
 						&& !(exmem_rd_val.equals(new BinaryNum("0")))
-						&& !(exmem_rd_val.equals(new BinaryNum(idex_rt_val.toString()))))
-				&& memwb_rd_val.equals(new BinaryNum(idex_rt_val.toString()))){
+						&& !(exmem_rd_val.equals(idex_rt_val)))
+				&& memwb_rd_val.equals(idex_rt_val)){
 			forwardB.setValue(new BinaryNum("1"));
 		} else forwardB.setValue(new BinaryNum("0"));
 	}
