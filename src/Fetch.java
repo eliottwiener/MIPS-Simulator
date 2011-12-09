@@ -13,6 +13,6 @@ public class Fetch implements Clockable{
 	}
 	
 	public void clockEdge(){
-		instr.setValue(mem.loadWord(pc.getValue()));
+		instr.setValue(mem.loadWord(pc.getValue().toInt()));
 	}
 }
