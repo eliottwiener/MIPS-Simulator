@@ -166,8 +166,8 @@ public class Debugger{
 		for(int i = 0 ; i < 32 ; i++){
 			BinaryNum thisVal = regFile.getVal(i);
 			//print out register values in binary
-			output+= "$r" + i +":\t" + thisVal.pad(32).toString() + "\n";
-	//		+ "\t0x" + Long.toHexString(thisVal.pad(32).toString()) + "\t" + thisVal + "\n";
+			output+= "$r" + i +":\t" + thisVal.pad(32).toString()
+			+ "\t0x" + Long.toHexString(thisVal.toLong()) + "\t" + thisVal.toLong() + "\n";
 		}
 		output += "\n\n";
 	}
@@ -181,11 +181,11 @@ public class Debugger{
 			
 	}
 	
-	public int printDecimal(Pin p){
+	public long printDecimal(Pin p){
 		if(p.getValue() == null){
 			return -1;
 		}else{
-			return p.getValue().toInt();
+			return p.getValue().toLong();
 		}
 	}
 	
