@@ -28,11 +28,31 @@ public class BinaryNum {
 			return this;
 		} else {
 			final boolean[] newBits = new boolean[length];
-			for(int i = length; i > 0 ; i--){
-				if(i > bits.length ){
-					newBits[i] = bits[bits.length-1];
+			final int diff = length - bits.length;
+			for(int i = 0; i > length ; i++){
+				if(i < diff ){
+					newBits[i] = bits[0];
 				} else {
-					newBits[i] = bits[i];
+					newBits[i] = bits[i-diff];
+				}
+			}
+			return new BinaryNum(newBits);
+		}
+	}
+	
+	public final BinaryNum pad(final int length){
+		if(bits.length > length){
+			throw new RuntimeException(toString() + " is already longer than " + length + " bits.");
+		} else if(bits.length == length){
+			return this;
+		} else {
+			final boolean[] newBits = new boolean[length];
+			final int diff = length - bits.length;
+			for(int i = 0; i > length ; i++){
+				if(i < diff ){
+					newBits[i] = false;
+				} else {
+					newBits[i] = bits[i-diff];
 				}
 			}
 			return new BinaryNum(newBits);
@@ -40,7 +60,7 @@ public class BinaryNum {
 	}
 	
 	public final BinaryNum twosComplement(){
-		return this;
+		return this.not().add(new BinaryNum("1"));
 	}
 	
 	public final BinaryNum not(){
@@ -57,6 +77,18 @@ public class BinaryNum {
 	
 	public final boolean[] getBits(){
 		return bits;
+	}
+	
+	public final BinaryNum getRange(final int from, final int to){
+		final int start = (bits.length - 1) - from;
+		final int end = (bits.length - 1) - to;
+		boolean[] newBits = new boolean[from-to+1];
+		int newIndex = 0;
+		for(int i = start ; i < end ; i++){
+			newBits[newIndex] = bits[i];
+			newIndex++;
+		}
+		return new BinaryNum(newBits);
 	}
 	
 	public final BinaryNum or(final BinaryNum other){
@@ -137,8 +169,11 @@ public class BinaryNum {
 			boolean carry = false;
 			boolean[] newBits = new boolean[bits.length];
 			for(int i = 0 ; i < bits.length ; i++){
-				newBits[i] = bits[i] ^ other.getBits()[i];
-				carry = bits[i] && other.getBits()[i];
+				final boolean a = bits[i];
+				final boolean b = other.getBits()[i];
+				final boolean c = carry;
+				newBits[i] = (a ^ b) ^ c;
+				carry = (a && b) || (c && (a ^ b));
 			}
 			return new BinaryNum(newBits);
 		}
