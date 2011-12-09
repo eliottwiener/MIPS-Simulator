@@ -7,8 +7,7 @@ public class SignExtend implements Clockable{
 	
 	
 	public void clockEdge(){
-			String s = BinaryUtil.stringValue(input.getValue());
-			output.setValue(Long.parseLong(s,2));
+		output.setValue(input.getValue().extend(32));
 	}
 
 	
