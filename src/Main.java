@@ -9,7 +9,7 @@ public class Main {
 	public static void main(String[] args) {
 		
 		//Read mem from program file
-		List<Long> rawMemory = ProgramReader.getMemory(args[0]);
+		List<BinaryNum> rawMemory = ProgramReader.getMemory(args[0]);
 		
 		Memory memory = new Memory(rawMemory);
 		
@@ -20,8 +20,8 @@ public class Main {
 		Mux jumpMux = new Mux();
 		Mux branchMux = new Mux();
 		Mux jumpRegMux = new Mux();
-		Mux forwardAMux = new Mux();
-		Mux forwardBMux = new Mux();
+		Mux3 forwardAMux = new Mux3();
+		Mux3 forwardBMux = new Mux3();
 		
 		// Initialize the 2 SLTs
 	 	ShiftLeftTwo sltTarget = new ShiftLeftTwo(28);
@@ -32,9 +32,9 @@ public class Main {
 		ALU aluAdd = new ALU();
 		ALU aluP4 = new ALU();
 		// set the static controls/inputs for certain ALU
-		aluAdd.control.setValue((long)2);
-		aluP4.control.setValue((long)2);
-		aluP4.input2.setValue((long)4);
+		aluAdd.control.setValue(new BinaryNum("10"));
+		aluP4.control.setValue(new BinaryNum("10"));
+		aluP4.input2.setValue(new BinaryNum("100"));
 		
 		// initalize Memory IO
 		MemoryIO memoryIo = new MemoryIO(memory);
@@ -161,6 +161,7 @@ public class Main {
 		idex.outregWrite.connectTo(exmem.regWrite);
 		idex.outjumpReg.connectTo(exmem.jumpReg);
 		idex.outimmediate.connectTo(alu.immediate);
+		idex.outimmediate.connectTo(signExtend.immediate);
 		exmem.outjump.connectTo(jumpMux.switcher);
 		exmem.outjumpReg.connectTo(jumpRegMux.switcher);
 		exmem.outbranch.connectTo(branchMuxAnd.input0);
@@ -204,8 +205,19 @@ public class Main {
 		forwardingUnit.forwardA.connectTo(forwardAMux.switcher);
 		forwardingUnit.forwardB.connectTo(forwardBMux.switcher);
 		
-		//exmem.r
-		pc.pcIn.setValue(Long.parseLong("1000",16));
+		// connect I/O of forwarding MUXes
+		exmem.outGenALUresult.connectTo(forwardAMux.input2);
+		exmem.outGenALUresult.connectTo(forwardBMux.input2);
+		memToRegMux.output.connectTo(forwardAMux.input1);
+		memToRegMux.output.connectTo(forwardBMux.input1);
+		idex.outReadData1.connectTo(forwardAMux.input0);
+		idex.outReadData2.connectTo(forwardBMux.input0);
+		forwardAMux.output.connectTo(alu.input1);
+		forwardBMux.output.connectTo(aluSrcMux.input0);
+		forwardBMux.output.connectTo(exmem.readData2);
+		
+	
+		pc.pcIn.setValue(new BinaryNum("1000000000000"));
 		int cycleCount = 0;
 		for(;;){
 			try{
@@ -331,14 +343,14 @@ public class Main {
 		System.out.println("The total number of instructions executed: " + instrCount);
 		System.out.println("CPI: " + (new Float(cycleCount/instrCount)));
 		System.out.println("Final Register Values:");
-		String output = "Register\tBinary\t\t\t  Hexadecimal\tDecimal\n";
+/*		String output = "Register\tBinary\t\t\t  Hexadecimal\tDecimal\n";
 		for(int i = 0 ; i < 32 ; i++){
 			Long thisVal = regFile.getVal(i);
 			//print out register values in binary
 			output+= "$r" + i +":\t" + BinaryUtil.pad(Long.toBinaryString(thisVal), 32)
 			+ "\t0x" + Long.toHexString(thisVal) + "\t" + thisVal + "\n";
 		}
-		System.out.println(output);
+		System.out.println(output);*/
 	}
 
 }
