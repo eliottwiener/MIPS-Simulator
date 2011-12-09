@@ -4,38 +4,37 @@ import java.util.List;
 
 
 public class Memory {
-	List<Long> mem = new ArrayList<Long>();
+	List<BinaryNum> mem = new ArrayList<BinaryNum>();
 	
-	public Memory(final List<Long> contents){
-		Iterator<Long> it = contents.iterator();
+	public Memory(final List<BinaryNum> contents){
+		Iterator<BinaryNum> it = contents.iterator();
 		while(it.hasNext()){
-			Long next = it.next();
+			BinaryNum next = it.next();
 			mem.add(next);
 		}
 	}
 	
-	public final Long loadWord(Long addr){
+	public final BinaryNum loadWord(int addr){
 		try{
-			String a = BinaryUtil.pad(Long.toBinaryString(mem.get(addr.intValue()+3)),8);
-			String b = BinaryUtil.pad(Long.toBinaryString(mem.get(addr.intValue()+2)),8);
-			String c = BinaryUtil.pad(Long.toBinaryString(mem.get(addr.intValue()+1)),8);
-			String d = BinaryUtil.pad(Long.toBinaryString(mem.get(addr.intValue()+0)),8);
-			return Long.parseLong(a+b+c+d,2);
+			String a = mem.get(addr+3).pad(8).toString();
+			String b = mem.get(addr+2).pad(8).toString();
+			String c = mem.get(addr+1).pad(8).toString();
+			String d = mem.get(addr).pad(8).toString();
+			return new BinaryNum(a+b+c+d);
 		} catch(Exception e){
 			System.out.println(e + " : " + e.getMessage());
 			throw new RuntimeException("unable to load word at address: " + addr);
 		}
 	}
 	
-	public final void storeWord(Long addr, Long val){
-			String valString = BinaryUtil.pad(Long.toBinaryString(val),32);
-			Long a = Long.parseLong(valString.substring(0,8), 2);
-			Long b = Long.parseLong(valString.substring(8,16), 2);
-			Long c = Long.parseLong(valString.substring(16,24), 2);
-			Long d = Long.parseLong(valString.substring(24,32), 2);
-			mem.set(addr.intValue()+3, a);
-			mem.set(addr.intValue()+2, b);
-			mem.set(addr.intValue()+1, c);
-			mem.set(addr.intValue()+0, d);
+	public final void storeWord(int addr, BinaryNum val){
+			BinaryNum a = val.getRange(31, 24);
+			BinaryNum b = val.getRange(23, 16);
+			BinaryNum c = val.getRange(15, 8);
+			BinaryNum d = val.getRange(7, 0);
+			mem.set(addr+3, a);
+			mem.set(addr+2, b);
+			mem.set(addr+1, c);
+			mem.set(addr+0, d);
 	}
 }
