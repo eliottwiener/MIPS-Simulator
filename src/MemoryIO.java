@@ -14,10 +14,11 @@ public class MemoryIO implements Clockable {
 	}
 	
 	public void clockEdge() {
+		System.out.println(address.getValue());
 		if(memRead.getValue().equals(new BinaryNum("1"))){
-			readData.setValue(mem.loadWord(address.getValue().toInt()));
+			readData.setValue(mem.loadWord(address.getValue().toLong().intValue()));
 		}else if(memWrite.getValue().equals(new BinaryNum("1"))){
-			mem.storeWord(address.getValue().toInt(), writeData.getValue());
+			mem.storeWord(address.getValue().toLong().intValue(), writeData.getValue());
 		}
 	}
 
