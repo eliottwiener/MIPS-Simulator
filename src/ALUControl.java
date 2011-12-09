@@ -6,14 +6,14 @@ public class ALUControl {
 	public ALUControl(){}
 	
 	public final void update(){
-		String funcString = BinaryUtil.pad(Long.toBinaryString(func.getValue()),6);
+		String funcString = func.getValue().toString();
 		
 		boolean f0 = funcString.substring(5,6).equals("1");
 		boolean f1 = funcString.substring(4,5).equals("1");
 		boolean f2 = funcString.substring(3,4).equals("1");
 		boolean f3 = funcString.substring(2,3).equals("1");
 		
-		String aluOpString = BinaryUtil.pad(Long.toBinaryString(aluOp.getValue()),2);
+		String aluOpString = aluOp.getValue().toString();
 		
 		boolean aluOp0 = aluOpString.substring(1,2).equals("1");
 		boolean aluOp1 = aluOpString.substring(0,1).equals("1");
@@ -37,7 +37,7 @@ public class ALUControl {
 		} else {
 			aluControlString += "0";
 		}
-		aluControl.setValue(Long.parseLong(aluControlString,2));
+		aluControl.setValue(new BinaryNum(aluControlString));
 		
 	}
 }
