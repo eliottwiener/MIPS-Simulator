@@ -20,8 +20,7 @@ public class ProgramReader {
 				int b = fin.readUnsignedByte();
 				String s = Integer.toBinaryString(b);
 				BinaryNum bn = new BinaryNum(s);
-				bn = bn.pad(8);
-				individualBytes.add(bn);
+				individualBytes.add(bn.pad(8));
 			}
 		} catch(EOFException e){
 		}
