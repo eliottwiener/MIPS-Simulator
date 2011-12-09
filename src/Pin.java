@@ -2,19 +2,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Pin {
-	private Long value;
+	private BinaryNum value;
 	private List<Pin> connectedPins = new ArrayList<Pin>();
 	
 	Pin(){}
 	
-	public final void setValue(final Long val){
+	public final void setValue(final BinaryNum val){
 		this.value = val;
 		for(Pin p : connectedPins){
 			p.setValue(val);
 		}
 	}
 	
-	public final Long getValue(){
+	public final BinaryNum getValue(){
 		return this.value;
 	}
 	
