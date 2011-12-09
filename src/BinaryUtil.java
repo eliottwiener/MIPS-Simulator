@@ -34,7 +34,7 @@ public class BinaryUtil {
 			for(int i = 0 ; i < 32-len ; i++){
 				p = "0" + p;
 			}
-			return s.substring(len-32);
+			return p;
 		} else {
 			return s;
 		}

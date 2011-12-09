@@ -1,0 +1,81 @@
+################################# End of Cycle 1 #################################
+----------------------- IF/ID -----------------------
+PC+4: 00000000000000000001000000000100		4100
+instruction:00100000000000000000000000000010
+out PC+4: 00000000000000000001000000000100		4100
+out instruction:00100000000000000000000000000010
+----------------------- ID/EX -----------------------
+			Data information
+PC+4 in:00000000000000000001000000000100		4100
+PC+4 out: 00000000000000000001000000000100		4100
+readData1 in:00000000000000000000000000000000
+readData1 out:00000000000000000000000000000000
+readData2 in:00000000000000000000000000000000
+readData2 out:00000000000000000000000000000000
+signExtended in:00000000000000000000000000000010
+signExtended out:00000000000000000000000000000010
+rt in:00000000000000000000000000000000
+rt out:00000000000000000000000000000000
+rd in:00000000000000000000000000000000
+rd out:00000000000000000000000000000000
+funct in:00000000000000000000000000100000
+funct out:00000000000000000000000000100000
+rs in:00000000000000000000000000000000
+rs out:00000000000000000000000000000000
+			 Control information
+regWrite in:1
+regWrite out:1
+memToReg in:0
+memToReg out:0
+jump in:0
+jump out:0
+jumpReg in:0
+jumpReg out:0
+memWrite in:0
+memWrite out:0
+memRead in:0
+memRead out:0
+branch in:0
+branch out:0
+regDST in:0
+regDST out:0
+aluOP in:10
+aluOP out:10
+aluSrc in:1
+aluSrc out:1
+branchBNE in:0
+branchBNE out:0
+------------------=---- EX/MEM -----------------------
+add ALU result:00000000000000000001000000001100
+zero:l
+general ALU result:00000000000000000000000000000010
+reaData2:00000000000000000000000000000000
+out add ALU result:00000000000000000001000000001100
+out zero:l
+out general ALU result:00000000000000000000000000000010
+out reaData2:00000000000000000000000000000000
+			 Control information
+regWrite in:1
+regWrite out:1
+memToReg in:0
+memToReg out:0
+jump in:0
+jump out:0
+jumpReg in:0
+jumpReg out:0
+memWrite in:0
+memWrite out:0
+memRead in:0
+memRead out:0
+branch in:0
+branch out:0
+----------------------- MEM/WB -----------------------
+readData:0000000000000000000000000000null
+general ALU result:0000000000000000000000000000null
+out readData:0000000000000000000000000000null
+out general ALU result:0000000000000000000000000000null
+			 Control information
+regWrite in:1
+regWrite out:1
+memToReg in:0
+memToReg out:0

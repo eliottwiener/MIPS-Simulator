@@ -7,25 +7,10 @@ public class SignExtend implements Clockable{
 	
 	
 	public void clockEdge(){
-		String s = BinaryUtil.pad(Long.toBinaryString(input.getValue()),16);
-		String strOut;
-		if(s.length() > 16){
-			throw new RuntimeException("Attempt to sign-extend long string that is > 32 bits: ");
-		}else {
-			if(immediate.getValue().equals((long)1)){
-				char msb = s.charAt(0);
-				if(msb == '0'){
-					strOut = BinaryUtil.pad(s,32);
-				}else{
-					strOut = BinaryUtil.pad(s,31);
-					strOut = "1" + strOut;
-				}
-			}
-			else strOut = BinaryUtil.pad(s,32);
-			
-			output.setValue(Long.parseLong(strOut,2));
-		}
+		//if(immediate.getValue().equals((long)1)){
+			String s = BinaryUtil.stringValue(input.getValue());
+			output.setValue(Long.parseLong(s,2));
+		//}
 	}
-
 	
 }
