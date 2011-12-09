@@ -109,7 +109,6 @@ public class Main {
 				
 		// Connect outputs of ALU and related
 		aluSrcMux.output.connectTo(alu.input2);
-		alu.result.connectTo(memoryIo.address);
 		alu.result.connectTo(exmem.genALUResult);
 		alu.zero.connectTo(exmem.zero);
 		inv.out.connectTo(branchMuxAnd.input1);
@@ -149,6 +148,7 @@ public class Main {
 		control.regWrite.connectTo(idex.regWrite);
 		control.jumpReg.connectTo(idex.jumpReg);
 		control.branchBNE.connectTo(idex.branchBNE);
+		control.immediate.connectTo(idex.immediate);
 		idex.outregDST.connectTo(regDstMux.switcher);
 		idex.outaluOp.connectTo(aluControl.aluOp);
 		idex.outaluSrc.connectTo(aluSrcMux.switcher);
@@ -160,6 +160,7 @@ public class Main {
 		idex.outmemWrite.connectTo(exmem.memWrite);
 		idex.outregWrite.connectTo(exmem.regWrite);
 		idex.outjumpReg.connectTo(exmem.jumpReg);
+		idex.outimmediate.connectTo(alu.immediate);
 		exmem.outjump.connectTo(jumpMux.switcher);
 		exmem.outjumpReg.connectTo(jumpRegMux.switcher);
 		exmem.outbranch.connectTo(branchMuxAnd.input0);
@@ -186,11 +187,12 @@ public class Main {
 		idex.outFunct.connectTo(aluControl.func);
 		exmem.outAddALUresult.connectTo(branchMux.input1);
 		exmem.outGenALUresult.connectTo(memoryIo.address);
-		exmem.outGenALUresult.connectTo(memToRegMux.input0);
+		exmem.outGenALUresult.connectTo(memwb.genALUresult);
 		exmem.outReadData2.connectTo(memoryIo.writeData);
 		exmem.outZero.connectTo(inv.in);
-		memwb.outGenALUresult.connectTo(memToRegMux.input1);
+		memwb.outGenALUresult.connectTo(memToRegMux.input0);
 		memwb.outReadData.connectTo(memToRegMux.input1);
+		memwb.outRd.connectTo(regFile.writeReg);
 		
 		// connect I/O of forwarding unit
 		idex.outRs.connectTo(forwardingUnit.idex_rs);
@@ -320,7 +322,7 @@ public class Main {
 				
 
 		}
-		
+	
 		debug.dump("debug.txt");
 		pipelineDebug.dump("pipelineDebug.txt");
 		int instrCount = cycleCount;
