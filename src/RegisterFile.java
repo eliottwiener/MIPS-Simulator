@@ -46,7 +46,7 @@ public class RegisterFile implements Clockable{
 		}
 		
 		readData1.setValue(getVal(readReg1.getValue().toLong().intValue()));
-		readData1.setValue(getVal(readReg2.getValue().toLong().intValue()));
+		readData2.setValue(getVal(readReg2.getValue().toLong().intValue()));
 	}
 	
 }
