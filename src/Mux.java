@@ -8,7 +8,7 @@ public class Mux implements Clockable{
 	Mux(){}
 	
 	public void clockEdge() {
-		if(switcher.getValue().equals((long)0)){
+		if(switcher.getValue().equals(new BinaryNum("0"))){
 			output.setValue(input0.getValue());
 		} else {
 			output.setValue(input1.getValue());
