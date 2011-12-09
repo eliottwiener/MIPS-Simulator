@@ -105,6 +105,7 @@ public class Debugger{
 		output += "input2:" + BinaryUtil.pad(print(zeroALU.input2),32)  + "\n";
 		output += "control:" + BinaryUtil.pad(print(zeroALU.control),32)  + "\n";
 		output += "result:" + BinaryUtil.pad(print(zeroALU.result), 32)  + "\n";
+		output += "immediate:" + BinaryUtil.pad(print(zeroALU.immediate),1) + "\n";
 		output += "zero:" + BinaryUtil.pad(print(zeroALU.zero),32)  + "\n";
 		output += "--------------------------- Inverter Information --------------------------\n";				
 		output += "input:" + BinaryUtil.pad(print(inv.in),1) + "\n";
@@ -159,6 +160,8 @@ public class Debugger{
 		output += "Write Data:" + BinaryUtil.pad(print(regFile.writeData),32) + "\n";
 		output += "Read Data 1:" + BinaryUtil.pad(print(regFile.readData1),32) + "\n";
 		output += "Read Data 2:" + BinaryUtil.pad(print(regFile.readData2),32) + "\n";
+		output += "writeReg:" + BinaryUtil.pad(print(regFile.writeReg),32) + "\n";
+		output += "regWrite:" + BinaryUtil.pad(print(regFile.regWrite),1) + "\n";
 		output += "Register\t\tBinary Value\t\tHex Value\t\tLong Value\n";
 		for(int i = 0 ; i < 32 ; i++){
 			Long thisVal = regFile.getVal(i);
