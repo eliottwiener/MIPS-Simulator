@@ -9,13 +9,13 @@ public class Mux3 implements Clockable{
 	Mux3(){}
 	
 	public void clockEdge() {
-		if(switcher.getValue().equals((long)0)){
+		if(switcher.getValue().equals(new BinaryNum("0"))){
 			output.setValue(input0.getValue());
 		}
-		else if(switcher.getValue().equals((long)1)){
+		else if(switcher.getValue().equals(new BinaryNum("1"))){
 			output.setValue(input1.getValue());
 		}
-		else if(switcher.getValue().equals((long)2)){
+		else if(switcher.getValue().equals(new BinaryNum("2"))){
 			output.setValue(input2.getValue());
 		}
 	}
