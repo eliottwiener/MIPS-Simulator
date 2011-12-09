@@ -65,7 +65,7 @@ public class DebuggerPR{
 		output += "aluSrc out:" + BinaryUtil.pad(print(idex.outaluSrc), 1) + "\n";
 		output += "branchBNE in:" + BinaryUtil.pad(print(idex.branchBNE), 1) + "\n";
 		output += "branchBNE out:" + BinaryUtil.pad(print(idex.outbranchBNE), 1) + "\n";
-		output += "------------------=---- EX/MEM -----------------------\n";
+		output += "----------------------- EX/MEM -----------------------\n";
 		output += "add ALU result:" + BinaryUtil.pad(print(exmem.addALUresult),32) + "\n";
 		output += "zero:" + BinaryUtil.pad(print(exmem.zero),1) + "\n";
 		output += "general ALU result:" + BinaryUtil.pad(print(exmem.genALUResult), 32) + "\n";
@@ -98,7 +98,7 @@ public class DebuggerPR{
 		output += "regWrite in:" + BinaryUtil.pad(print(memwb.regWrite), 1) + "\n";
 		output += "regWrite out:" + BinaryUtil.pad(print(memwb.outregWrite), 1) + "\n";
 		output += "memToReg in:" + BinaryUtil.pad(print(memwb.memToReg), 1) + "\n";
-		output += "memToReg out:" + BinaryUtil.pad(print(memwb.outmemToReg), 1) + "\n";
+		output += "memToReg out:" + BinaryUtil.pad(print(memwb.outmemToReg), 1) + "\n\n";
 
 	}
 	
