@@ -111,11 +111,11 @@ public class DebuggerPR{
 			
 	}
 	
-	public int printDecimal(Pin p){
+	public long printDecimal(Pin p){
 		if(p.getValue() == null){
 			return -1;
 		}else{
-			return p.getValue().toInt();
+			return p.getValue().toLong();
 		}
 	}
 	
