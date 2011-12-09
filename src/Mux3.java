@@ -15,7 +15,7 @@ public class Mux3 implements Clockable{
 		else if(switcher.getValue().equals(new BinaryNum("1"))){
 			output.setValue(input1.getValue());
 		}
-		else if(switcher.getValue().equals(new BinaryNum("2"))){
+		else if(switcher.getValue().equals(new BinaryNum("10"))){
 			output.setValue(input2.getValue());
 		}
 	}
