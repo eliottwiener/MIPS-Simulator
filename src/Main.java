@@ -32,9 +32,9 @@ public class Main {
 		ALU aluAdd = new ALU();
 		ALU aluP4 = new ALU();
 		// set the static controls/inputs for certain ALU
-		aluAdd.control.setValue(new BinaryNum("10"));
-		aluP4.control.setValue(new BinaryNum("10"));
-		aluP4.input2.setValue(new BinaryNum("100"));
+		aluAdd.control.setValue(new BinaryNum("010"));
+		aluP4.control.setValue(new BinaryNum("010"));
+		aluP4.input2.setValue(new BinaryNum("100").pad(32));
 		
 		// initalize Memory IO
 		MemoryIO memoryIo = new MemoryIO(memory);
@@ -206,7 +206,7 @@ public class Main {
 		forwardingUnit.forwardB.connectTo(forwardBMux.switcher);
 		
 		// connect I/O of forwarding MUXes
-		exmem.outGenALUresult.connectTo(forwardAMux.input2);
+	/*	exmem.outGenALUresult.connectTo(forwardAMux.input2);
 		exmem.outGenALUresult.connectTo(forwardBMux.input2);
 		memToRegMux.output.connectTo(forwardAMux.input1);
 		memToRegMux.output.connectTo(forwardBMux.input1);
@@ -214,10 +214,10 @@ public class Main {
 		idex.outReadData2.connectTo(forwardBMux.input0);
 		forwardAMux.output.connectTo(alu.input1);
 		forwardBMux.output.connectTo(aluSrcMux.input0);
-		forwardBMux.output.connectTo(exmem.readData2);
+		forwardBMux.output.connectTo(exmem.readData2);*/
 		
 	
-		pc.pcIn.setValue(new BinaryNum("1000000000000"));
+		pc.pcIn.setValue(new BinaryNum("1000000000000").pad(32));
 		int cycleCount = 0;
 		for(;;){
 			try{
@@ -317,7 +317,7 @@ public class Main {
 				// Add this cycle to the debug stream
 				debug.debugCycle(cycleCount);
 				pipelineDebug.debugCycle(cycleCount);
-			
+							
 			}
 			
 			catch (Exception e){
@@ -331,6 +331,7 @@ public class Main {
 				}
 				break;
 			}
+		
 				
 
 		}
