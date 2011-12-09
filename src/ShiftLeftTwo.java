@@ -8,8 +8,7 @@ public class ShiftLeftTwo implements Clockable{
 	}
 
 	public void clockEdge() {
-		String myStr = BinaryUtil.pad(Long.toBinaryString(in.getValue()), outputBits);
-		out.setValue(Long.parseLong(myStr.substring(2,outputBits) + "00", 2));
+		out.setValue(in.getValue().shiftLeft());
 	}
 	
 	
