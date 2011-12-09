@@ -15,7 +15,7 @@ public class MEMWB implements Clockable{
 	
 	public void clockEdge(){
 		outReadData.setValue(readData.getValue());
-		outGenALUresult.setValue(readData.getValue());
+		outGenALUresult.setValue(genALUresult.getValue());
 		outregWrite.setValue(regWrite.getValue());
 		outmemToReg.setValue(memToReg.getValue());
 		outRd.setValue(rd.getValue());
