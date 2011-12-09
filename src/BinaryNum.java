@@ -22,15 +22,15 @@ public class BinaryNum {
 	}
 	
 	public final BinaryNum setIfLessThan(final BinaryNum other){
-		if(this.toInt() < other.toInt()){
+		if(this.toLong() < other.toLong()){
 			return new BinaryNum("1");
 		} else {
 			return new BinaryNum("0");
 		}
 	}
 	
-	public final int toInt(){
-		return Integer.parseInt(this.toString(),2);
+	public final Long toLong(){
+		return new Long(Long.parseLong(this.toString(),2));
 	}
 	
 	public final BinaryNum extend(final int length){
@@ -96,7 +96,7 @@ public class BinaryNum {
 		final int end = (bits.length - 1) - to;
 		boolean[] newBits = new boolean[from-to+1];
 		int newIndex = 0;
-		for(int i = start ; i < end ; i++){
+		for(int i = start ; i <= end ; i++){
 			newBits[newIndex] = bits[i];
 			newIndex++;
 		}
