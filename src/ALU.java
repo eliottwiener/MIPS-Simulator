@@ -16,22 +16,22 @@ public class ALU implements Clockable{
 		BinaryNum a = input1.getValue();
 		BinaryNum b = input2.getValue();
 
-		if(control.getValue().equals((long)0)){
+		if(control.getValue().equals(new BinaryNum("0"))){
 			// bitwise and
 			f = a.and(b);
-		} else if(control.getValue().equals((long)1)){
+		} else if(control.getValue().equals(new BinaryNum("1"))){
 			// bitwise or
 			f = a.or(b);
-		} else if(control.getValue().equals((long)2)){
+		} else if(control.getValue().equals(new BinaryNum("10"))){
 			// add
 			f = a.add(b);
-		} else if(control.getValue().equals((long)6)){
+		} else if(control.getValue().equals(new BinaryNum("110"))){
 			// subtract
 			f = a.sub(b);
-		} else if(control.getValue().equals((long)7)){
+		} else if(control.getValue().equals(new BinaryNum("111"))){
 			// set if less than
 			f = a.setIfLessThan(b);
-		} else if(control.getValue().equals((long)5)){
+		} else if(control.getValue().equals(new BinaryNum("101"))){
 			// bitwise nor
 			f = a.nor(b);
 		}
