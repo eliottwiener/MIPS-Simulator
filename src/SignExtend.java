@@ -12,5 +12,6 @@ public class SignExtend implements Clockable{
 			output.setValue(Long.parseLong(s,2));
 		//}
 	}
+
 	
 }
