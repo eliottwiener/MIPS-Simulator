@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 
 public class BinaryNum {
 	private final boolean[] bits;
@@ -94,6 +96,38 @@ public class BinaryNum {
 		return new BinaryNum(newBits);
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public final int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Arrays.hashCode(bits);
+		return result;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public final boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		BinaryNum other = (BinaryNum) obj;
+		if (!Arrays.equals(bits, other.bits)) {
+			return false;
+		}
+		return true;
+	}
+
 	public final BinaryNum add(final BinaryNum other){
 		if(other.length() < bits.length){
 			return this.add(other.extend(bits.length));
@@ -108,14 +142,17 @@ public class BinaryNum {
 			}
 			return new BinaryNum(newBits);
 		}
-		
-		
+	}
+	
+	public final BinaryNum sub(final BinaryNum other){
+		return this.add(other.twosComplement());
 	}
 	
 	public final BinaryNum nor(BinaryNum other){
 		return this.or(other).not();
 	}
 	
+	@Override
 	public final String toString(){
 		String s = "0b";
 		for(int i = 0 ; i < bits.length;i++){
@@ -128,6 +165,7 @@ public class BinaryNum {
 		return s;
 	}
 	
+	/*
 	public boolean isEqualTo(BinaryNum other){
 		if(other.length() < bits.length){
 			return this.isEqualTo(other.extend(bits.length));
@@ -142,5 +180,6 @@ public class BinaryNum {
 			return true;
 		}
 	}
+	*/
 
 }
