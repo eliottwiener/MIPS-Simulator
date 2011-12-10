@@ -29,6 +29,10 @@ public class BinaryNum {
 		}
 	}
 	
+	public final boolean isNegative(){
+		return bits[0];
+	}
+	
 	public final Long toLong(){
 		return new Long(Long.parseLong(this.toString(),2));
 	}
@@ -144,10 +148,9 @@ public class BinaryNum {
 	public final BinaryNum shiftLeftChangeSize(){
 		final boolean[] newBits = new boolean[bits.length+1];
 		for(int i = 1 ; i < bits.length ; i++){
-			newBits[i-1] = bits[i];
+			newBits[i] = bits[i];
 		}
 		newBits[bits.length-1] = false;
-		newBits[0] = false;
 		return new BinaryNum(newBits);
 	}
 	
@@ -177,6 +180,9 @@ public class BinaryNum {
 			return false;
 		}
 		BinaryNum other = (BinaryNum) obj;
+		if(this.bits.length != other.bits.length){
+			throw new RuntimeException("Tried to compare equality between BinaryNums of unequal length.");
+		}
 		if (!Arrays.equals(bits, other.bits)) {
 			return false;
 		}

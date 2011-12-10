@@ -31,7 +31,11 @@ public class ALU implements Clockable{
 			f = a.sub(b);
 		} else if(controlVal.equals(new BinaryNum("111"))){
 			// set if less than
-			f = a.setIfLessThan(b);
+			if(a.sub(b).isNegative()){
+				f = new BinaryNum("0").pad(32);
+			} else {
+				f = new BinaryNum("1").pad(32);
+			}
 		} else if(controlVal.equals(new BinaryNum("101"))){
 			// bitwise nor
 			f = a.nor(b);
@@ -39,7 +43,7 @@ public class ALU implements Clockable{
 			else {
 			throw new RuntimeException("Unhandled ALU control: " + control.getValue().toString());
 		}
-		if(f.equals(new BinaryNum("0"))){
+		if(f.equals(new BinaryNum("0").pad(32))){
 			zero.setValue(new BinaryNum("1"));
 		}else{
 			zero.setValue(new BinaryNum("0"));

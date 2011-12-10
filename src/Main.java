@@ -317,7 +317,12 @@ public class Main {
 				// Add this cycle to the debug stream
 				debug.debugCycle(cycleCount);
 				pipelineDebug.debugCycle(cycleCount);
-							
+				
+				/*
+				if(cycleCount >= 100){
+					break;
+				}
+				*/
 			}
 			
 			catch (Exception e){
