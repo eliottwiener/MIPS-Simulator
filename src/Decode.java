@@ -146,7 +146,6 @@ public class Decode{
 	public void clockEdge(){		
 		// converts the instruction into a binary String
 		BinaryNum instrbin = instruction.getValue();
-	//	System.out.println(instrbin.toString());
 		// decode the instruction
 		setOpcode(instrbin);
 		setOpType();
