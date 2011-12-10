@@ -26,6 +26,7 @@ public class Debugger{
 	public ForwardingUnit fu;
 	public Mux3 forwardA;
 	public Mux3 forwardB;
+	public HazardDetectionUnit hdu;
 	public String output = "";
 	
 	public Debugger(RegisterFile regFile, Decode decode,
@@ -37,7 +38,8 @@ public class Debugger{
 			SignExtend signExtend, ShiftLeftTwo sltAdd,
 			ShiftLeftTwo sltTarget, Mux jumpRegMux,
 			Inverter inv, Combiner comb, And and,
-			ForwardingUnit fu, Mux3 forwardA, Mux3 forwardB){
+			ForwardingUnit fu, Mux3 forwardA, Mux3 forwardB,
+			HazardDetectionUnit hdu){
 		this.regFile = regFile;
 		this.decode = decode;
 		this.pc = pc;
@@ -63,6 +65,7 @@ public class Debugger{
 		this.fu = fu;
 		this.forwardA = forwardA;
 		this.forwardB = forwardB;
+		this.hdu = hdu;
 	}
 	
 	public void debugCycle(int cycleCount){
@@ -101,6 +104,12 @@ public class Debugger{
 		output += "JumpReg:" + print(control.jumpReg) + "\n";
 		output += "branchBNE:" + print(control.branchBNE) + "\n";
 		output += "immediate:" + print(control.immediate) + "\n";
+		output += "-------------------------- Hazard Detection Unit --------------------------\n";				
+		output += "ID/EX memRead:" + print(hdu.idex_memRead) + "\n";
+		output += "ID/EX rt:" + print(hdu.idex_rt)  + "\n";
+		output += "IF/ID rs:" + print(hdu.ifid_rs)  + "\n";
+		output += "IF/ID rt:" + print(hdu.ifid_rt)  + "\n";
+		output += "output:" + print(hdu.output)  + "\n";
 		output += "------------------------ Forwarding Unit Information ----------------------\n";				
 		output += "ID/EX rs:" + print(fu.idex_rs) + "\n";
 		output += "ID/EX rt:" + print(fu.idex_rt)  + "\n";
