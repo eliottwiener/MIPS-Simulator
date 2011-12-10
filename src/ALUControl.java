@@ -6,38 +6,23 @@ public class ALUControl {
 	public ALUControl(){}
 	
 	public final void update(){
-		String funcString = func.getValue().toString();
+		BinaryNum funcBits = func.getValue();
 		
-		boolean f0 = funcString.substring(5,6).equals("1");
-		boolean f1 = funcString.substring(4,5).equals("1");
-		boolean f2 = funcString.substring(3,4).equals("1");
-		boolean f3 = funcString.substring(2,3).equals("1");
+		boolean f0 = funcBits.getBit(0);
+		boolean f1 = funcBits.getBit(1);
+		boolean f2 = funcBits.getBit(2);
+		boolean f3 = funcBits.getBit(3);
 		
-		String aluOpString = aluOp.getValue().toString();
+		BinaryNum aluOpBits = aluOp.getValue();
 		
-		boolean aluOp0 = aluOpString.substring(1,2).equals("1");
-		boolean aluOp1 = aluOpString.substring(0,1).equals("1");
+		boolean aluOp0 = aluOpBits.getBit(0);
+		boolean aluOp1 = aluOpBits.getBit(1);
 		
-		boolean aluControl0 = aluOp1 && (f0 || f3);
-		boolean aluControl1 = !aluOp1 || !f2;
-		boolean aluControl2 = aluOp0 || (aluOp1 && f1);
-		String aluControlString = "";
-		if(aluControl2){
-			aluControlString += "1";
-		} else {
-			aluControlString += "0";
-		}
-		if(aluControl1){
-			aluControlString += "1";
-		} else {
-			aluControlString += "0";
-		}
-		if(aluControl0){
-			aluControlString += "1";
-		} else {
-			aluControlString += "0";
-		}
-		aluControl.setValue(new BinaryNum(aluControlString));
+		boolean[] aluControlBits = new boolean[3];
+		aluControlBits[2] = aluOp1 && (f0 || f3);
+		aluControlBits[1] = !aluOp1 || !f2;
+		aluControlBits[0] = aluOp0 || (aluOp1 && f1);
+		aluControl.setValue(new BinaryNum(aluControlBits));
 		
 	}
 }

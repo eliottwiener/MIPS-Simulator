@@ -103,6 +103,11 @@ public class BinaryNum {
 		return new BinaryNum(newBits);
 	}
 	
+	public final boolean getBit(final int i){
+		final int index = (bits.length - 1) - i;
+		return bits[index];
+	}
+	
 	public final BinaryNum or(final BinaryNum other){
 		if(other.length() != bits.length){
 			throw new RuntimeException("Bit lengths do not match: " + this.toString() + ", " + other.toString());

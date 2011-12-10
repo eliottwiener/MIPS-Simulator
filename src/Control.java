@@ -37,7 +37,7 @@ public class Control{
 			if(myFunct.equals("001000")){
 				regDst.setValue(new BinaryNum("0"));
 				jumpReg.setValue(new BinaryNum("1"));
-				aluOp.setValue(new BinaryNum("0"));
+				aluOp.setValue(new BinaryNum("00"));
 				regWrite.setValue(new BinaryNum("0"));
 			}else{
 				regDst.setValue(new BinaryNum("1"));
@@ -55,7 +55,7 @@ public class Control{
 			branch.setValue(new BinaryNum("0"));
 			memRead.setValue(new BinaryNum("1"));
 			memToReg.setValue(new BinaryNum("1"));
-			aluOp.setValue(new BinaryNum("0"));
+			aluOp.setValue(new BinaryNum("00"));
 			memWrite.setValue(new BinaryNum("0"));
 			aluSrc.setValue(new BinaryNum("1"));
 			regWrite.setValue(new BinaryNum("1"));
@@ -70,7 +70,7 @@ public class Control{
 			branch.setValue(new BinaryNum("0"));
 			memRead.setValue(new BinaryNum("0"));
 			memToReg.setValue(new BinaryNum("0"));
-			aluOp.setValue(new BinaryNum("0"));
+			aluOp.setValue(new BinaryNum("00"));
 			memWrite.setValue(new BinaryNum("1"));
 			aluSrc.setValue(new BinaryNum("1"));
 			regWrite.setValue(new BinaryNum("0"));
@@ -85,7 +85,7 @@ public class Control{
 			branch.setValue(new BinaryNum("1"));
 			memRead.setValue(new BinaryNum("0"));
 			memToReg.setValue(new BinaryNum("0"));
-			aluOp.setValue(new BinaryNum("1"));
+			aluOp.setValue(new BinaryNum("01"));
 			memWrite.setValue(new BinaryNum("0"));
 			aluSrc.setValue(new BinaryNum("0"));
 			regWrite.setValue(new BinaryNum("0"));
@@ -100,7 +100,7 @@ public class Control{
 			branch.setValue(new BinaryNum("1"));
 			memRead.setValue(new BinaryNum("0"));
 			memToReg.setValue(new BinaryNum("0"));
-			aluOp.setValue(new BinaryNum("1"));
+			aluOp.setValue(new BinaryNum("01"));
 			memWrite.setValue(new BinaryNum("0"));
 			aluSrc.setValue(new BinaryNum("0"));
 			regWrite.setValue(new BinaryNum("0"));
@@ -115,7 +115,7 @@ public class Control{
 			branch.setValue(new BinaryNum("0"));
 			memRead.setValue(new BinaryNum("0"));
 			memToReg.setValue(new BinaryNum("0"));
-			aluOp.setValue(new BinaryNum("0"));
+			aluOp.setValue(new BinaryNum("00"));
 			memWrite.setValue(new BinaryNum("0"));
 			aluSrc.setValue(new BinaryNum("1"));
 			regWrite.setValue(new BinaryNum("0"));
