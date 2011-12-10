@@ -32,9 +32,9 @@ public class ALU implements Clockable{
 		} else if(controlVal.equals(new BinaryNum("111"))){
 			// set if less than
 			if(a.sub(b).isNegative()){
-				f = new BinaryNum("0").pad(32);
-			} else {
 				f = new BinaryNum("1").pad(32);
+			} else {
+				f = new BinaryNum("0").pad(32);
 			}
 		} else if(controlVal.equals(new BinaryNum("101"))){
 			// bitwise nor
@@ -43,6 +43,14 @@ public class ALU implements Clockable{
 			else {
 			throw new RuntimeException("Unhandled ALU control: " + control.getValue().toString());
 		}
+		/*
+		5 - 6 = -1 true
+		6 - 5 = 1 false
+		5 - -6 = 11 false
+		6 - -5 = 11 false
+		-5 - -6 = 1 false
+		-6 - -5 = -1 true
+		*/
 		if(f.equals(new BinaryNum("0").pad(32))){
 			zero.setValue(new BinaryNum("1"));
 		}else{
