@@ -39,7 +39,11 @@ public class ALU implements Clockable{
 			else {
 			throw new RuntimeException("Unhandled ALU control: " + control.getValue().toString());
 		}
-		if(f.toString().equals("0")) zero.setValue(new BinaryNum("1"));
+		if(f.equals(new BinaryNum("0"))){
+			zero.setValue(new BinaryNum("1"));
+		}else{
+			zero.setValue(new BinaryNum("0"));
+		}
 		
 		result.setValue(f);
 	}
