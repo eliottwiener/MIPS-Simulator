@@ -8,6 +8,8 @@ public class IFID implements Clockable{
 	public Pin outInstr = new Pin();
 	
 	public IFID(){
+		outPC4.setValue(new BinaryNum("0").pad(32));
+		outInstr.setValue(new BinaryNum("0").pad(32));
 	}
 	
 	public void clockEdge(){
