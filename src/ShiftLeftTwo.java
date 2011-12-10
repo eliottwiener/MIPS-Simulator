@@ -8,7 +8,12 @@ public class ShiftLeftTwo implements Clockable{
 	}
 
 	public void clockEdge() {
-		out.setValue(in.getValue().shiftLeft());
+		if(outputBits == 32){
+			out.setValue(in.getValue().shiftLeft().shiftLeft());
+		}
+		else{
+			out.setValue(in.getValue().shiftLeftChangeSize().shiftLeftChangeSize());
+		}
 	}
 	
 	
