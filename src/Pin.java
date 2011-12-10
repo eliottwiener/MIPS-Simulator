@@ -20,5 +20,6 @@ public class Pin {
 	
 	public final void connectTo(final Pin somePin){
 		connectedPins.add(somePin);
+		somePin.setValue(this.getValue());
 	}
 }
