@@ -28,6 +28,8 @@ public class EXMEM implements Clockable{
 	public Pin outmemRead = new Pin();
 	public Pin outbranch = new Pin();
 
+	public EXMEM(){
+	}
 	
 	public void clockEdge(){
 		outAddALUresult.setValue(addALUresult.getValue());
