@@ -163,13 +163,13 @@ public class BinaryNum {
 	@Override
 	public final boolean equals(Object obj) {
 		if (this == obj) {
-			return true;
+			throw new RuntimeException("a is null");
 		}
 		if (obj == null) {
-			return false;
+			throw new RuntimeException("b is null");
 		}
 		if (getClass() != obj.getClass()) {
-			return false;
+			throw new RuntimeException("Tried to compare equality between non-matching classes");
 		}
 		BinaryNum other = (BinaryNum) obj;
 		if(this.bits.length != other.bits.length){
