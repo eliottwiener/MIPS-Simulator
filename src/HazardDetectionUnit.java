@@ -5,6 +5,9 @@ public class HazardDetectionUnit implements Clockable{
 	public Pin ifid_rt = new Pin();
 	public Pin output = new Pin();
 	
+	public HazardDetectionUnit(){
+		output.setValue(new BinaryNum("0"));
+	}
 	public void clockEdge(){
 		if(new BinaryNum("1").equals(idex_memRead.getValue())
 				&& (idex_rt.getValue().equals(ifid_rs.getValue())
