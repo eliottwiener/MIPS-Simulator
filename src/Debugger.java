@@ -73,6 +73,7 @@ public class Debugger{
 		output += "----------------------- Program Counter Information -----------------------\n";
 		output += "Program Counter for Cycle " + cycleCount + ":" + print(pc.pcOut) + "\t\t" + printDecimal(pc.pcOut) + "\n";
 		output += "Program Counter for Cycle " + (cycleCount+1) + ":" + print(pc.pcIn) + "\t\t" + printDecimal(pc.pcIn) + "\n";
+		output += "PC Control:" + print(pc.control) + "\n";
 		output += "------------------------- Instruction Information -------------------------\n";
 		output += "instruction:" + print(decode.instruction) + "\t\t" + printDecimal(decode.instruction) + "\n";
 		output += "op code:" + print(decode.opcode) + "\t\t" + printDecimal(decode.opcode)  +"\n";
