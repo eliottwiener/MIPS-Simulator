@@ -13,6 +13,14 @@ public class MEMWB implements Clockable{
 	public Pin outregWrite = new Pin();
 	public Pin outmemToReg = new Pin();
 	
+	MEMWB(){
+		outReadData.setValue(new BinaryNum("0").pad(32));
+		outGenALUresult.setValue(new BinaryNum("0").pad(32));
+		outregWrite.setValue(new BinaryNum("0"));
+		outmemToReg.setValue(new BinaryNum("0"));
+		outRd.setValue(new BinaryNum("0").pad(5));
+	}
+	
 	public void clockEdge(){
 		outReadData.setValue(readData.getValue());
 		outGenALUresult.setValue(genALUresult.getValue());
