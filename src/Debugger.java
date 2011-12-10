@@ -21,6 +21,8 @@ public class Debugger{
 	public ShiftLeftTwo sltAdd;
 	public ShiftLeftTwo sltTarget;
 	public Inverter inv;
+	public Combiner comb;
+	public And and;
 	public String output = "";
 	
 	public Debugger(RegisterFile regFile, Decode decode,
@@ -31,7 +33,7 @@ public class Debugger{
 			Mux aluSrcMux, Mux branchMux, Mux jumpMux,
 			SignExtend signExtend, ShiftLeftTwo sltAdd,
 			ShiftLeftTwo sltTarget, Mux jumpRegMux,
-			Inverter inv){
+			Inverter inv, Combiner comb, And and){
 		this.regFile = regFile;
 		this.decode = decode;
 		this.pc = pc;
@@ -52,6 +54,8 @@ public class Debugger{
 		this.sltTarget = sltTarget;
 		this.jumpRegMux = jumpRegMux;
 		this.inv = inv;
+		this.comb = comb;
+		this.and = and;
 	}
 	
 	public void debugCycle(int cycleCount){
@@ -111,6 +115,14 @@ public class Debugger{
 		output += "input:" + print(inv.in) + "\n";
 		output += "branchBNE:" + print(inv.branchBNE)  + "\n";
 		output += "output:" + print(inv.out)  + "\n";
+		output += "------------------------------ And Information -----==---------------------\n";	
+		output += "input0:" + print(and.input0) + "\n";
+		output += "input1:" + print(and.input1) + "\n";
+		output += "output:" + print(and.output) + "\n";
+		output += "--------------------------- Combiner Information --------------------------\n";				
+		output += "pcIN:" + print(comb.pcIn) + "\n";
+		output += "jumpAddr:" + print(comb.jumpAddr) + "\n";
+		output += "out:" + print(comb.out) + "\n";
 		output += "-------------------------- Branch ALU Information -------------------------\n";				
 		output += "input1:" + print(branchALU.input1) + "\n";
 		output += "input2:" + print(branchALU.input2)  + "\n";
