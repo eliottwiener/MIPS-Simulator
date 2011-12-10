@@ -15,6 +15,7 @@ public class Control{
 	public Pin jumpReg = new Pin();
 	public Pin branchBNE = new Pin();
 	public Pin immediate = new Pin();
+	public Pin flush = new Pin();
 
 	public Control(){}
 
