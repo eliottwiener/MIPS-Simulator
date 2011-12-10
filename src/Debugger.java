@@ -23,6 +23,9 @@ public class Debugger{
 	public Inverter inv;
 	public Combiner comb;
 	public And and;
+	public ForwardingUnit fu;
+	public Mux3 forwardA;
+	public Mux3 forwardB;
 	public String output = "";
 	
 	public Debugger(RegisterFile regFile, Decode decode,
@@ -33,7 +36,8 @@ public class Debugger{
 			Mux aluSrcMux, Mux branchMux, Mux jumpMux,
 			SignExtend signExtend, ShiftLeftTwo sltAdd,
 			ShiftLeftTwo sltTarget, Mux jumpRegMux,
-			Inverter inv, Combiner comb, And and){
+			Inverter inv, Combiner comb, And and,
+			ForwardingUnit fu, Mux3 forwardA, Mux3 forwardB){
 		this.regFile = regFile;
 		this.decode = decode;
 		this.pc = pc;
@@ -56,6 +60,9 @@ public class Debugger{
 		this.inv = inv;
 		this.comb = comb;
 		this.and = and;
+		this.fu = fu;
+		this.forwardA = forwardA;
+		this.forwardB = forwardB;
 	}
 	
 	public void debugCycle(int cycleCount){
@@ -94,6 +101,28 @@ public class Debugger{
 		output += "JumpReg:" + print(control.jumpReg) + "\n";
 		output += "branchBNE:" + print(control.branchBNE) + "\n";
 		output += "immediate:" + print(control.immediate) + "\n";
+		output += "------------------------ Forwarding Unit Information ----------------------\n";				
+		output += "ID/EX rs:" + print(fu.idex_rs) + "\n";
+		output += "ID/EX rt:" + print(fu.idex_rt)  + "\n";
+		output += "EX/MEM rd:" + print(fu.exmem_rd)  + "\n";
+		output += "MEM/WB rd:" + print(fu.memwb_rd)  + "\n";
+		output += "EX/MEM regWrite:" + print(fu.exmem_rd)  + "\n";
+		output += "MEM/WB regWrite:" + print(fu.memwb_rd)  + "\n";
+		output += "Forward A:" + print(fu.forwardA)  + "\n";
+		output += "Forward B:" + print(fu.forwardB)  + "\n";
+		output += "------------------------ Forwarding MUX Information ------------------------\n";				
+		output += "\t\t\t\tForward A\t\t\t\t\n";
+		output += "switcher:" + print(forwardA.switcher) + "\n";
+		output += "input 0:" + print(forwardA.input0) + "\n";
+		output += "input 1:" + print(forwardA.input1) + "\n";
+		output += "input 2:" + print(forwardA.input2) + "\n";
+		output += "output:" + print(forwardA.output) + "\n";
+		output += "\t\t\t\tForward B\t\t\t\t\n";
+		output += "switcher:" + print(forwardB.switcher) + "\n";
+		output += "input 0:" + print(forwardB.input0) + "\n";
+		output += "input 1:" + print(forwardB.input1) + "\n";
+		output += "input 2:" + print(forwardB.input2) + "\n";
+		output += "output:" + print(forwardB.output) + "\n";
 		output += "------------------------ ALU Control Signal Outputs -----------------------\n";		
 		output += "funct:" + print(aluControl.func) + "\n";
 		output += "ALUOp:" + print(aluControl.aluOp) + "\n";
