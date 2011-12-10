@@ -2,10 +2,13 @@
 public class ProgramCounter implements Clockable{
 	Pin pcIn = new Pin();
 	Pin pcOut = new Pin();
+	Pin control = new Pin();
 	
 	public ProgramCounter(){}
 
 	public void clockEdge() {
-		pcOut.setValue(pcIn.getValue());
+		if(new BinaryNum("0").equals(control)){
+			pcOut.setValue(pcIn.getValue());
+		}
 	}
 }
