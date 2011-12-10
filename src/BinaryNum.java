@@ -3,11 +3,11 @@ import java.util.Arrays;
 
 public class BinaryNum {
 	private final boolean[] bits;
-
+	
 	public BinaryNum(final boolean[] bits){
 		this.bits = bits;
 	}
-
+	
 	public BinaryNum(final String bitString){
 		this.bits = new boolean[bitString.length()];
 		for(int i = 0 ; i < bitString.length() ; i++){
@@ -20,7 +20,7 @@ public class BinaryNum {
 			}
 		}
 	}
-
+	
 	public final BinaryNum setIfLessThan(final BinaryNum other){
 		if(this.toLong() < other.toLong()){
 			return new BinaryNum("1");
@@ -28,11 +28,11 @@ public class BinaryNum {
 			return new BinaryNum("0");
 		}
 	}
-
+	
 	public final Long toLong(){
 		return new Long(Long.parseLong(this.toString(),2));
 	}
-
+	
 	public final BinaryNum extend(final int length){
 		if(bits.length > length){
 			throw new RuntimeException(toString() + " is already longer than " + length + " bits.");
@@ -51,7 +51,7 @@ public class BinaryNum {
 			return new BinaryNum(newBits);
 		}
 	}
-
+	
 	public final BinaryNum pad(final int length){
 		if(bits.length > length){
 			throw new RuntimeException(toString() + " is already longer than " + length + " bits.");
@@ -70,11 +70,11 @@ public class BinaryNum {
 			return new BinaryNum(newBits);
 		}
 	}
-
+	
 	public final BinaryNum twosComplement(){
 		return this.not().add(new BinaryNum("1").pad(this.length()));
 	}
-
+	
 	public final BinaryNum not(){
 		final boolean[] newBits = new boolean[bits.length];
 		for(int i = 0 ; i < bits.length ; i++){
@@ -82,15 +82,15 @@ public class BinaryNum {
 		}
 		return new BinaryNum(newBits);
 	}
-
+	
 	public final int length(){
 		return bits.length;
 	}
-
+	
 	public final boolean[] getBits(){
 		return bits;
 	}
-
+	
 	public final BinaryNum getRange(final int from, final int to){
 		final int start = (bits.length - 1) - from;
 		final int end = (bits.length - 1) - to;
@@ -102,12 +102,12 @@ public class BinaryNum {
 		}
 		return new BinaryNum(newBits);
 	}
-
+	
 	public final boolean getBit(final int i){
 		final int index = (bits.length - 1) - i;
 		return bits[index];
 	}
-
+	
 	public final BinaryNum or(final BinaryNum other){
 		if(other.length() != bits.length){
 			throw new RuntimeException("Bit lengths do not match: " + this.toString() + ", " + other.toString());
@@ -119,7 +119,7 @@ public class BinaryNum {
 			return new BinaryNum(newBits);
 		}
 	}
-
+	
 	public final BinaryNum and(final BinaryNum other){
 		if(other.length() != bits.length){
 			throw new RuntimeException("Bit lengths do not match: " + this.toString() + ", " + other.toString());
@@ -131,7 +131,7 @@ public class BinaryNum {
 			return new BinaryNum(newBits);
 		}
 	}
-
+	
 	public final BinaryNum shiftLeft(){
 		final boolean[] newBits = new boolean[bits.length];
 		for(int i = 1 ; i < bits.length ; i++){
@@ -140,7 +140,17 @@ public class BinaryNum {
 		newBits[bits.length-1] = false;
 		return new BinaryNum(newBits);
 	}
-
+	
+	public final BinaryNum shiftLeftChangeSize(){
+		final boolean[] newBits = new boolean[bits.length+1];
+		for(int i = 1 ; i < bits.length ; i++){
+			newBits[i-1] = bits[i];
+		}
+		newBits[bits.length-1] = false;
+		newBits[0] = false;
+		return new BinaryNum(newBits);
+	}
+	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */
@@ -189,15 +199,15 @@ public class BinaryNum {
 			return new BinaryNum(newBits);
 		}
 	}
-
+	
 	public final BinaryNum sub(final BinaryNum other){
 		return this.add(other.twosComplement());
 	}
-
+	
 	public final BinaryNum nor(final BinaryNum other){
 		return this.or(other).not();
 	}
-
+	
 	@Override
 	public final String toString(){
 		String s = "";
@@ -210,7 +220,7 @@ public class BinaryNum {
 		}
 		return s;
 	}
-
+	
 	/*	
 	public static int testNum = 1;
 	
