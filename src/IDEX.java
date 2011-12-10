@@ -45,6 +45,28 @@ public class IDEX implements Clockable{
 	public Pin outbranchBNE = new Pin();
 	public Pin outimmediate = new Pin();
 	
+	public IDEX(){
+		outPC4.setValue(new BinaryNum("0").pad(32));
+		outReadData1.setValue(new BinaryNum("0").pad(32));
+		outReadData2.setValue(new BinaryNum("0").pad(32));
+		outSignExtended.setValue(new BinaryNum("0").pad(32));
+		outRt.setValue(new BinaryNum("0").pad(5));
+		outRd.setValue(new BinaryNum("0").pad(5));
+		outFunct.setValue(new BinaryNum("0").pad(6));
+		outRs.setValue(new BinaryNum("0").pad(5));
+		outregWrite.setValue(new BinaryNum("0"));
+		outmemToReg.setValue(new BinaryNum("0"));
+		outjump.setValue(new BinaryNum("0"));
+		outjumpReg.setValue(new BinaryNum("0"));
+		outmemWrite.setValue(new BinaryNum("0"));
+		outmemRead.setValue(new BinaryNum("0"));
+		outbranch.setValue(new BinaryNum("0"));
+		outregDST.setValue(new BinaryNum("0"));
+		outaluSrc.setValue(new BinaryNum("0"));
+		outaluOp.setValue(new BinaryNum("00"));
+		outbranchBNE.setValue(new BinaryNum("0"));
+		outimmediate.setValue(new BinaryNum("0"));
+	}
 	public void clockEdge(){
 		outPC4.setValue(PC4.getValue());
 		outReadData1.setValue(readData1.getValue());
