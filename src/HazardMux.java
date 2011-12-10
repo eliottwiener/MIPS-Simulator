@@ -31,7 +31,6 @@ public class HazardMux implements Clockable{
 	public Pin branchBNE = new Pin();
 	public Pin immediate = new Pin();
 	
-	@Override
 	public void clockEdge() {
 		if(hazard.getValue().equals(new BinaryNum("0"))){
 			// control signals (WB)
