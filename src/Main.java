@@ -74,11 +74,15 @@ public class Main {
 		// initialize the forwarding unit
 		ForwardingUnit forwardingUnit = new ForwardingUnit();
 		
+		// initialize the hazard detection unit
+		HazardDetectionUnit hdu = new HazardDetectionUnit();
+		
 		// For debugging
 		Debugger debug = new Debugger(regFile, decode, pc, control, aluControl,
 				memoryIo, alu, aluP4, aluAdd, regDstMux, memToRegMux, aluSrcMux, 
 				branchMux, jumpMux, signExtend, sltAdd, sltTarget, jumpRegMux,
-				inv, combiner, branchMuxAnd, forwardingUnit, forwardAMux, forwardBMux);
+				inv, combiner, branchMuxAnd, forwardingUnit, forwardAMux, forwardBMux,
+				hdu);
 		DebuggerPR pipelineDebug = new DebuggerPR(ifid, idex, exmem, memwb);
 		
 		// Connect output of PC
@@ -213,6 +217,12 @@ public class Main {
 		forwardAMux.output.connectTo(alu.input1);
 		forwardBMux.output.connectTo(aluSrcMux.input0);
 		forwardBMux.output.connectTo(exmem.readData2);
+		
+		// connect I/O of Hazard Detection Unit
+		decode.rs.connectTo(hdu.ifid_rs);
+		decode.rt.connectTo(hdu.ifid_rt);
+		idex.memRead.connectTo(hdu.idex_memRead);
+		idex.outRt.connectTo(hdu.idex_rt);
 		
 	
 		pc.pcIn.setValue(new BinaryNum("1000000000000").pad(32));
