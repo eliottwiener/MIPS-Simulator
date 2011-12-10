@@ -9,6 +9,7 @@ public class HazardDetectionUnit implements Clockable{
 		if(new BinaryNum("1").equals(idex_memRead.getValue())
 				&& (idex_rt.getValue().equals(ifid_rs.getValue())
 						|| idex_rt.getValue().equals(ifid_rt.getValue()))){
+			// stalls the pipeline
 			output.setValue(new BinaryNum("1"));
 		}else output.setValue(new BinaryNum("0"));
 				
