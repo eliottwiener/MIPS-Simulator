@@ -166,6 +166,7 @@ public class Main {
 		hazardMux.jumpReg.connectTo(idex.jumpReg);
 		hazardMux.branchBNE.connectTo(idex.branchBNE);
 		hazardMux.immediate.connectTo(idex.immediate);
+		hazardMux.regDST.connectTo(idex.regDST);
 		idex.outregDST.connectTo(regDstMux.switcher);
 		idex.outaluOp.connectTo(aluControl.aluOp);
 		idex.outaluSrc.connectTo(aluSrcMux.switcher);
@@ -237,7 +238,8 @@ public class Main {
 		idex.memRead.connectTo(hdu.idex_memRead);
 		idex.outRt.connectTo(hdu.idex_rt);
 		hdu.output.connectTo(hazardMux.hazard);
-		
+		hdu.output.connectTo(pc.control);
+		hdu.output.connectTo(ifid.IFIDWrite);
 	
 		pc.pcIn.setValue(new BinaryNum("1000000000000").pad(32));
 		int cycleCount = 0;
@@ -280,8 +282,14 @@ public class Main {
 				// clock the SLT
 				sltTarget.clockEdge();
 				
+				// clock the hazard detection unit
+				hdu.clockEdge();
+				
 				// set the output control signals
 				control.setSignals();
+				
+				// clock the hazard mux
+				hazardMux.clockEdge();
 				
 				// clock ID/EX
 				idex.clockEdge();
