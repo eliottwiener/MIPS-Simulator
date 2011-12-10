@@ -22,6 +22,7 @@ public class Main {
 		Mux jumpRegMux = new Mux();
 		Mux3 forwardAMux = new Mux3();
 		Mux3 forwardBMux = new Mux3();
+		HazardMux hazardMux = new HazardMux();
 		
 		// Initialize the 2 SLTs
 	 	ShiftLeftTwo sltTarget = new ShiftLeftTwo(28);
@@ -141,18 +142,30 @@ public class Main {
 		
 		// connect the control signals
 		aluControl.aluControl.connectTo(alu.control);
-		control.regDst.connectTo(idex.regDST);
-		control.jump.connectTo(idex.jump);
-		control.branch.connectTo(idex.branch);
-		control.memRead.connectTo(idex.memRead);
-		control.memToReg.connectTo(idex.memToReg);
-		control.aluOp.connectTo(idex.aluOp);
-		control.memWrite.connectTo(idex.memWrite);
-		control.aluSrc.connectTo(idex.aluSrc);
-		control.regWrite.connectTo(idex.regWrite);
-		control.jumpReg.connectTo(idex.jumpReg);
-		control.branchBNE.connectTo(idex.branchBNE);
-		control.immediate.connectTo(idex.immediate);
+		control.regDst.connectTo(hazardMux.regDstIn);
+		control.jump.connectTo(hazardMux.jumpIn);
+		control.branch.connectTo(hazardMux.branchIn);
+		control.memRead.connectTo(hazardMux.memReadIn);
+		control.memToReg.connectTo(hazardMux.memToRegIn);
+		control.aluOp.connectTo(hazardMux.aluOpIn);
+		control.memWrite.connectTo(hazardMux.memWriteIn);
+		control.aluSrc.connectTo(hazardMux.aluSrcIn);
+		control.regWrite.connectTo(hazardMux.regWriteIn);
+		control.jumpReg.connectTo(hazardMux.jumpRegIn);
+		control.branchBNE.connectTo(hazardMux.branchBNEIn);
+		control.immediate.connectTo(hazardMux.immediateIn);
+		control.regDst.connectTo(hazardMux.regDstIn);
+		hazardMux.jump.connectTo(idex.jump);
+		hazardMux.branch.connectTo(idex.branch);
+		hazardMux.memRead.connectTo(idex.memRead);
+		hazardMux.memToReg.connectTo(idex.memToReg);
+		hazardMux.aluOp.connectTo(idex.aluOp);
+		hazardMux.memWrite.connectTo(idex.memWrite);
+		hazardMux.aluSrc.connectTo(idex.aluSrc);
+		hazardMux.regWrite.connectTo(idex.regWrite);
+		hazardMux.jumpReg.connectTo(idex.jumpReg);
+		hazardMux.branchBNE.connectTo(idex.branchBNE);
+		hazardMux.immediate.connectTo(idex.immediate);
 		idex.outregDST.connectTo(regDstMux.switcher);
 		idex.outaluOp.connectTo(aluControl.aluOp);
 		idex.outaluSrc.connectTo(aluSrcMux.switcher);
@@ -223,6 +236,7 @@ public class Main {
 		decode.rt.connectTo(hdu.ifid_rt);
 		idex.memRead.connectTo(hdu.idex_memRead);
 		idex.outRt.connectTo(hdu.idex_rt);
+		hdu.output.connectTo(hazardMux.hazard);
 		
 	
 		pc.pcIn.setValue(new BinaryNum("1000000000000").pad(32));
