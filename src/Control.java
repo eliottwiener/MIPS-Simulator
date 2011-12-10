@@ -1,5 +1,5 @@
 public class Control{
-	
+
 	// each control output is a Pin object
 	public Pin opcode = new Pin();
 	public Pin funct = new Pin();
@@ -15,12 +15,12 @@ public class Control{
 	public Pin jumpReg = new Pin();
 	public Pin branchBNE = new Pin();
 	public Pin immediate = new Pin();
-	
+
 	public Control(){}
-	
+
 	// Set the control signals depending on the opcode
 	public void setSignals(){
-		
+
 		String myOpcode = opcode.getValue().toString();
 		// R-Type instructions
 		if(myOpcode.equals("000000")){
@@ -32,7 +32,7 @@ public class Control{
 			aluSrc.setValue(new BinaryNum("0"));
 			branchBNE.setValue(new BinaryNum("0"));
 			immediate.setValue(new BinaryNum("0"));
-					
+
 			String myFunct = funct.getValue().toString();
 			if(myFunct.equals("001000")){
 				regDst.setValue(new BinaryNum("0"));
@@ -44,10 +44,10 @@ public class Control{
 				jumpReg.setValue(new BinaryNum("0"));
 				aluOp.setValue(new BinaryNum("10"));
 				regWrite.setValue(new BinaryNum("1"));
-				
+
 			}
 		}
-		
+
 		// LW instruction
 		if(myOpcode.equals("100011")){
 			jump.setValue(new BinaryNum("0"));
@@ -62,7 +62,7 @@ public class Control{
 			jumpReg.setValue(new BinaryNum("0"));
 			branchBNE.setValue(new BinaryNum("0"));
 		}
-		
+
 		// SW instruction
 		if(myOpcode.equals("101011")){
 			jump.setValue(new BinaryNum("0"));
@@ -77,7 +77,7 @@ public class Control{
 			jumpReg.setValue(new BinaryNum("0"));
 			branchBNE.setValue(new BinaryNum("0"));
 		}
-		
+
 		// beq
 		if(myOpcode.equals("000100")){
 			jump.setValue(new BinaryNum("0"));
@@ -92,7 +92,7 @@ public class Control{
 			jumpReg.setValue(new BinaryNum("0"));
 			branchBNE.setValue(new BinaryNum("0"));
 		}
-		
+
 		// bne
 		if(myOpcode.equals("000101")){
 			jump.setValue(new BinaryNum("0"));
@@ -107,7 +107,7 @@ public class Control{
 			jumpReg.setValue(new BinaryNum("0"));
 			branchBNE.setValue(new BinaryNum("1"));
 		}
-		
+
 		// jump instruction
 		if(myOpcode.equals("000010")){
 			jump.setValue(new BinaryNum("1"));
@@ -122,8 +122,8 @@ public class Control{
 			jumpReg.setValue(new BinaryNum("0"));
 			branchBNE.setValue(new BinaryNum("0"));
 		}
-		
-		
+
+
 		// I-type instructions
 		// addi, andi, ori, slti
 		if(myOpcode.equals("001000") ||
@@ -143,6 +143,6 @@ public class Control{
 			branchBNE.setValue(new BinaryNum("0"));
 			immediate.setValue(new BinaryNum("1"));
 		}
-		
+
 	}
 }
