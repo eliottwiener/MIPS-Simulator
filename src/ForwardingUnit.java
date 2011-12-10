@@ -14,7 +14,6 @@ public class ForwardingUnit implements Clockable{
 		BinaryNum idex_rs_val = idex_rs.getValue();
 		BinaryNum idex_rt_val = idex_rt.getValue();
 		BinaryNum exmem_rd_val = exmem_rd.getValue();
-		BinaryNum exmem_regWrite_val = exmem_regWrite.getValue();
 		BinaryNum memwb_rd_val = memwb_rd.getValue();
 		BinaryNum memwb_regWrite_val = memwb_regWrite.getValue();
 		BinaryNum rdZero = new BinaryNum("0").pad(5);
@@ -23,12 +22,12 @@ public class ForwardingUnit implements Clockable{
 		
 		// (page 367 & 369)
 		// EX hazard
-		if(new BinaryNum("1").equals(exmem_regWrite_val)
+		if(new BinaryNum("1").equals(exmem_regWrite.getValue())
 				&& !(exmem_rd_val.equals(rdZero))
 				&& exmem_rd_val.equals(idex_rs_val)){
 			forwardA.setValue(new BinaryNum("10"));
 		} 	
-		if(new BinaryNum("1").equals(exmem_regWrite_val)
+		if(new BinaryNum("1").equals(exmem_regWrite.getValue())
 				&& !(exmem_rd_val.equals(rdZero))
 				&& exmem_rd_val.equals(idex_rt_val)){
 			forwardB.setValue(new BinaryNum("10"));
@@ -37,7 +36,7 @@ public class ForwardingUnit implements Clockable{
 		// MEM hazard
 		if(new BinaryNum("1").equals(memwb_regWrite_val)
 				&& !(memwb_rd_val.equals(rdZero))
-				&& !(new BinaryNum("1").equals(exmem_regWrite_val)
+				&& !(new BinaryNum("1").equals(exmem_regWrite.getValue())
 						&& !(exmem_rd_val.equals(rdZero))
 						&& !(exmem_rd_val.equals(idex_rs_val)))
 				&& memwb_rd_val.equals(idex_rs_val)){
@@ -45,7 +44,7 @@ public class ForwardingUnit implements Clockable{
 		} 
 		if(new BinaryNum("1").equals(memwb_regWrite_val)
 				&& !(memwb_rd_val.equals(rdZero))
-				&& !(new BinaryNum("1").equals(exmem_regWrite_val)
+				&& !(new BinaryNum("1").equals(exmem_regWrite.getValue())
 						&& !(exmem_rd_val.equals(rdZero))
 						&& !(exmem_rd_val.equals(idex_rt_val)))
 				&& memwb_rd_val.equals(idex_rt_val)){
