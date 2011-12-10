@@ -17,36 +17,39 @@ public class ForwardingUnit implements Clockable{
 		BinaryNum exmem_regWrite_val = exmem_regWrite.getValue();
 		BinaryNum memwb_rd_val = memwb_rd.getValue();
 		BinaryNum memwb_regWrite_val = memwb_regWrite.getValue();
+		BinaryNum rdZero = new BinaryNum("0").pad(5);
+		forwardA.setValue(new BinaryNum("00"));
+		forwardB.setValue(new BinaryNum("00"));
 		
 		// (page 367 & 369)
 		// EX hazard
 		if(exmem_regWrite_val.equals(new BinaryNum("1"))
-				&& !(exmem_rd_val.equals(new BinaryNum("0")))
+				&& !(exmem_rd_val.equals(rdZero))
 				&& exmem_rd_val.equals(idex_rs_val)){
 			forwardA.setValue(new BinaryNum("10"));
-		} else forwardA.setValue(new BinaryNum("0"));
+		} 	
 		if(exmem_regWrite_val.equals(new BinaryNum("1"))
-				&& !(exmem_rd_val.equals(new BinaryNum("0")))
+				&& !(exmem_rd_val.equals(rdZero))
 				&& exmem_rd_val.equals(idex_rt_val)){
 			forwardB.setValue(new BinaryNum("10"));
-		} else forwardB.setValue(new BinaryNum("0"));
+		} 
 		
 		// MEM hazard
 		if(memwb_regWrite_val.equals(new BinaryNum("1"))
-				&& !(memwb_rd_val.equals(new BinaryNum("0")))
+				&& !(memwb_rd_val.equals(rdZero))
 				&& !(exmem_regWrite_val.equals(new BinaryNum("1"))
-						&& !(exmem_rd_val.equals(new BinaryNum("0")))
+						&& !(exmem_rd_val.equals(rdZero))
 						&& !(exmem_rd_val.equals(idex_rs_val)))
 				&& memwb_rd_val.equals(idex_rs_val)){
-			forwardA.setValue(new BinaryNum("1"));
-		} else forwardA.setValue(new BinaryNum("0"));
+			forwardA.setValue(new BinaryNum("01"));
+		} 
 		if(memwb_regWrite_val.equals(new BinaryNum("1"))
-				&& !(memwb_rd_val.equals(new BinaryNum("0")))
+				&& !(memwb_rd_val.equals(rdZero))
 				&& !(exmem_regWrite_val.equals(new BinaryNum("1"))
-						&& !(exmem_rd_val.equals(new BinaryNum("0")))
+						&& !(exmem_rd_val.equals(rdZero))
 						&& !(exmem_rd_val.equals(idex_rt_val)))
 				&& memwb_rd_val.equals(idex_rt_val)){
-			forwardB.setValue(new BinaryNum("1"));
-		} else forwardB.setValue(new BinaryNum("0"));
+			forwardB.setValue(new BinaryNum("01"));
+		}
 	}
 }
