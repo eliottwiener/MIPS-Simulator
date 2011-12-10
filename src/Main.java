@@ -78,7 +78,7 @@ public class Main {
 		Debugger debug = new Debugger(regFile, decode, pc, control, aluControl,
 				memoryIo, alu, aluP4, aluAdd, regDstMux, memToRegMux, aluSrcMux, 
 				branchMux, jumpMux, signExtend, sltAdd, sltTarget, jumpRegMux,
-				inv, combiner, branchMuxAnd);
+				inv, combiner, branchMuxAnd, forwardingUnit, forwardAMux, forwardBMux);
 		DebuggerPR pipelineDebug = new DebuggerPR(ifid, idex, exmem, memwb);
 		
 		// Connect output of PC
@@ -177,9 +177,7 @@ public class Main {
 		ifid.outInstr.connectTo(decode.instruction);
 		ifid.outPC4.connectTo(idex.PC4);
 		idex.outPC4.connectTo(aluAdd.input1);
-		idex.outReadData1.connectTo(alu.input1);
 		idex.outReadData1.connectTo(jumpRegMux.input1);
-		idex.outReadData2.connectTo(aluSrcMux.input0);
 		idex.outReadData2.connectTo(exmem.readData2);
 		idex.outSignExtended.connectTo(sltAdd.in);
 		idex.outSignExtended.connectTo(aluSrcMux.input1);
@@ -206,7 +204,7 @@ public class Main {
 		forwardingUnit.forwardB.connectTo(forwardBMux.switcher);
 		
 		// connect I/O of forwarding MUXes
-	/*	exmem.outGenALUresult.connectTo(forwardAMux.input2);
+		exmem.outGenALUresult.connectTo(forwardAMux.input2);
 		exmem.outGenALUresult.connectTo(forwardBMux.input2);
 		memToRegMux.output.connectTo(forwardAMux.input1);
 		memToRegMux.output.connectTo(forwardBMux.input1);
@@ -214,7 +212,7 @@ public class Main {
 		idex.outReadData2.connectTo(forwardBMux.input0);
 		forwardAMux.output.connectTo(alu.input1);
 		forwardBMux.output.connectTo(aluSrcMux.input0);
-		forwardBMux.output.connectTo(exmem.readData2);*/
+		forwardBMux.output.connectTo(exmem.readData2);
 		
 	
 		pc.pcIn.setValue(new BinaryNum("1000000000000").pad(32));
@@ -276,6 +274,13 @@ public class Main {
 				
 				// clock the RegDST Mux
 				regDstMux.clockEdge();
+				
+				// clock the forwarding unit
+				forwardingUnit.clockEdge();
+				
+				// clock the Forwarding Muxes;
+				forwardAMux.clockEdge();
+				forwardBMux.clockEdge();
 				
 				// clock the ALUSrc Mux
 				aluSrcMux.clockEdge();
