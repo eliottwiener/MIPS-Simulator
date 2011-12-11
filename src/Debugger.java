@@ -3,6 +3,7 @@ import java.io.*;
 public class Debugger{
 	
 	public RegisterFile regFile;
+	public IFID ifid;
 	public Decode decode;
 	public ProgramCounter pc;
 	public Control control;
@@ -27,8 +28,10 @@ public class Debugger{
 	public Mux3 forwardA;
 	public Mux3 forwardB;
 	public HazardDetectionUnit hdu;
-	public ALU equals;
-	public And bpAnd;
+	public BranchPredictor bp;
+	public And bcAnd;
+	public IDEX idex;
+	public EXMEM exmem;
 	public String output = "";
 	public FileWriter fstream;
 	public BufferedWriter out;
@@ -43,9 +46,11 @@ public class Debugger{
 			ShiftLeftTwo sltTarget, Mux jumpRegMux,
 			Inverter inv, Combiner comb, And and,
 			ForwardingUnit fu, Mux3 forwardA, Mux3 forwardB,
-			HazardDetectionUnit hdu, ALU equals, And bpAnd){
+			HazardDetectionUnit hdu, BranchPredictor bp,
+			And bcAnd, IFID ifid, IDEX idex, EXMEM exmem){
 		this.regFile = regFile;
 		this.decode = decode;
+		this.ifid = ifid;
 		this.pc = pc;
 		this.control = control;
 		this.aluControl = aluControl;
@@ -70,8 +75,10 @@ public class Debugger{
 		this.forwardA = forwardA;
 		this.forwardB = forwardB;
 		this.hdu = hdu;
-		this.equals = equals;
-		this.bpAnd = bpAnd;
+		this.bp = bp;
+		this.bcAnd = bcAnd;
+		this.idex = idex;
+		this.exmem = exmem;
 		
 		try {
 			fstream = new FileWriter("debug.txt", false);
@@ -92,6 +99,8 @@ public class Debugger{
 		output += "Program Counter for Cycle " + cycleCount + ":" + print(pc.pcOut) + "\t\t" + printDecimal(pc.pcOut) + "\n";
 		output += "Program Counter for Cycle " + (cycleCount+1) + ":" + print(pc.pcIn) + "\t\t" + printDecimal(pc.pcIn) + "\n";
 		output += "PC Control:" + print(pc.control) + "\n";
+		output += "Flush:" + print(ifid.Flush) + "\n";
+		output += "branch clear?" + print(ifid.branchCleared) + "\n";
 		output += "------------------------- Instruction Information -------------------------\n";
 		output += "instruction:" + print(decode.instruction) + "\t\t" + printDecimal(decode.instruction) + "\n";
 		output += "op code:" + print(decode.opcode) + "\t\t" + printDecimal(decode.opcode)  +"\n";
@@ -101,6 +110,9 @@ public class Debugger{
 		output += "funct:" + print(decode.funct) + "\t\t" + printDecimal(decode.funct)  +"\n";
 		output += "immediate:" + print(decode.immediate) + "\t\t" + printDecimal(decode.immediate)  +"\n";
 		output += "target:" + print(decode.target) + "\t\t" + printDecimal(decode.target)  +"\n";
+		output += "------------------------- Branch Taken Information -------------------------\n";
+		output += "idex branch taken:" + print(idex.branchTaken) + "\n";
+		output += "exmem branch taken:" + print(exmem.branchTaken) + "\n";
 		output += "------------------------- Sign-Extend Information -------------------------\n";
 		output += "input:" + print(signExtend.input) + "\n";
 		output += "output:" + print(signExtend.output) + "\n";
@@ -122,16 +134,19 @@ public class Debugger{
 		output += "RegWrite:" + print(control.regWrite) + "\n";
 		output += "JumpReg:" + print(control.jumpReg) + "\n";
 		output += "branchBNE:" + print(control.branchBNE) + "\n";
-		output += "-------------------------- Branch Predictor ALU ---------------------------\n";				
-		output += "input1:" + print(equals.input1) + "\n";
-		output += "input2:" + print(equals.input2)  + "\n";
-		output += "control:" + print(equals.control)  + "\n";
-		output += "result:" + print(equals.result)  + "\n";
-		output += "zero:" + print(equals.zero)  + "\n";
-		output += "-------------------------- Branch Predictor AND ---------------------------\n";				
-		output += "input0:" + print(bpAnd.input0) + "\n";
-		output += "input1:" + print(bpAnd.input1)  + "\n";
-		output += "output:" + print(bpAnd.output)  + "\n";
+		output += "BranchT In:" + print(control.branchTakenIn) + "\n";
+		output += "BranchT Out:" + print(control.branchTakenOut) + "\n";
+		output += "----------------------------- Branch Cleared And ---------------------------\n";				
+		output += "input 0:" + print(bcAnd.input0) + "\n";
+		output += "input 1:" + print(bcAnd.input1)  + "\n";
+		output += "output:" + print(bcAnd.output)  + "\n";
+		output += "--------------------------- Branch Predict Information ---------------------\n";				
+		output += "read data 1:" + print(bp.readData1) + "\n";
+		output += "read data 2:" + print(bp.readData2)  + "\n";
+		output += "branch:" + print(bp.branch)  + "\n";
+		output += "branchBNE:" + print(bp.branchBNE)  + "\n";
+		output += "branchCleared:" + print(bp.branchCleared) + "\n";
+		output += "flush:" + print(bp.flush) + "\n";
 		output += "-------------------------- Hazard Detection Unit --------------------------\n";				
 		output += "ID/EX memRead:" + print(hdu.idex_memRead) + "\n";
 		output += "ID/EX rt:" + print(hdu.idex_rt)  + "\n";
