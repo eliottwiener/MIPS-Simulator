@@ -12,8 +12,8 @@ public class MEMWB implements Clockable{
 	public Pin memToReg = new Pin();
 	public Pin outregWrite = new Pin();
 	public Pin outmemToReg = new Pin();
-	
-	MEMWB(){
+		
+	public MEMWB(){
 		readData.setValue(new BinaryNum("0").pad(32));
 		genALUresult.setValue(new BinaryNum("0").pad(32));
 		regWrite.setValue(new BinaryNum("0"));
