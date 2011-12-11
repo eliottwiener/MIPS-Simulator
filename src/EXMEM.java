@@ -27,7 +27,7 @@ public class EXMEM implements Clockable{
 	public Pin outmemWrite = new Pin();
 	public Pin outmemRead = new Pin();
 	public Pin outbranch = new Pin();
-
+	
 	public EXMEM(){
 		outAddALUresult.setValue(new BinaryNum("0"));
 		outZero.setValue(new BinaryNum("1"));
