@@ -107,8 +107,6 @@ public class DebuggerPR{
 		output += "memRead out:" + print(exmem.outmemRead) + "\n";
 		output += "branch in:" + print(exmem.branch) + "\n";
 		output += "branch out:" + print(exmem.outbranch) + "\n";
-		output += "branchTaken in:" + print(exmem.branchTaken) + "\n";
-		output += "branchTakenOut in:" + print(exmem.outbranchTaken) + "\n";
 		output += "----------------------- MEM/WB -----------------------\n";
 		output += "readData:" + print(memwb.readData) + "\n";
 		output += "general ALU result:" + print(memwb.genALUresult) + "\n";
