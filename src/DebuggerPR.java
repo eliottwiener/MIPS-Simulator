@@ -75,7 +75,9 @@ public class DebuggerPR{
 		output += "out add ALU result:" + print(exmem.outAddALUresult) + "\n";
 		output += "out zero:" + print(exmem.outZero) + "\n";
 		output += "out general ALU result:" + print(exmem.outGenALUresult) + "\n";
-		output += "out reaData2:" + print(exmem.outReadData2) + "\n";
+		output += "out readData2:" + print(exmem.outReadData2) + "\n";
+		output += "rd:" + print(exmem.rd) + "\n";
+		output += "outRD:" + print(exmem.outRd) + "\n";
 		output += "\t\t\t Control information\n";
 		output += "regWrite in:" + print(exmem.regWrite) + "\n";
 		output += "regWrite out:" + print(exmem.outregWrite) + "\n";
