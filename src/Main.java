@@ -34,12 +34,11 @@ public class Main {
 		ALU alu = new ALU();
 		ALU aluAdd = new ALU();
 		ALU aluP4 = new ALU();
-		ALU branchPredictor = new ALU();
+		
 		// set the static controls/inputs for certain ALU
 		aluAdd.control.setValue(new BinaryNum("010"));
 		aluP4.control.setValue(new BinaryNum("010"));
 		aluP4.input2.setValue(new BinaryNum("100").pad(32));
-		branchPredictor.control.setValue(new BinaryNum("110"));
 		
 		// initalize Memory IO
 		MemoryIO memoryIo = new MemoryIO(memory);
@@ -57,17 +56,19 @@ public class Main {
 
 		// initialize the AND going to branch MUX
 		And branchMuxAnd = new And();
-		And branchPredictorAnd = new And();
+		And branchClearedAnd = new And();
 		
 		// initialize the combiner (jump addr + (PC + 4))
 		Combiner combiner = new Combiner();
+		
+		// initialize the branchPredictor
+		BranchPredictor branchPredictor = new BranchPredictor();
 		
 		// initialize the sign-extend
 		SignExtend signExtend = new SignExtend();
 		
 		// initialize the inverter
 		Inverter inv = new Inverter();
-		Inverter branchInv = new Inverter();
 		
 		// initialize the Program Counter
 		ProgramCounter pc = new ProgramCounter();
@@ -89,7 +90,7 @@ public class Main {
 				memoryIo, alu, aluP4, aluAdd, regDstMux, memToRegMux, aluSrcMux, 
 				branchMux, jumpMux, signExtend, sltAdd, sltTarget, jumpRegMux,
 				inv, combiner, branchMuxAnd, forwardingUnit, forwardAMux, forwardBMux,
-				hdu, branchPredictor, branchPredictorAnd);
+				hdu, branchPredictor, branchClearedAnd, ifid, idex, exmem);
 		DebuggerPR pipelineDebug = new DebuggerPR(ifid, idex, exmem, memwb);
 		
 		// Connect output of PC
@@ -117,16 +118,14 @@ public class Main {
 		// Connect outputs of regFile
 		regFile.readData1.connectTo(idex.readData1);
 		regFile.readData2.connectTo(idex.readData2);
-		regFile.readData1.connectTo(branchPredictor.input1);
-		regFile.readData2.connectTo(branchPredictor.input2);
+		regFile.readData1.connectTo(branchPredictor.readData1);
+		regFile.readData2.connectTo(branchPredictor.readData2);
 				
 		// Connect outputs of ALU and related
 		aluSrcMux.output.connectTo(alu.input2);
 		alu.result.connectTo(exmem.genALUResult);
 		alu.zero.connectTo(exmem.zero);
 		inv.out.connectTo(branchMuxAnd.input1);
-		branchPredictor.zero.connectTo(branchInv.in);
-		branchInv.out.connectTo(branchPredictorAnd.input1);
 		aluP4.result.connectTo(ifid.PC4);
 		aluP4.result.connectTo(branchMux.input0);
 		aluP4.result.connectTo(combiner.pcIn);
@@ -144,7 +143,6 @@ public class Main {
 		
 		// connect output of ANDs
 		branchMuxAnd.output.connectTo(branchMux.switcher);
-		branchPredictorAnd.output.connectTo(ifid.Flush);
 		
 		memToRegMux.output.connectTo(regFile.writeData);
 		regDstMux.output.connectTo(exmem.rd);
@@ -158,7 +156,7 @@ public class Main {
 		control.regDst.connectTo(hazardMux.regDstIn);
 		control.jump.connectTo(hazardMux.jumpIn);
 		control.branch.connectTo(hazardMux.branchIn);
-		control.branch.connectTo(branchPredictorAnd.input0);
+		control.branch.connectTo(branchPredictor.branch);
 		control.memRead.connectTo(hazardMux.memReadIn);
 		control.memToReg.connectTo(hazardMux.memToRegIn);
 		control.aluOp.connectTo(hazardMux.aluOpIn);
@@ -167,6 +165,7 @@ public class Main {
 		control.regWrite.connectTo(hazardMux.regWriteIn);
 		control.jumpReg.connectTo(hazardMux.jumpRegIn);
 		control.branchBNE.connectTo(hazardMux.branchBNEIn);
+		control.branchBNE.connectTo(branchPredictor.branchBNE);
 		control.regDst.connectTo(hazardMux.regDstIn);
 		hazardMux.jump.connectTo(idex.jump);
 		hazardMux.branch.connectTo(idex.branch);
@@ -183,7 +182,6 @@ public class Main {
 		idex.outaluOp.connectTo(aluControl.aluOp);
 		idex.outaluSrc.connectTo(aluSrcMux.switcher);
 		idex.outbranchBNE.connectTo(inv.branchBNE);
-		idex.outbranchBNE.connectTo(branchInv.branchBNE);
 		idex.outjump.connectTo(exmem.jump);
 		idex.outbranch.connectTo(exmem.branch);
 		idex.outmemRead.connectTo(exmem.memRead);
@@ -191,6 +189,7 @@ public class Main {
 		idex.outmemWrite.connectTo(exmem.memWrite);
 		idex.outregWrite.connectTo(exmem.regWrite);
 		idex.outjumpReg.connectTo(exmem.jumpReg);
+		idex.outbranchTaken.connectTo(branchClearedAnd.input0);
 		exmem.outjump.connectTo(jumpMux.switcher);
 		exmem.outjumpReg.connectTo(jumpRegMux.switcher);
 		exmem.outbranch.connectTo(branchMuxAnd.input0);
@@ -218,6 +217,7 @@ public class Main {
 		exmem.outReadData2.connectTo(memoryIo.writeData);
 		exmem.outRd.connectTo(memwb.rd);
 		exmem.outZero.connectTo(inv.in);
+		branchClearedAnd.input1.setValue(new BinaryNum("1"));
 		memwb.outGenALUresult.connectTo(memToRegMux.input0);
 		memwb.outReadData.connectTo(memToRegMux.input1);
 		memwb.outRd.connectTo(regFile.writeReg);
@@ -252,6 +252,16 @@ public class Main {
 		hdu.output.connectTo(pc.control);
 		hdu.output.connectTo(ifid.IFIDWrite);
 		
+		// connect the I/O of branch predictor
+		regFile.readData1.connectTo(branchPredictor.readData1);
+		regFile.readData2.connectTo(branchPredictor.readData2);
+		branchClearedAnd.output.connectTo(branchPredictor.branchCleared);
+		control.branch.connectTo(branchPredictor.branch);
+		control.branchBNE.connectTo(branchPredictor.branchBNE);
+		branchPredictor.flush.connectTo(ifid.Flush);
+		branchPredictor.flush.connectTo(control.branchTaken);
+		control.branchTaken.connectTo(hazardMux.branchTakenIn);
+		hazardMux.branchTaken.connectTo(idex.branchTaken);
 		
 		pc.pcIn.setValue(new BinaryNum("1000000000000").pad(32));
 		int cycleCount = 0;
@@ -269,6 +279,8 @@ public class Main {
 				/*
 				 * The MEM stage of the datapath
 				 */
+				// clock the branchClearedAnd
+				branchClearedAnd.clockEdge();
 				// clock the Inverter
 				inv.clockEdge();	
 				// clock the AND
@@ -331,10 +343,6 @@ public class Main {
 				hazardMux.clockEdge();
 				// clock the branch predictor
 				branchPredictor.clockEdge();
-				// clock the branch inverter
-				branchInv.clockEdge();
-				// clock the branch predictor AND
-				branchPredictorAnd.clockEdge();
 				
 				
 				/*
