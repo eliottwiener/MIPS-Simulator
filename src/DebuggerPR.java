@@ -1,5 +1,6 @@
 import java.io.BufferedWriter;
 import java.io.FileWriter;
+import java.io.IOException;
 
 public class DebuggerPR{
 	
@@ -8,12 +9,26 @@ public class DebuggerPR{
 	public EXMEM exmem;
 	public MEMWB memwb;
 	public String output = "";
+	public FileWriter fstream;
+	public BufferedWriter out;
 	
 	public DebuggerPR(IFID ifid, IDEX idex, EXMEM exmem, MEMWB memwb){
 		this.ifid = ifid;
 		this.idex = idex;
 		this.exmem = exmem;
 		this.memwb = memwb;
+		
+		try {
+			fstream = new FileWriter("debug.txt", false);
+			out = new BufferedWriter(fstream);
+			out.write("");
+			out.close();
+			fstream = new FileWriter("debug.txt", true);
+			out = new BufferedWriter(fstream);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void debugCycle(int cycleCount){
@@ -26,7 +41,6 @@ public class DebuggerPR{
 		output += "out instruction:" + print(ifid.outInstr) + "\n";
 		output += "----------------------- ID/EX -----------------------\n";
 		output += "\t\t\tData information\n";
-		output += "instruction:" + print(idex.instruction) + "\n";
 		output += "PC+4 in:" + print(idex.PC4) + "\t\t" + printDecimal(ifid.PC4) + "\n";
 		output += "PC+4 out: " + print(idex.outPC4) + "\t\t" + printDecimal(ifid.PC4) + "\n";
 		output += "readData1 in:" + print(idex.readData1) + "\n";
@@ -67,7 +81,6 @@ public class DebuggerPR{
 		output += "branchBNE in:" + print(idex.branchBNE) + "\n";
 		output += "branchBNE out:" + print(idex.outbranchBNE) + "\n";
 		output += "----------------------- EX/MEM -----------------------\n";
-		output += "instruction:" + print(exmem.instruction) + "\n";
 		output += "add ALU result:" + print(exmem.addALUresult) + "\n";
 		output += "zero:" + print(exmem.zero) + "\n";
 		output += "general ALU result:" + print(exmem.genALUResult) + "\n";
@@ -94,7 +107,6 @@ public class DebuggerPR{
 		output += "branch in:" + print(exmem.branch) + "\n";
 		output += "branch out:" + print(exmem.outbranch) + "\n";
 		output += "----------------------- MEM/WB -----------------------\n";
-		output += "instruction:" + print(memwb.instruction) + "\n";
 		output += "readData:" + print(memwb.readData) + "\n";
 		output += "general ALU result:" + print(memwb.genALUresult) + "\n";
 		output += "rd:" + print(memwb.rd) + "\n";
@@ -106,6 +118,9 @@ public class DebuggerPR{
 		output += "regWrite out:" + print(memwb.outregWrite) + "\n";
 		output += "memToReg in:" + print(memwb.memToReg) + "\n";
 		output += "memToReg out:" + print(memwb.outmemToReg) + "\n\n";
+		
+		dump();
+		output = "";
 
 	}
 	
@@ -126,16 +141,19 @@ public class DebuggerPR{
 		}
 	}
 	
-	public void dump(String fileName){
+	public void dump(){
 		try{
-			// Create file 
-			FileWriter fstream = new FileWriter(fileName);
-			BufferedWriter out = new BufferedWriter(fstream);
 			out.write(output);
-			//Close the output stream
-			out.close();
 			}catch (Exception e){//Catch exception if any
 			System.err.println("Error: " + e.getMessage());
 			}
+	}
+	public void close(){
+		try {
+			out.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+	}
 }
