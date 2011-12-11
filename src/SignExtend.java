@@ -1,9 +1,11 @@
 public class SignExtend implements Clockable{
 	public Pin input = new Pin();
 	public Pin output = new Pin();
-	public Pin immediate = new Pin();
 	
-	public SignExtend(){}
+	public SignExtend(){
+		input.setValue(new BinaryNum("0").pad(16));
+		output.setValue(new BinaryNum("0").pad(32));
+	}
 	
 	
 	public void clockEdge(){

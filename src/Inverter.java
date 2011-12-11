@@ -3,6 +3,11 @@ public class Inverter implements Clockable{
 	Pin out = new Pin();
 	Pin branchBNE = new Pin();
 	
+	public Inverter(){
+		in.setValue(new BinaryNum("0").pad(32));
+		out.setValue(new BinaryNum("0").pad(32));
+		branchBNE.setValue(new BinaryNum("0"));
+	}
 	public void clockEdge(){
 		if(branchBNE.getValue().equals(new BinaryNum("1"))){
 			if(in.getValue().equals(new BinaryNum("1"))){

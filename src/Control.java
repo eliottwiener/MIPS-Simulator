@@ -14,10 +14,24 @@ public class Control{
 	public Pin regWrite = new Pin();
 	public Pin jumpReg = new Pin();
 	public Pin branchBNE = new Pin();
-	public Pin immediate = new Pin();
 	public Pin flush = new Pin();
 
-	public Control(){}
+	public Control(){
+		opcode.setValue(new BinaryNum("00000"));
+		funct.setValue(new BinaryNum("000000"));
+		jump.setValue(new BinaryNum("0"));
+		regDst.setValue(new BinaryNum("0"));
+		branch.setValue(new BinaryNum("0"));
+		memRead.setValue(new BinaryNum("0"));
+		memToReg.setValue(new BinaryNum("0"));
+		aluOp.setValue(new BinaryNum("00"));
+		memWrite.setValue(new BinaryNum("0"));
+		aluSrc.setValue(new BinaryNum("0"));
+		regWrite.setValue(new BinaryNum("0"));
+		jumpReg.setValue(new BinaryNum("0"));
+		branchBNE.setValue(new BinaryNum("0"));
+		flush.setValue(new BinaryNum("0"));
+	}
 
 	// Set the control signals depending on the opcode
 	public void setSignals(){
@@ -32,7 +46,6 @@ public class Control{
 			memWrite.setValue(new BinaryNum("0"));
 			aluSrc.setValue(new BinaryNum("0"));
 			branchBNE.setValue(new BinaryNum("0"));
-			immediate.setValue(new BinaryNum("0"));
 
 			String myFunct = funct.getValue().toString();
 			if(myFunct.equals("001000")){
@@ -142,7 +155,6 @@ public class Control{
 			regWrite.setValue(new BinaryNum("1"));
 			jumpReg.setValue(new BinaryNum("0"));
 			branchBNE.setValue(new BinaryNum("0"));
-			immediate.setValue(new BinaryNum("1"));
 		}
 
 	}

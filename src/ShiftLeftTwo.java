@@ -5,6 +5,8 @@ public class ShiftLeftTwo implements Clockable{
 	
 	ShiftLeftTwo(int outputBits){
 		this.outputBits = outputBits;
+		out.setValue(new BinaryNum("0").pad(outputBits));
+		in.setValue(new BinaryNum("0"));
 	}
 
 	public void clockEdge() {

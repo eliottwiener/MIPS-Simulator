@@ -9,6 +9,9 @@ public class IFID implements Clockable{
 	public Pin outInstr = new Pin();
 	
 	public IFID(){
+		IFIDWrite.setValue(new BinaryNum("0"));
+		PC4.setValue(new BinaryNum("0").pad(32));
+		instruction.setValue(new BinaryNum("0").pad(32));
 		outPC4.setValue(new BinaryNum("0").pad(32));
 		outInstr.setValue(new BinaryNum("0").pad(32));
 		Flush.setValue(new BinaryNum("0"));

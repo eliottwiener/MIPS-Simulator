@@ -7,6 +7,10 @@ public class HazardDetectionUnit implements Clockable{
 	
 	public HazardDetectionUnit(){
 		output.setValue(new BinaryNum("0"));
+		idex_memRead.setValue(new BinaryNum("0"));
+		idex_rt.setValue(new BinaryNum("0").pad(5));
+		ifid_rs.setValue(new BinaryNum("0").pad(5));
+		ifid_rt.setValue(new BinaryNum("0").pad(5));
 	}
 	public void clockEdge(){
 		if(new BinaryNum("1").equals(idex_memRead.getValue())

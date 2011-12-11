@@ -11,7 +11,6 @@ public class HazardMux implements Clockable{
 	public Pin regWriteIn = new Pin();
 	public Pin jumpRegIn = new Pin();
 	public Pin branchBNEIn = new Pin();
-	public Pin immediateIn = new Pin();
 	
 	public Pin hazard = new Pin();
 
@@ -29,8 +28,32 @@ public class HazardMux implements Clockable{
 	public Pin aluSrc = new Pin();
 	public Pin aluOp = new Pin();
 	public Pin branchBNE = new Pin();
-	public Pin immediate = new Pin();
 	
+	public HazardMux(){
+		jumpIn.setValue(new BinaryNum("0"));
+		regDstIn.setValue(new BinaryNum("0"));
+		branchIn.setValue(new BinaryNum("0"));
+		memReadIn.setValue(new BinaryNum("0"));
+		memToRegIn.setValue(new BinaryNum("0"));
+		aluOpIn.setValue(new BinaryNum("00"));
+		memWriteIn.setValue(new BinaryNum("0"));
+		aluSrcIn.setValue(new BinaryNum("0"));
+		regWriteIn.setValue(new BinaryNum("0"));
+		jumpRegIn.setValue(new BinaryNum("0"));
+		branchBNEIn.setValue(new BinaryNum("0"));
+		hazard.setValue(new BinaryNum("0"));
+		regWrite.setValue(new BinaryNum("0"));
+		memToReg.setValue(new BinaryNum("0"));
+		jump.setValue(new BinaryNum("0"));
+		jumpReg.setValue(new BinaryNum("0"));
+		memWrite.setValue(new BinaryNum("0"));
+		memRead.setValue(new BinaryNum("0"));
+		branch.setValue(new BinaryNum("0"));
+		regDST.setValue(new BinaryNum("0"));
+		aluSrc.setValue(new BinaryNum("0"));
+		aluOp.setValue(new BinaryNum("00"));
+		branchBNE.setValue(new BinaryNum("0"));
+	}
 	public void clockEdge() {
 		if(hazard.getValue().equals(new BinaryNum("0"))){
 			// control signals (WB)
@@ -47,7 +70,6 @@ public class HazardMux implements Clockable{
 			aluSrc.setValue(aluSrcIn.getValue());
 			aluOp.setValue(aluOpIn.getValue());
 			branchBNE.setValue(branchBNEIn.getValue());
-			immediate.setValue(immediateIn.getValue());
 		} else {
 			regWrite.setValue(new BinaryNum("0"));
 			memToReg.setValue(new BinaryNum("0"));
@@ -62,7 +84,6 @@ public class HazardMux implements Clockable{
 			aluSrc.setValue(new BinaryNum("0"));
 			aluOp.setValue(new BinaryNum("00"));
 			branchBNE.setValue(new BinaryNum("0"));
-			immediate.setValue(new BinaryNum("0").pad(16));
 		}
 		
 	}

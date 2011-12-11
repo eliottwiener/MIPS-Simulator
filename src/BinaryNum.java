@@ -162,11 +162,8 @@ public class BinaryNum {
 	 */
 	@Override
 	public final boolean equals(Object obj) {
-		if (this == obj) {
-			throw new RuntimeException("a is null");
-		}
 		if (obj == null) {
-			return false;
+			throw new RuntimeException("b is null");
 		}
 		if (getClass() != obj.getClass()) {
 			throw new RuntimeException("Tried to compare equality between non-matching classes");

@@ -11,6 +11,11 @@ public class MemoryIO implements Clockable {
 	
 	public MemoryIO(final Memory dataMemory){
 		this.mem = dataMemory;
+		address.setValue(new BinaryNum("0").pad(32));
+		writeData.setValue(new BinaryNum("0").pad(32));
+		readData.setValue(new BinaryNum("0").pad(32));
+		memWrite.setValue(new BinaryNum("0"));
+		memRead.setValue(new BinaryNum("0"));
 	}
 	
 	public void clockEdge() {

@@ -34,7 +34,16 @@ public class Decode{
 	public int opType = -1;
 
 	// creates this object with an instruction from fetch stage
-	Decode(){}
+	Decode(){
+		instruction.setValue(new BinaryNum("0").pad(32));
+		opcode.setValue(new BinaryNum("0").pad(5));
+		rs.setValue(new BinaryNum("0").pad(5));
+		rt.setValue(new BinaryNum("0").pad(5));
+		rd.setValue(new BinaryNum("0").pad(5));
+		funct.setValue(new BinaryNum("0").pad(6));
+		immediate.setValue(new BinaryNum("0").pad(16));
+		target.setValue(new BinaryNum("0").pad(26));
+	}
 
 	// takes first 6 bits as opcode
 	public void setOpcode(BinaryNum instr){

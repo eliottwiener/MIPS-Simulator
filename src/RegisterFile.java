@@ -17,6 +17,9 @@ public class RegisterFile implements Clockable{
 		for(int x=0; x<32; x++){
 			regFile[x] = new Register(new BinaryNum("0").pad(32));
 		}
+		
+		readData1.setValue(new BinaryNum("0").pad(32));
+		readData2.setValue(new BinaryNum("0").pad(32));
 	}
 	
 	// gets the value stored at register $'index'

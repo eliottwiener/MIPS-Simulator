@@ -6,6 +6,8 @@ public class Main {
 	 * Entry point for program
 	 * @param args
 	 */
+	
+	
 	public static void main(String[] args) {
 		
 		//Read mem from program file
@@ -153,7 +155,6 @@ public class Main {
 		control.regWrite.connectTo(hazardMux.regWriteIn);
 		control.jumpReg.connectTo(hazardMux.jumpRegIn);
 		control.branchBNE.connectTo(hazardMux.branchBNEIn);
-		control.immediate.connectTo(hazardMux.immediateIn);
 		control.regDst.connectTo(hazardMux.regDstIn);
 		hazardMux.jump.connectTo(idex.jump);
 		hazardMux.branch.connectTo(idex.branch);
@@ -165,7 +166,6 @@ public class Main {
 		hazardMux.regWrite.connectTo(idex.regWrite);
 		hazardMux.jumpReg.connectTo(idex.jumpReg);
 		hazardMux.branchBNE.connectTo(idex.branchBNE);
-		hazardMux.immediate.connectTo(idex.immediate);
 		hazardMux.regDST.connectTo(idex.regDST);
 		idex.outregDST.connectTo(regDstMux.switcher);
 		idex.outaluOp.connectTo(aluControl.aluOp);
@@ -178,8 +178,6 @@ public class Main {
 		idex.outmemWrite.connectTo(exmem.memWrite);
 		idex.outregWrite.connectTo(exmem.regWrite);
 		idex.outjumpReg.connectTo(exmem.jumpReg);
-		idex.outimmediate.connectTo(alu.immediate);
-		idex.outimmediate.connectTo(signExtend.immediate);
 		exmem.outjump.connectTo(jumpMux.switcher);
 		exmem.outjumpReg.connectTo(jumpRegMux.switcher);
 		exmem.outbranch.connectTo(branchMuxAnd.input0);
@@ -235,11 +233,13 @@ public class Main {
 		// connect I/O of Hazard Detection Unit
 		decode.rs.connectTo(hdu.ifid_rs);
 		decode.rt.connectTo(hdu.ifid_rt);
-		idex.memRead.connectTo(hdu.idex_memRead);
+		idex.outmemRead.connectTo(hdu.idex_memRead);
 		idex.outRt.connectTo(hdu.idex_rt);
 		hdu.output.connectTo(hazardMux.hazard);
 		hdu.output.connectTo(pc.control);
 		hdu.output.connectTo(ifid.IFIDWrite);
+		
+		
 		pc.pcIn.setValue(new BinaryNum("1000000000000").pad(32));
 		int cycleCount = 0;
 		for(;;){
@@ -257,7 +257,6 @@ public class Main {
 				// clock the P4 ALU (increment the PC)
 				aluP4.clockEdge();
 				
-				// clock IF/ID
 				ifid.clockEdge();
 				
 				// decode the instruction
@@ -272,10 +271,6 @@ public class Main {
 				
 				
 				// clock the regfile
-				// we do this before clocking the control
-				// because if regWrite ends up being a 1, we won't have
-				// write data until this cycle is finished. So we clock 
-				// regFile first in order to handle the read registers
 				regFile.clockEdge();
 				
 				// clock the SLT
@@ -290,9 +285,8 @@ public class Main {
 				// clock the hazard mux
 				hazardMux.clockEdge();
 				
-				// clock ID/EX
 				idex.clockEdge();
-				
+
 				// clock slt Add
 				sltAdd.clockEdge();
 
@@ -318,9 +312,9 @@ public class Main {
 				
 				// clock the ALU
 				alu.clockEdge();
-				
+
 				exmem.clockEdge();
-				
+
 				// clock the Inverter
 				inv.clockEdge();
 				
@@ -329,9 +323,7 @@ public class Main {
 				
 				// clock the Memory IO
 				memoryIo.clockEdge();
-				
-				memwb.clockEdge();
-				
+								
 				// clock the combiner
 				combiner.clockEdge();
 				
@@ -347,18 +339,15 @@ public class Main {
 				// clock the jump register Mux
 				jumpRegMux.clockEdge();
 				
-				// clock the regFile
-				regFile.clockEdge();
+				memwb.clockEdge();
+
+				// Debug these objects
+				debug.debugCycle(cycleCount);
+
 				
 				// Add this cycle to the debug stream
-				debug.debugCycle(cycleCount);
 				pipelineDebug.debugCycle(cycleCount);
 				
-				/*
-				if(cycleCount >= 100){
-					break;
-				}
-				*/
 			}
 			
 			catch (Exception e){
@@ -385,14 +374,14 @@ public class Main {
 		System.out.println("The total number of instructions executed: " + instrCount);
 		System.out.println("CPI: " + (new Float(cycleCount/instrCount)));
 		System.out.println("Final Register Values:");
-/*		String output = "Register\tBinary\t\t\t  Hexadecimal\tDecimal\n";
+		String output = "Register\tHexadecimal Value \n";
 		for(int i = 0 ; i < 32 ; i++){
-			Long thisVal = regFile.getVal(i);
+			BinaryNum thisVal = regFile.getVal(i);
 			//print out register values in binary
-			output+= "$r" + i +":\t" + BinaryUtil.pad(Long.toBinaryString(thisVal), 32)
-			+ "\t0x" + Long.toHexString(thisVal) + "\t" + thisVal + "\n";
+			output+= "$r" + i +":\t\t"
+			+ "0x" + Long.toHexString(thisVal.toLong()) + "\n";
 		}
-		System.out.println(output);*/
+		System.out.println(output);
 	}
 
 }

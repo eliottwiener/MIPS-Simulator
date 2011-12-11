@@ -104,7 +104,6 @@ public class Debugger{
 		output += "RegWrite:" + print(control.regWrite) + "\n";
 		output += "JumpReg:" + print(control.jumpReg) + "\n";
 		output += "branchBNE:" + print(control.branchBNE) + "\n";
-		output += "immediate:" + print(control.immediate) + "\n";
 		output += "-------------------------- Hazard Detection Unit --------------------------\n";				
 		output += "ID/EX memRead:" + print(hdu.idex_memRead) + "\n";
 		output += "ID/EX rt:" + print(hdu.idex_rt)  + "\n";
@@ -116,8 +115,8 @@ public class Debugger{
 		output += "ID/EX rt:" + print(fu.idex_rt)  + "\n";
 		output += "EX/MEM rd:" + print(fu.exmem_rd)  + "\n";
 		output += "MEM/WB rd:" + print(fu.memwb_rd)  + "\n";
-		output += "EX/MEM regWrite:" + print(fu.exmem_rd)  + "\n";
-		output += "MEM/WB regWrite:" + print(fu.memwb_rd)  + "\n";
+		output += "EX/MEM regWrite:" + print(fu.exmem_regWrite)  + "\n";
+		output += "MEM/WB regWrite:" + print(fu.memwb_regWrite)  + "\n";
 		output += "Forward A:" + print(fu.forwardA)  + "\n";
 		output += "Forward B:" + print(fu.forwardB)  + "\n";
 		output += "------------------------ Forwarding MUX Information ------------------------\n";				
@@ -148,7 +147,6 @@ public class Debugger{
 		output += "input2:" + print(zeroALU.input2)  + "\n";
 		output += "control:" + print(zeroALU.control)  + "\n";
 		output += "result:" + print(zeroALU.result)  + "\n";
-		output += "immediate:" + print(zeroALU.immediate) + "\n";
 		output += "zero:" + print(zeroALU.zero) + "\n";
 		output += "--------------------------- Inverter Information --------------------------\n";				
 		output += "input:" + print(inv.in) + "\n";

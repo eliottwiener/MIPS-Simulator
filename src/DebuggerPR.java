@@ -92,6 +92,8 @@ public class DebuggerPR{
 		output += "----------------------- MEM/WB -----------------------\n";
 		output += "readData:" + print(memwb.readData) + "\n";
 		output += "general ALU result:" + print(memwb.genALUresult) + "\n";
+		output += "rd:" + print(memwb.rd) + "\n";
+		output += "outRD:" + print(memwb.outRd) + "\n";
 		output += "out readData:" + print(memwb.outReadData) + "\n";
 		output += "out general ALU result:" + print(memwb.outGenALUresult) + "\n";
 		output += "\t\t\t Control information\n";

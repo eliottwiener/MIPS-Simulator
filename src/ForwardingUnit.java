@@ -8,7 +8,16 @@ public class ForwardingUnit implements Clockable{
 	
 	public Pin forwardA = new Pin();
 	public Pin forwardB = new Pin();
-	public ForwardingUnit(){}
+	public ForwardingUnit(){
+		idex_rs.setValue(new BinaryNum("0").pad(5));
+		idex_rt.setValue(new BinaryNum("0").pad(5));
+		exmem_rd.setValue(new BinaryNum("0").pad(5));
+		memwb_rd.setValue(new BinaryNum("0").pad(5));
+		exmem_regWrite.setValue(new BinaryNum("0"));
+		memwb_regWrite.setValue(new BinaryNum("0"));
+		forwardA.setValue(new BinaryNum("00"));
+		forwardB.setValue(new BinaryNum("00"));
+	}
 	
 	public void clockEdge(){
 		BinaryNum idex_rs_val = idex_rs.getValue();

@@ -10,6 +10,8 @@ public class Fetch implements Clockable{
 	// initialize program counter to zero
 	public Fetch(final Memory mem){
 		this.mem = mem;
+		pc.setValue(new BinaryNum("0").pad(32));
+		instr.setValue(new BinaryNum("0").pad(32));
 	}
 	
 	public void clockEdge(){

@@ -5,7 +5,11 @@ public class And implements Clockable {
 	public final Pin input0 = new Pin();
 	public final Pin input1 = new Pin();
 	
-	And(){}
+	And(){
+		output.setValue(new BinaryNum("0"));
+		input0.setValue(new BinaryNum("0"));
+		input1.setValue(new BinaryNum("0"));
+	}
 	
 	public void clockEdge() {
 		if(input0.getValue().equals(new BinaryNum("1")) && 

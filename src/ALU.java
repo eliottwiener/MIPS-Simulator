@@ -4,11 +4,16 @@ public class ALU implements Clockable{
 	Pin input1 = new Pin();
 	Pin input2 = new Pin();
 	Pin control = new Pin();	
-	Pin immediate = new Pin();
 	Pin result = new Pin();
 	Pin zero = new Pin();
 	
-	public ALU(){}
+	public ALU(){
+		input1.setValue(new BinaryNum("0").pad(32));
+		input2.setValue(new BinaryNum("0").pad(32));
+		control.setValue(new BinaryNum("000"));
+		result.setValue(new BinaryNum("0").pad(32));
+		zero.setValue(new BinaryNum("1"));
+	}
 	
 	
 	public void clockEdge() {

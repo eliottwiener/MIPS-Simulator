@@ -3,7 +3,11 @@ public class ALUControl {
 	public final Pin aluOp = new Pin();
 	public final Pin aluControl = new Pin();
 
-	public ALUControl(){}
+	public ALUControl(){
+		func.setValue(new BinaryNum("000000"));
+		aluOp.setValue(new BinaryNum("00"));
+		aluControl.setValue(new BinaryNum("000"));
+	}
 
 	public final void update(){
 		BinaryNum funcBits = func.getValue();
