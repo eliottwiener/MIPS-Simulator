@@ -57,6 +57,7 @@ public class Main {
 
 		// initialize the AND going to branch MUX
 		And branchMuxAnd = new And();
+		And branchPredictorAnd = new And();
 		
 		// initialize the combiner (jump addr + (PC + 4))
 		Combiner combiner = new Combiner();
@@ -88,7 +89,7 @@ public class Main {
 				memoryIo, alu, aluP4, aluAdd, regDstMux, memToRegMux, aluSrcMux, 
 				branchMux, jumpMux, signExtend, sltAdd, sltTarget, jumpRegMux,
 				inv, combiner, branchMuxAnd, forwardingUnit, forwardAMux, forwardBMux,
-				hdu, branchPredictor);
+				hdu, branchPredictor, branchPredictorAnd);
 		DebuggerPR pipelineDebug = new DebuggerPR(ifid, idex, exmem, memwb);
 		
 		// Connect output of PC
@@ -125,7 +126,7 @@ public class Main {
 		alu.zero.connectTo(exmem.zero);
 		inv.out.connectTo(branchMuxAnd.input1);
 		branchPredictor.zero.connectTo(branchInv.in);
-		branchInv.out.connectTo(ifid.Flush);
+		branchInv.out.connectTo(branchPredictorAnd.input1);
 		aluP4.result.connectTo(ifid.PC4);
 		aluP4.result.connectTo(branchMux.input0);
 		aluP4.result.connectTo(combiner.pcIn);
@@ -141,9 +142,12 @@ public class Main {
 		// connect output of combiner
 		combiner.out.connectTo(jumpMux.input1);
 		
+		// connect output of ANDs
+		branchMuxAnd.output.connectTo(branchMux.switcher);
+		branchPredictorAnd.output.connectTo(ifid.Flush);
+		
 		memToRegMux.output.connectTo(regFile.writeData);
 		regDstMux.output.connectTo(exmem.rd);
-		branchMuxAnd.output.connectTo(branchMux.switcher);
 		branchMux.output.connectTo(jumpMux.input0);
 		jumpMux.output.connectTo(jumpRegMux.input0);
 		jumpRegMux.output.connectTo(pc.pcIn);
@@ -154,6 +158,7 @@ public class Main {
 		control.regDst.connectTo(hazardMux.regDstIn);
 		control.jump.connectTo(hazardMux.jumpIn);
 		control.branch.connectTo(hazardMux.branchIn);
+		control.branch.connectTo(branchPredictorAnd.input0);
 		control.memRead.connectTo(hazardMux.memReadIn);
 		control.memToReg.connectTo(hazardMux.memToRegIn);
 		control.aluOp.connectTo(hazardMux.aluOpIn);
@@ -324,6 +329,12 @@ public class Main {
 				control.setSignals();
 				// clock the hazard mux
 				hazardMux.clockEdge();
+				// clock the branch predictor
+				branchPredictor.clockEdge();
+				// clock the branch inverter
+				branchInv.clockEdge();
+				// clock the branch predictor AND
+				branchPredictorAnd.clockEdge();
 				
 				
 				/*
@@ -359,7 +370,7 @@ public class Main {
 				idex.clockEdge();
 				ifid.clockEdge();
 				
-				if(cycleCount == 120) break;
+				if(cycleCount == 155) break;
 				
 			}
 			
@@ -375,7 +386,6 @@ public class Main {
 				break;
 			}
 		
-				
 
 		}
 	
