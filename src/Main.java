@@ -91,6 +91,12 @@ public class Main {
 				branchMux, jumpMux, signExtend, sltAdd, sltTarget, jumpRegMux,
 				inv, combiner, branchMuxAnd, forwardingUnit, forwardAMux, forwardBMux,
 				hdu, branchPredictor, branchClearedAnd, ifid, idex, exmem);
+		Debugger2 debug2 = new Debugger2(regFile, decode, pc, control, aluControl,
+				memoryIo, alu, aluP4, aluAdd, regDstMux, memToRegMux, aluSrcMux, 
+				branchMux, jumpMux, signExtend, sltAdd, sltTarget, jumpRegMux,
+				inv, combiner, branchMuxAnd, forwardingUnit, forwardAMux, forwardBMux,
+				hdu, branchPredictor, branchClearedAnd, ifid, idex, exmem,
+				hazardMux);
 		DebuggerPR pipelineDebug = new DebuggerPR(ifid, idex, exmem, memwb);
 		
 		// Connect output of PC
@@ -274,7 +280,7 @@ public class Main {
 				 */
 				// clock the memToRegMux
 				memToRegMux.clockEdge();
-				
+				debug2.debugCycle(cycleCount, "Writeback");
 				
 				/*
 				 * The MEM stage of the datapath
@@ -293,7 +299,8 @@ public class Main {
 				jumpMux.clockEdge();
 				// clock the jump register Mux
 				jumpRegMux.clockEdge();
-				
+				debug2.debugCycle(cycleCount, "Memory");
+
 				
 				/*
 				 * The EX stage of the datapath
@@ -317,7 +324,8 @@ public class Main {
 				aluSrcMux.clockEdge();
 				// clock the ALU
 				alu.clockEdge();
-				
+				debug2.debugCycle(cycleCount, "Execute");
+
 				
 				/*
 				 * The ID stage of the datapath
@@ -343,7 +351,8 @@ public class Main {
 				hazardMux.clockEdge();
 				// clock the branch predictor
 				branchPredictor.clockEdge();
-				
+				debug2.debugCycle(cycleCount, "Decode");
+
 				
 				/*
 				 * The IF stage of the datapath
@@ -357,6 +366,8 @@ public class Main {
 				fetch.clockEdge();
 				// clock the P4 ALU (increment the PC)
 				aluP4.clockEdge();
+				debug2.debugCycle(cycleCount, "Fetch");
+
 							
 				/* 
 				 * Debug stuff
@@ -398,6 +409,7 @@ public class Main {
 		}
 	
 		debug.close();
+		debug2.close();
 		pipelineDebug.close();
 		int instrCount = cycleCount;
 		System.out.println("Execution Complete!\n");
