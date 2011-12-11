@@ -112,7 +112,6 @@ public class Debugger{
 		output += "target:" + print(decode.target) + "\t\t" + printDecimal(decode.target)  +"\n";
 		output += "------------------------- Branch Taken Information -------------------------\n";
 		output += "idex branch taken:" + print(idex.branchTaken) + "\n";
-		output += "exmem branch taken:" + print(exmem.branchTaken) + "\n";
 		output += "------------------------- Sign-Extend Information -------------------------\n";
 		output += "input:" + print(signExtend.input) + "\n";
 		output += "output:" + print(signExtend.output) + "\n";
