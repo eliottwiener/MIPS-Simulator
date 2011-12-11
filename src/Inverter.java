@@ -4,8 +4,8 @@ public class Inverter implements Clockable{
 	Pin branchBNE = new Pin();
 	
 	public Inverter(){
-		in.setValue(new BinaryNum("0").pad(32));
-		out.setValue(new BinaryNum("0").pad(32));
+		in.setValue(new BinaryNum("0"));
+		out.setValue(new BinaryNum("0"));
 		branchBNE.setValue(new BinaryNum("0"));
 	}
 	public void clockEdge(){
