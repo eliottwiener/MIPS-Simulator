@@ -19,11 +19,11 @@ public class DebuggerPR{
 		this.memwb = memwb;
 		
 		try {
-			fstream = new FileWriter("debug.txt", false);
+			fstream = new FileWriter("pipelineDebug.txt", false);
 			out = new BufferedWriter(fstream);
 			out.write("");
 			out.close();
-			fstream = new FileWriter("debug.txt", true);
+			fstream = new FileWriter("pipelineDebug.txt", true);
 			out = new BufferedWriter(fstream);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -39,6 +39,7 @@ public class DebuggerPR{
 		output += "instruction:" + print(ifid.instruction) + "\n";
 		output += "out PC+4: " + print(ifid.outPC4) + "\t\t" + printDecimal(ifid.PC4) + "\n";
 		output += "out instruction:" + print(ifid.outInstr) + "\n";
+		output += "Flush:" + print(ifid.Flush) + "\n";
 		output += "----------------------- ID/EX -----------------------\n";
 		output += "\t\t\tData information\n";
 		output += "PC+4 in:" + print(idex.PC4) + "\t\t" + printDecimal(ifid.PC4) + "\n";
