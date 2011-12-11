@@ -216,9 +216,6 @@ public class Main {
 		memwb.outGenALUresult.connectTo(memToRegMux.input0);
 		memwb.outReadData.connectTo(memToRegMux.input1);
 		memwb.outRd.connectTo(regFile.writeReg);
-		ifid.instruction.connectTo(idex.instruction);
-		idex.instruction.connectTo(exmem.instruction);
-		exmem.instruction.connectTo(memwb.instruction);
 		
 		// connect I/O of forwarding unit
 		idex.outRs.connectTo(forwardingUnit.idex_rs);
