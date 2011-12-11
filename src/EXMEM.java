@@ -57,6 +57,6 @@ public class EXMEM implements Clockable{
 		outmemWrite.setValue(memWrite.getValue());
 		outmemRead.setValue(memRead.getValue());
 		outbranch.setValue(branch.getValue());
-		outRd.setValue(rd.getValue());
+		outRd.setValue(rd.getValue());	
 	}
 }
