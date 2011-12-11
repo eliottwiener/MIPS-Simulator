@@ -30,14 +30,16 @@ public class Main {
 	 	ShiftLeftTwo sltTarget = new ShiftLeftTwo(28);
 		ShiftLeftTwo sltAdd = new ShiftLeftTwo(32);
 		
-		// Initialize the 3 ALUs
+		// Initialize the 4 ALUs
 		ALU alu = new ALU();
 		ALU aluAdd = new ALU();
 		ALU aluP4 = new ALU();
+		ALU branchPredictor = new ALU();
 		// set the static controls/inputs for certain ALU
 		aluAdd.control.setValue(new BinaryNum("010"));
 		aluP4.control.setValue(new BinaryNum("010"));
 		aluP4.input2.setValue(new BinaryNum("100").pad(32));
+		branchPredictor.control.setValue(new BinaryNum("110"));
 		
 		// initalize Memory IO
 		MemoryIO memoryIo = new MemoryIO(memory);
@@ -64,6 +66,7 @@ public class Main {
 		
 		// initialize the inverter
 		Inverter inv = new Inverter();
+		Inverter branchInv = new Inverter();
 		
 		// initialize the Program Counter
 		ProgramCounter pc = new ProgramCounter();
@@ -113,12 +116,16 @@ public class Main {
 		// Connect outputs of regFile
 		regFile.readData1.connectTo(idex.readData1);
 		regFile.readData2.connectTo(idex.readData2);
+		regFile.readData1.connectTo(branchPredictor.input1);
+		regFile.readData2.connectTo(branchPredictor.input2);
 				
 		// Connect outputs of ALU and related
 		aluSrcMux.output.connectTo(alu.input2);
 		alu.result.connectTo(exmem.genALUResult);
 		alu.zero.connectTo(exmem.zero);
 		inv.out.connectTo(branchMuxAnd.input1);
+		branchPredictor.zero.connectTo(branchInv.in);
+		branchInv.out.connectTo(ifid.Flush);
 		aluP4.result.connectTo(ifid.PC4);
 		aluP4.result.connectTo(branchMux.input0);
 		aluP4.result.connectTo(combiner.pcIn);
@@ -171,6 +178,7 @@ public class Main {
 		idex.outaluOp.connectTo(aluControl.aluOp);
 		idex.outaluSrc.connectTo(aluSrcMux.switcher);
 		idex.outbranchBNE.connectTo(inv.branchBNE);
+		idex.outbranchBNE.connectTo(branchInv.branchBNE);
 		idex.outjump.connectTo(exmem.jump);
 		idex.outbranch.connectTo(exmem.branch);
 		idex.outmemRead.connectTo(exmem.memRead);
@@ -208,6 +216,9 @@ public class Main {
 		memwb.outGenALUresult.connectTo(memToRegMux.input0);
 		memwb.outReadData.connectTo(memToRegMux.input1);
 		memwb.outRd.connectTo(regFile.writeReg);
+		ifid.instruction.connectTo(idex.instruction);
+		idex.instruction.connectTo(exmem.instruction);
+		exmem.instruction.connectTo(memwb.instruction);
 		
 		// connect I/O of forwarding unit
 		idex.outRs.connectTo(forwardingUnit.idex_rs);
@@ -247,7 +258,7 @@ public class Main {
 				
 				// increase the cycle count
 				cycleCount ++;
-
+				System.out.println("cycle:" + cycleCount);
 				// send PC to fetch object
 				pc.clockEdge();
 				
@@ -256,11 +267,10 @@ public class Main {
 				
 				// clock the P4 ALU (increment the PC)
 				aluP4.clockEdge();
-				
-				ifid.clockEdge();
-				
+								
 				// decode the instruction
 				decode.clockEdge();
+				
 				if(decode.isHalt()){
 					// terminate when we see a "HLT" instruction
 					break;
@@ -268,7 +278,6 @@ public class Main {
 				
 				// clock the sign-extend
 				signExtend.clockEdge();
-				
 				
 				// clock the regfile
 				regFile.clockEdge();
@@ -285,8 +294,6 @@ public class Main {
 				// clock the hazard mux
 				hazardMux.clockEdge();
 				
-				idex.clockEdge();
-
 				// clock slt Add
 				sltAdd.clockEdge();
 
@@ -295,8 +302,7 @@ public class Main {
 				
 				// set ALU control signals
 				aluControl.update();
-								
-				
+										
 				// clock the RegDST Mux
 				regDstMux.clockEdge();
 				
@@ -312,8 +318,6 @@ public class Main {
 				
 				// clock the ALU
 				alu.clockEdge();
-
-				exmem.clockEdge();
 
 				// clock the Inverter
 				inv.clockEdge();
@@ -339,11 +343,14 @@ public class Main {
 				// clock the jump register Mux
 				jumpRegMux.clockEdge();
 				
-				memwb.clockEdge();
-
 				// Debug these objects
 				debug.debugCycle(cycleCount);
 
+				// clock the registers
+				ifid.clockEdge();
+				idex.clockEdge();
+				exmem.clockEdge();
+				memwb.clockEdge();
 				
 				// Add this cycle to the debug stream
 				pipelineDebug.debugCycle(cycleCount);
