@@ -26,6 +26,7 @@ public class DebuggerPR{
 		output += "out instruction:" + print(ifid.outInstr) + "\n";
 		output += "----------------------- ID/EX -----------------------\n";
 		output += "\t\t\tData information\n";
+		output += "instruction:" + print(idex.instruction) + "\n";
 		output += "PC+4 in:" + print(idex.PC4) + "\t\t" + printDecimal(ifid.PC4) + "\n";
 		output += "PC+4 out: " + print(idex.outPC4) + "\t\t" + printDecimal(ifid.PC4) + "\n";
 		output += "readData1 in:" + print(idex.readData1) + "\n";
@@ -66,6 +67,7 @@ public class DebuggerPR{
 		output += "branchBNE in:" + print(idex.branchBNE) + "\n";
 		output += "branchBNE out:" + print(idex.outbranchBNE) + "\n";
 		output += "----------------------- EX/MEM -----------------------\n";
+		output += "instruction:" + print(exmem.instruction) + "\n";
 		output += "add ALU result:" + print(exmem.addALUresult) + "\n";
 		output += "zero:" + print(exmem.zero) + "\n";
 		output += "general ALU result:" + print(exmem.genALUResult) + "\n";
@@ -90,6 +92,7 @@ public class DebuggerPR{
 		output += "branch in:" + print(exmem.branch) + "\n";
 		output += "branch out:" + print(exmem.outbranch) + "\n";
 		output += "----------------------- MEM/WB -----------------------\n";
+		output += "instruction:" + print(memwb.instruction) + "\n";
 		output += "readData:" + print(memwb.readData) + "\n";
 		output += "general ALU result:" + print(memwb.genALUresult) + "\n";
 		output += "rd:" + print(memwb.rd) + "\n";
