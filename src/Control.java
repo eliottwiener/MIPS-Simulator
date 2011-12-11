@@ -14,7 +14,8 @@ public class Control{
 	public Pin regWrite = new Pin();
 	public Pin jumpReg = new Pin();
 	public Pin branchBNE = new Pin();
-	public Pin flush = new Pin();
+	public Pin branchTakenIn = new Pin();
+	public Pin branchTakenOut = new Pin();
 
 	public Control(){
 		opcode.setValue(new BinaryNum("00000"));
@@ -30,7 +31,8 @@ public class Control{
 		regWrite.setValue(new BinaryNum("0"));
 		jumpReg.setValue(new BinaryNum("0"));
 		branchBNE.setValue(new BinaryNum("0"));
-		flush.setValue(new BinaryNum("0"));
+		branchTakenIn.setValue(new BinaryNum("0"));
+		branchTakenOut.setValue(new BinaryNum("0"));
 	}
 
 	// Set the control signals depending on the opcode
@@ -156,6 +158,8 @@ public class Control{
 			jumpReg.setValue(new BinaryNum("0"));
 			branchBNE.setValue(new BinaryNum("0"));
 		}
+		
+		branchTakenOut.setValue(branchTakenIn.getValue());
 
 	}
 }
