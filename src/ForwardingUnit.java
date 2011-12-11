@@ -42,7 +42,7 @@ public class ForwardingUnit implements Clockable{
 			forwardB.setValue(new BinaryNum("10"));
 		} 
 		
-	/*	if(new BinaryNum("1").equals(memwb_regWrite_val) &&
+		if(new BinaryNum("1").equals(memwb_regWrite_val) &&
 				!(memwb_rd_val.equals(rdZero)) &&
 				!(new BinaryNum("1").equals(exmem_regWrite.getValue())) &&
 				exmem_rd_val.equals(rdZero) &&
@@ -57,8 +57,9 @@ public class ForwardingUnit implements Clockable{
 				exmem_rd_val.equals(idex_rt_val) &&
 				memwb_rd_val.equals(idex_rt_val)){
 			forwardB.setValue(new BinaryNum("01"));
-		}*/
-				
+		}
+		
+		/*
 		// MEM hazard
 		if(new BinaryNum("1").equals(memwb_regWrite_val) &&
 				!(memwb_rd_val.equals(rdZero)) &&
@@ -72,7 +73,7 @@ public class ForwardingUnit implements Clockable{
 				!(exmem_rd_val.equals(idex_rs_val)) &&
 				!(memwb_rd_val.equals(idex_rs_val))){
 			forwardB.setValue(new BinaryNum("01"));
-		}
+		}*/
 				
 	}
 }
