@@ -133,8 +133,7 @@ public class Debugger{
 		output += "RegWrite:" + print(control.regWrite) + "\n";
 		output += "JumpReg:" + print(control.jumpReg) + "\n";
 		output += "branchBNE:" + print(control.branchBNE) + "\n";
-		output += "BranchT In:" + print(control.branchTakenIn) + "\n";
-		output += "BranchT Out:" + print(control.branchTakenOut) + "\n";
+		output += "Branch Taken:" + print(control.branchTaken) + "\n";
 		output += "----------------------------- Branch Cleared And ---------------------------\n";				
 		output += "input 0:" + print(bcAnd.input0) + "\n";
 		output += "input 1:" + print(bcAnd.input1)  + "\n";
