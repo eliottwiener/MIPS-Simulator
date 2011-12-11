@@ -28,7 +28,6 @@ public class Decode{
 	// 25-bit for target of jump
 	public Pin target = new Pin();
 
-
 	// 0 for R-Type, 1 for I-Type, 2 for J-Type, 3 for HLT
 	// -1 for unrecognized opcode
 	public int opType = -1;
@@ -164,7 +163,6 @@ public class Decode{
 		setRD(instrbin);
 		setFunct(instrbin);
 		setImmediate(instrbin);
-		
 		
 	}
 }
