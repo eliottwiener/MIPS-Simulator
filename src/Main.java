@@ -88,7 +88,7 @@ public class Main {
 				memoryIo, alu, aluP4, aluAdd, regDstMux, memToRegMux, aluSrcMux, 
 				branchMux, jumpMux, signExtend, sltAdd, sltTarget, jumpRegMux,
 				inv, combiner, branchMuxAnd, forwardingUnit, forwardAMux, forwardBMux,
-				hdu);
+				hdu, branchPredictor);
 		DebuggerPR pipelineDebug = new DebuggerPR(ifid, idex, exmem, memwb);
 		
 		// Connect output of PC
@@ -253,6 +253,7 @@ public class Main {
 		for(;;){
 			try{
 				
+				cycleCount ++;
 				/*
 				 * The WB stage of the datapath
 				 */
@@ -269,8 +270,6 @@ public class Main {
 				branchMuxAnd.clockEdge();
 				// clock the Memory IO
 				memoryIo.clockEdge();
-				// clock the combiner
-				combiner.clockEdge();
 				// clock the Branch Mux
 				branchMux.clockEdge();
 				// clock the jump Mux
@@ -290,6 +289,8 @@ public class Main {
 				aluControl.update();	
 				// clock the RegDST Mux
 				regDstMux.clockEdge();
+				// clock the combiner
+				combiner.clockEdge();
 				// clock the forwarding unit
 				forwardingUnit.clockEdge();
 				// clock the Forwarding Muxes;
@@ -328,7 +329,7 @@ public class Main {
 				/*
 				 * The IF stage of the datapath
 				 */
-				if(cycleCount == 0){
+				if(cycleCount == 1){
 					pc.pcIn.setValue(new BinaryNum("1000000000000").pad(32));
 				}
 				// send PC to fetch object
@@ -343,17 +344,13 @@ public class Main {
 				 */
 				// Debug these objects
 				debug.debugCycle(cycleCount);
-				
 				// increase the cycle count
-				cycleCount ++;
+				
 				System.out.println("cycle:" + cycleCount);
 				
 				// Add this cycle to the debug stream
 				pipelineDebug.debugCycle(cycleCount);
-				/*
-				 * 
-				 */
-				
+			
 				/*
 				 * Clock the pipeline registers
 				 */
@@ -361,9 +358,9 @@ public class Main {
 				exmem.clockEdge();
 				idex.clockEdge();
 				ifid.clockEdge();
-
 				
-				if(cycleCount == 25) break;
+				if(cycleCount == 120) break;
+				
 			}
 			
 			catch (Exception e){
@@ -382,8 +379,8 @@ public class Main {
 
 		}
 	
-		debug.dump("debug.txt");
-		pipelineDebug.dump("pipelineDebug.txt");
+		debug.close();
+		pipelineDebug.close();
 		int instrCount = cycleCount;
 		System.out.println("Execution Complete!\n");
 		System.out.println("The total number of cycles: " + cycleCount);
