@@ -28,11 +28,13 @@ public class IDEX implements Clockable{
 	public Pin memWrite = new Pin();
 	public Pin memRead = new Pin();
 	public Pin branch = new Pin();
+	public Pin branchTaken = new Pin();
 	public Pin outjump = new Pin();
 	public Pin outjumpReg = new Pin();
 	public Pin outmemWrite = new Pin();
 	public Pin outmemRead = new Pin();
 	public Pin outbranch = new Pin();
+	public Pin outbranchTaken = new Pin();
 	// control signals (EX)
 	public Pin regDST = new Pin();
 	public Pin aluSrc = new Pin();
@@ -61,6 +63,7 @@ public class IDEX implements Clockable{
 		memWrite.setValue(new BinaryNum("0"));
 		memRead.setValue(new BinaryNum("0"));
 		branch.setValue(new BinaryNum("0"));
+		branchTaken.setValue(new BinaryNum("0"));
 		regDST.setValue(new BinaryNum("0"));
 		aluSrc.setValue(new BinaryNum("0"));
 		aluOp.setValue(new BinaryNum("00"));
@@ -81,12 +84,14 @@ public class IDEX implements Clockable{
 		outmemWrite.setValue(new BinaryNum("0"));
 		outmemRead.setValue(new BinaryNum("0"));
 		outbranch.setValue(new BinaryNum("0"));
+		outbranchTaken.setValue(new BinaryNum("0"));
 		outregDST.setValue(new BinaryNum("0"));
 		outaluSrc.setValue(new BinaryNum("0"));
 		outaluOp.setValue(new BinaryNum("00"));
 		outbranchBNE.setValue(new BinaryNum("0"));
 		outimmediate.setValue(new BinaryNum("0"));
 	}
+	
 	public void clockEdge(){
 		outPC4.setValue(PC4.getValue());
 		outReadData1.setValue(readData1.getValue());
@@ -99,6 +104,7 @@ public class IDEX implements Clockable{
 		outmemWrite.setValue(memWrite.getValue());
 		outmemRead.setValue(memRead.getValue());
 		outbranch.setValue(branch.getValue());
+		outbranchTaken.setValue(branchTaken.getValue());
 		outimmediate.setValue(immediate.getValue());
 		outregDST.setValue(regDST.getValue());
 		outaluSrc.setValue(aluSrc.getValue());
@@ -109,4 +115,5 @@ public class IDEX implements Clockable{
 		outFunct.setValue(funct.getValue());
 		outRs.setValue(rs.getValue());
 	}
+	
 }
