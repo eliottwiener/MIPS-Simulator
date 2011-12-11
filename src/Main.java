@@ -193,7 +193,6 @@ public class Main {
 		exmem.outmemRead.connectTo(memoryIo.memRead);
 		exmem.outmemToReg.connectTo(memwb.memToReg);
 		exmem.outregWrite.connectTo(memwb.regWrite);
-		exmem.outRd.connectTo(memwb.rd);
 		memwb.outmemToReg.connectTo(memToRegMux.switcher);
 		memwb.outregWrite.connectTo(regFile.regWrite);
 		
@@ -212,6 +211,7 @@ public class Main {
 		exmem.outGenALUresult.connectTo(memoryIo.address);
 		exmem.outGenALUresult.connectTo(memwb.genALUresult);
 		exmem.outReadData2.connectTo(memoryIo.writeData);
+		exmem.outRd.connectTo(memwb.rd);
 		exmem.outZero.connectTo(inv.in);
 		memwb.outGenALUresult.connectTo(memToRegMux.input0);
 		memwb.outReadData.connectTo(memToRegMux.input1);
@@ -256,105 +256,117 @@ public class Main {
 		for(;;){
 			try{
 				
-				// increase the cycle count
-				cycleCount ++;
-				System.out.println("cycle:" + cycleCount);
-				// send PC to fetch object
-				pc.clockEdge();
+				/*
+				 * The WB stage of the datapath
+				 */
+				// clock the memToRegMux
+				memToRegMux.clockEdge();
 				
-				// fetch the instruction
-				fetch.clockEdge();
 				
-				// clock the P4 ALU (increment the PC)
-				aluP4.clockEdge();
-								
+				/*
+				 * The MEM stage of the datapath
+				 */
+				// clock the Inverter
+				inv.clockEdge();	
+				// clock the AND
+				branchMuxAnd.clockEdge();
+				// clock the Memory IO
+				memoryIo.clockEdge();
+				// clock the combiner
+				combiner.clockEdge();
+				// clock the Branch Mux
+				branchMux.clockEdge();
+				// clock the jump Mux
+				jumpMux.clockEdge();
+				// clock the jump register Mux
+				jumpRegMux.clockEdge();
+				
+				
+				/*
+				 * The EX stage of the datapath
+				 */
+				// clock slt Add
+				sltAdd.clockEdge();
+				// clock the Add ALU
+				aluAdd.clockEdge();
+				// set ALU control signals
+				aluControl.update();	
+				// clock the RegDST Mux
+				regDstMux.clockEdge();
+				// clock the forwarding unit
+				forwardingUnit.clockEdge();
+				// clock the Forwarding Muxes;
+				forwardAMux.clockEdge();
+				forwardBMux.clockEdge();
+				// clock the ALUSrc Mux
+				aluSrcMux.clockEdge();
+				// clock the ALU
+				alu.clockEdge();
+				
+				
+				/*
+				 * The ID stage of the datapath
+				 */
 				// decode the instruction
 				decode.clockEdge();
-				
+				// stop executing if we see a halt instruction.
 				if(decode.isHalt()){
 					// terminate when we see a "HLT" instruction
 					break;
 				}
-				
 				// clock the sign-extend
 				signExtend.clockEdge();
-				
 				// clock the regfile
 				regFile.clockEdge();
-				
 				// clock the SLT
 				sltTarget.clockEdge();
-				
 				// clock the hazard detection unit
 				hdu.clockEdge();
-				
 				// set the output control signals
 				control.setSignals();
-				
 				// clock the hazard mux
 				hazardMux.clockEdge();
 				
-				// clock slt Add
-				sltAdd.clockEdge();
-
-				// clock the Add ALU
-				aluAdd.clockEdge();
 				
-				// set ALU control signals
-				aluControl.update();
-										
-				// clock the RegDST Mux
-				regDstMux.clockEdge();
-				
-				// clock the forwarding unit
-				forwardingUnit.clockEdge();
-				
-				// clock the Forwarding Muxes;
-				forwardAMux.clockEdge();
-				forwardBMux.clockEdge();
-				
-				// clock the ALUSrc Mux
-				aluSrcMux.clockEdge();
-				
-				// clock the ALU
-				alu.clockEdge();
-
-				// clock the Inverter
-				inv.clockEdge();
-				
-				// clock the AND
-				branchMuxAnd.clockEdge();
-				
-				// clock the Memory IO
-				memoryIo.clockEdge();
-								
-				// clock the combiner
-				combiner.clockEdge();
-				
-				// clock the Branch Mux
-				branchMux.clockEdge();
-	
-				// clock the memToRegMux
-				memToRegMux.clockEdge();
-	
-				// clock the jump Mux
-				jumpMux.clockEdge();
-				
-				// clock the jump register Mux
-				jumpRegMux.clockEdge();
-				
+				/*
+				 * The IF stage of the datapath
+				 */
+				if(cycleCount == 0){
+					pc.pcIn.setValue(new BinaryNum("1000000000000").pad(32));
+				}
+				// send PC to fetch object
+				pc.clockEdge();
+				// fetch the instruction
+				fetch.clockEdge();
+				// clock the P4 ALU (increment the PC)
+				aluP4.clockEdge();
+							
+				/* 
+				 * Debug stuff
+				 */
 				// Debug these objects
 				debug.debugCycle(cycleCount);
-
-				// clock the registers
-				ifid.clockEdge();
-				idex.clockEdge();
-				exmem.clockEdge();
-				memwb.clockEdge();
+				
+				// increase the cycle count
+				cycleCount ++;
+				System.out.println("cycle:" + cycleCount);
 				
 				// Add this cycle to the debug stream
 				pipelineDebug.debugCycle(cycleCount);
+				/*
+				 * 
+				 */
 				
+				/*
+				 * Clock the pipeline registers
+				 */
+				memwb.clockEdge();
+				exmem.clockEdge();
+				idex.clockEdge();
+				ifid.clockEdge();
+
+				
+				if(cycleCount == 25) break;
 			}
 			
 			catch (Exception e){
