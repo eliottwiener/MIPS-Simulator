@@ -393,12 +393,13 @@ public class Main {
 		System.out.println("The total number of instructions executed: " + instrCount);
 		System.out.println("CPI: " + (new Float(cycleCount/instrCount)));
 		System.out.println("Final Register Values:");
-		String output = "Register\tHexadecimal Value \n";
+		String output = "Register\tHexadecimal Value\tDecimal Value \n";
 		for(int i = 0 ; i < 32 ; i++){
 			BinaryNum thisVal = regFile.getVal(i);
 			//print out register values in binary
 			output+= "$r" + i +":\t\t"
-			+ "0x" + Long.toHexString(thisVal.toLong()) + "\n";
+			+ "0x" + Long.toHexString(thisVal.toLong()) + 
+			"\t\t" + thisVal.toLong() + "\n";
 		}
 		System.out.println(output);
 	}
