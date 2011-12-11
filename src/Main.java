@@ -240,7 +240,6 @@ public class Main {
 		hdu.output.connectTo(hazardMux.hazard);
 		hdu.output.connectTo(pc.control);
 		hdu.output.connectTo(ifid.IFIDWrite);
-	
 		pc.pcIn.setValue(new BinaryNum("1000000000000").pad(32));
 		int cycleCount = 0;
 		for(;;){

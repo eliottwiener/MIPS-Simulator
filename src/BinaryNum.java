@@ -166,7 +166,7 @@ public class BinaryNum {
 			throw new RuntimeException("a is null");
 		}
 		if (obj == null) {
-			throw new RuntimeException("b is null");
+			return false;
 		}
 		if (getClass() != obj.getClass()) {
 			throw new RuntimeException("Tried to compare equality between non-matching classes");
