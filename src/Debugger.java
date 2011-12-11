@@ -27,7 +27,10 @@ public class Debugger{
 	public Mux3 forwardA;
 	public Mux3 forwardB;
 	public HazardDetectionUnit hdu;
+	public ALU equals;
 	public String output = "";
+	public FileWriter fstream;
+	public BufferedWriter out;
 	
 	public Debugger(RegisterFile regFile, Decode decode,
 			ProgramCounter pc, Control control,
@@ -39,7 +42,7 @@ public class Debugger{
 			ShiftLeftTwo sltTarget, Mux jumpRegMux,
 			Inverter inv, Combiner comb, And and,
 			ForwardingUnit fu, Mux3 forwardA, Mux3 forwardB,
-			HazardDetectionUnit hdu){
+			HazardDetectionUnit hdu, ALU equals){
 		this.regFile = regFile;
 		this.decode = decode;
 		this.pc = pc;
@@ -66,6 +69,19 @@ public class Debugger{
 		this.forwardA = forwardA;
 		this.forwardB = forwardB;
 		this.hdu = hdu;
+		this.equals = equals;
+		
+		try {
+			fstream = new FileWriter("debug.txt", false);
+			out = new BufferedWriter(fstream);
+			out.write("");
+			out.close();
+			fstream = new FileWriter("debug.txt", true);
+			out = new BufferedWriter(fstream);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void debugCycle(int cycleCount){
@@ -104,6 +120,12 @@ public class Debugger{
 		output += "RegWrite:" + print(control.regWrite) + "\n";
 		output += "JumpReg:" + print(control.jumpReg) + "\n";
 		output += "branchBNE:" + print(control.branchBNE) + "\n";
+		output += "-------------------------- Branch Predictor ALU ---------------------------\n";				
+		output += "input1:" + print(equals.input1) + "\n";
+		output += "input2:" + print(equals.input2)  + "\n";
+		output += "control:" + print(equals.control)  + "\n";
+		output += "result:" + print(equals.result)  + "\n";
+		output += "zero:" + print(equals.zero)  + "\n";
 		output += "-------------------------- Hazard Detection Unit --------------------------\n";				
 		output += "ID/EX memRead:" + print(hdu.idex_memRead) + "\n";
 		output += "ID/EX rt:" + print(hdu.idex_rt)  + "\n";
@@ -219,6 +241,9 @@ public class Debugger{
 			+ "\t0x" + Long.toHexString(thisVal.toLong()) + "\t" + thisVal.toLong() + "\n";
 		}
 		output += "\n\n";
+		
+		dump();
+		output = "";
 	}
 	
 	public String print(Pin p){
@@ -238,16 +263,21 @@ public class Debugger{
 		}
 	}
 	
-	public void dump(String fileName){
+	public void dump(){
 		try{
-			// Create file 
-			FileWriter fstream = new FileWriter(fileName);
-			BufferedWriter out = new BufferedWriter(fstream);
 			out.write(output);
 			//Close the output stream
-			out.close();
 			}catch (Exception e){//Catch exception if any
 			System.err.println("Error: " + e.getMessage());
 			}
+	}
+	
+	public void close(){
+		try {
+			out.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+	}
 }
