@@ -1,4 +1,3 @@
-
 public class And implements Clockable {
 	
 	public final Pin output = new Pin(); 
