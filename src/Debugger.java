@@ -28,6 +28,7 @@ public class Debugger{
 	public Mux3 forwardB;
 	public HazardDetectionUnit hdu;
 	public ALU equals;
+	public And bpAnd;
 	public String output = "";
 	public FileWriter fstream;
 	public BufferedWriter out;
@@ -42,7 +43,7 @@ public class Debugger{
 			ShiftLeftTwo sltTarget, Mux jumpRegMux,
 			Inverter inv, Combiner comb, And and,
 			ForwardingUnit fu, Mux3 forwardA, Mux3 forwardB,
-			HazardDetectionUnit hdu, ALU equals){
+			HazardDetectionUnit hdu, ALU equals, And bpAnd){
 		this.regFile = regFile;
 		this.decode = decode;
 		this.pc = pc;
@@ -70,6 +71,7 @@ public class Debugger{
 		this.forwardB = forwardB;
 		this.hdu = hdu;
 		this.equals = equals;
+		this.bpAnd = bpAnd;
 		
 		try {
 			fstream = new FileWriter("debug.txt", false);
@@ -126,6 +128,10 @@ public class Debugger{
 		output += "control:" + print(equals.control)  + "\n";
 		output += "result:" + print(equals.result)  + "\n";
 		output += "zero:" + print(equals.zero)  + "\n";
+		output += "-------------------------- Branch Predictor AND ---------------------------\n";				
+		output += "input0:" + print(bpAnd.input0) + "\n";
+		output += "input1:" + print(bpAnd.input1)  + "\n";
+		output += "output:" + print(bpAnd.output)  + "\n";
 		output += "-------------------------- Hazard Detection Unit --------------------------\n";				
 		output += "ID/EX memRead:" + print(hdu.idex_memRead) + "\n";
 		output += "ID/EX rt:" + print(hdu.idex_rt)  + "\n";
