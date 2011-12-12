@@ -269,7 +269,7 @@ public class Main {
 		hazardMux.branchTaken.connectTo(idex.branchTaken);
 		
 		pc.pcIn.setValue(new BinaryNum("1000000000000").pad(32));
-		int cycleCount = 0;
+		float cycleCount = 0;
 		int killClock = 0;
 		boolean halting = false;
 		for(;;){
@@ -410,11 +410,10 @@ public class Main {
 		debug.close();
 		debug2.close();
 		pipelineDebug.close();
-		int instrCount = cycleCount;
 		System.out.println("Execution Complete!\n");
 		System.out.println("The total number of cycles: " + cycleCount);
-		System.out.println("The total number of instructions executed: " + instrCount);
-		System.out.println("CPI: " + (new Float(cycleCount/instrCount)));
+		System.out.println("The total number of instructions executed: " + pc.instrCount);
+		System.out.println("CPI: " + (new Float(cycleCount/pc.instrCount)));
 		System.out.println("Final Register Values:");
 		String output = "Register\tHexadecimal Value\tDecimal Value \n";
 		for(int i = 0 ; i < 32 ; i++){
