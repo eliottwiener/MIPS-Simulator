@@ -31,7 +31,7 @@ public class DebuggerPR{
 		}
 	}
 	
-	public void debugCycle(int cycleCount){
+	public void debugCycle(float cycleCount){
 
 		output += "################################# End of Cycle " + cycleCount +" #################################\n";
 		output += "----------------------- IF/ID -----------------------\n";
