@@ -211,7 +211,6 @@ public class Main {
 		ifid.outPC4.connectTo(idex.PC4);
 		idex.outPC4.connectTo(aluAdd.input1);
 		idex.outReadData1.connectTo(jumpRegMux.input1);
-		idex.outReadData2.connectTo(exmem.readData2);
 		idex.outSignExtended.connectTo(sltAdd.in);
 		idex.outSignExtended.connectTo(aluSrcMux.input1);
 		idex.outRt.connectTo(regDstMux.input0);
