@@ -270,8 +270,12 @@ public class Main {
 		
 		pc.pcIn.setValue(new BinaryNum("1000000000000").pad(32));
 		int cycleCount = 0;
+		int killClock = 0;
+		boolean halting = false;
 		for(;;){
 			try{
+				if(halting) killClock++;
+				if(killClock >= 3) break;
 				
 				cycleCount ++;
 				/*
@@ -334,7 +338,7 @@ public class Main {
 				// stop executing if we see a halt instruction.
 				if(decode.isHalt()){
 					// terminate when we see a "HLT" instruction
-					break;
+					halting = true;
 				}
 				// clock the sign-extend
 				signExtend.clockEdge();
@@ -374,9 +378,7 @@ public class Main {
 				// Debug these objects
 				debug.debugCycle(cycleCount);
 				// increase the cycle count
-				
-				System.out.println("cycle:" + cycleCount);
-				
+								
 				// Add this cycle to the debug stream
 				pipelineDebug.debugCycle(cycleCount);
 			
@@ -387,9 +389,7 @@ public class Main {
 				exmem.clockEdge();
 				idex.clockEdge();
 				ifid.clockEdge();
-				
-				if(cycleCount == 155) break;
-				
+								
 			}
 			
 			catch (Exception e){
