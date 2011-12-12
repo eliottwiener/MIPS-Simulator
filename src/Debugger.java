@@ -81,11 +81,11 @@ public class Debugger{
 		this.exmem = exmem;
 		
 		try {
-			fstream = new FileWriter("debug.txt", false);
+			fstream = new FileWriter("debugSimple.txt", false);
 			out = new BufferedWriter(fstream);
 			out.write("");
 			out.close();
-			fstream = new FileWriter("debug.txt", true);
+			fstream = new FileWriter("debugSimple.txt", true);
 			out = new BufferedWriter(fstream);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -93,7 +93,7 @@ public class Debugger{
 		}
 	}
 	
-	public void debugCycle(int cycleCount){
+	public void debugCycle(float cycleCount){
 		output += "################################# End of Cycle " + cycleCount +" #################################\n";
 		output += "----------------------- Program Counter Information -----------------------\n";
 		output += "Program Counter for Cycle " + cycleCount + ":" + print(pc.pcOut) + "\t\t" + printDecimal(pc.pcOut) + "\n";
