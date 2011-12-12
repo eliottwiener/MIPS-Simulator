@@ -17,7 +17,6 @@ public class HazardDetectionUnit implements Clockable{
 				&& (idex_rt.getValue().equals(ifid_rs.getValue())
 						|| idex_rt.getValue().equals(ifid_rt.getValue()))){
 			// stalls the pipeline
-			System.out.println("Hazard here stall pipeline");
 			output.setValue(new BinaryNum("1"));
 		}else output.setValue(new BinaryNum("0"));
 				
