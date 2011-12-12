@@ -22,8 +22,6 @@ public class MemoryIO implements Clockable {
 		if(memRead.getValue().equals(new BinaryNum("1"))){
 			readData.setValue(mem.loadWord(address.getValue().toLong().intValue()));
 		}else if(memWrite.getValue().equals(new BinaryNum("1"))){
-			System.out.println("Storing word at: " + address.getValue().toLong().intValue());
-			System.out.println("value is: " + writeData.getValue());
 			mem.storeWord(address.getValue().toLong().intValue(), writeData.getValue());
 		}
 	}
