@@ -106,6 +106,7 @@ public class Debugger2{
 			output += "PC Control:" + print(pc.control) + "\n";
 			output += "Flush:" + print(ifid.Flush) + "\n";
 			output += "branch clear?: " + print(ifid.branchCleared) + "\n";
+			output += "IF/IDWrite:" + print(ifid.IFIDWrite) + "\n";
 			output += "-------------------------- PC + 4 ALU Information -------------------------\n";				
 			output += "input1:" + print(p4ALU.input1) + "\n";
 			output += "input2:" + print(p4ALU.input2)  + "\n";
